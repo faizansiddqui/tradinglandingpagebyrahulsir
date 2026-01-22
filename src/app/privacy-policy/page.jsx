@@ -1,8 +1,8 @@
 import React from "react";
 
 export const metadata = {
-  title: "Privacy Policy | Mahabali Price Action",
-  description: "Privacy Policy of Mahabali Price Action / Mahabali Trades",
+  title: "Privacy Policy | Mahhabali Price Action",
+  description: "Privacy Policy of Mahhabali Price Action / Mahhabali Trades",
 };
 
 const Page = () => {
@@ -28,7 +28,7 @@ const Page = () => {
         <div className="rounded-2xl border bg-white p-5 sm:p-8">
           <PolicyBlock title="1) Introduction">
             <p>
-              Mahabali Price Action / Mahabali Trades (“we”, “our”, “us”) respects your privacy.
+              Mahhabali Price Action / Mahhabali Trades (“we”, “our”, “us”) respects your privacy.
               This Privacy Policy explains how we collect, use, store, and protect your information
               when you visit and use our website, services, and courses.
             </p>
