@@ -3,23 +3,17 @@ import { Users, Video, Award, Star } from 'lucide-react';
 import Image from 'next/image';
 
 export default function LearningForm() {
-
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
-    age: '',
-    amount: '₹20,000 to ₹50,000',
-    occupation: 'Student',
-    whatsapp: 'Yes',
-    emailUpdates: true
   });
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
+    const { name, value } = e.target;
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: value,
     }));
   };
 
@@ -29,132 +23,130 @@ export default function LearningForm() {
   };
 
   return (
-    <div id="webinar" className="min-h-screen bg-[#0a0a0a] text-white">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-[#1a1a1a] via-[#0a0a0a] to-[#0a0a0a]"></div>
+    <div id="webinar" className="min-h-screen bg-white text-gray-900 relative overflow-hidden">
+      {/* Background gradients */}
+      <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-white to-white pointer-events-none" />
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-[#C5FF00]/5 rounded-full blur-[120px] animate-pulse"></div>
-        <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-[#C5FF00]/3 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '1000ms' }}></div>
+        <div className="absolute -top-20 -right-20 sm:top-1/4 sm:right-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-[#00D9B8]/5 rounded-full blur-3xl animate-pulse" />
+        <div
+          className="absolute -bottom-20 -left-20 sm:bottom-1/4 sm:left-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-[#00D9B8]/4 rounded-full blur-3xl animate-pulse"
+          style={{ animationDelay: '1.2s' }}
+        />
       </div>
-      <div className="grid lg:grid-cols-2 min-h-screen relative ">
-        {/* Left Section - Dark Background with Image */}
-        <div className="relative bg-gradient-to-br from-[#1a1a1a] to-[#0f0f0f] p-8 lg:p-12 flex items-center justify-center overflow-hidden border-r border-[#C5FF00]/10">
-          {/* Floating Badges */}
-          <div className="absolute top-8 left-8 bg-[#C5FF00]/10 backdrop-blur-sm rounded-2xl px-4 py-2 shadow-lg border border-[#C5FF00]/20">
-            <div className="flex items-center gap-2">
-              <Star className="w-4 h-4 text-[#C5FF00] fill-[#C5FF00]" />
-              <span className="font-bold text-white">4.8</span>
+
+      <div className="relative grid grid-cols-1 lg:grid-cols-2 min-h-screen">
+        {/* LEFT - Image + Badges Section */}
+        <div className="relative hidden lg:flex lg:bg-gradient-to-br lg:from-white lg:to-gray-50 p-6 xl:p-12 items-center justify-center overflow-hidden border-r border-[#00D9B8]/10">
+          {/* Floating badges - only on desktop */}
+          <div className="absolute z-1 top-8 left-8 bg-[#00D9B8]/10 backdrop-blur-md rounded-2xl px-4 py-3 shadow-xl border border-[#00D9B8]/20 text-sm">
+            <div className="flex items-center gap-2 font-bold text-gray-900">
+              <Star className="w-4 h-4 text-[#00D9B8] fill-[#00D9B8]" />
+              4.8
             </div>
-            <div className="text-sm text-gray-300 font-medium flex items-center gap-1">
-              <Users className="w-4 h-4 text-[#C5FF00]" />
-              Join 30K+ happy users
+            <div className="flex items-center gap-1.5 text-gray-600 mt-1">
+              <Users className="w-4 h-4 text-[#00D9B8]" />
+              30K+ happy users
             </div>
           </div>
 
-          <div className="absolute top-8 right-8 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg flex items-center gap-2 border border-white/10">
-            <Video className="w-4 h-4 text-[#C5FF00]" />
-            <span className="font-semibold text-white text-sm">Online Classes</span>
+          <div className="absolute z-1 top-8 right-8 bg-white/60 backdrop-blur-md rounded-full px-5 py-2.5 shadow-lg border border-gray-200/40 flex items-center gap-2 text-sm font-semibold">
+            <Video className="w-4 h-4 text-[#00D9B8]" />
+            Online Classes
           </div>
 
-          <div className="absolute left-8 z-1 top-1/2 -translate-y-1/2 bg-[#C5FF00]/10 backdrop-blur-sm rounded-2xl px-4 py-3 shadow-lg border border-[#C5FF00]/20">
-            <div className="flex items-center gap-1 mb-2">
-              <span className="text-sm font-bold text-white">Happy Students</span>
-              <span className="text-lg">🤗</span>
-            </div>
-            <div className="flex -space-x-2">
-              {[1, 2, 3, 4, 5].map((i) => (
-                <div key={i} className="w-8 h-8 rounded-full bg-gradient-to-br from-[#C5FF00] to-[#a3cc00] border-2 border-[#C5FF00]/20 flex items-center justify-center text-black text-xs font-bold">
-                  {String.fromCharCode(64 + i)}
+          <div className="absolute z-1 bottom-16 right-12 bg-[#00D9B8]/10 backdrop-blur-md rounded-full px-5 py-2.5 shadow-lg border border-[#00D9B8]/20 flex items-center gap-2 text-sm font-bold">
+            <Award className="w-4 h-4 text-[#00D9B8]" />
+            Best Mentor in India
+          </div>
+
+          {/* Mentor Image - centered */}
+          <div className="relative w-full max-w-md xl:max-w-lg">
+            <div className="aspect-[3/4] bg-gradient-to-b from-white to-gray-50 rounded-3xl overflow-hidden border border-[#00D9B8]/20 shadow-2xl">
+              <div className="w-full h-full flex flex-col items-center justify-end pb-10 px-6">
+                <div className="w-full max-w-[340px] mb-6 bg-white/50 rounded-2xl overflow-hidden shadow-md">
+                  <Image
+                    width={400}
+                    height={400}
+                    alt="Mentor Mahabali Price"
+                    src="/tradingWeb.png"
+                    className="w-full h-auto object-contain"
+                    priority
+                  />
                 </div>
-              ))}
-            </div>
-          </div>
 
-          <div className="absolute bottom-1/3 z-1 right-8 bg-[#C5FF00]/10 backdrop-blur-sm rounded-full px-5 py-2 shadow-lg border border-[#C5FF00]/20">
-            <div className="flex items-center gap-2">
-              <Award className="w-4 h-4 text-[#C5FF00]" />
-              <span className="font-bold text-white text-sm">Best Mentor in India</span>
-            </div>
-          </div>
-
-          {/* Mentor Image Placeholder */}
-          <div className="relative w-full max-w-md ">
-            <div className="aspect-[3/4] bg-gradient-to-b from-[#1a1a1a] to-[#0f0f0f] rounded-3xl shadow-2xl overflow-hidden border border-[#C5FF00]/30">
-              <div className="w-full h-full flex items-end justify-center pb-8">
-                <div className="text-center text-white">
-                  <div className="w-full mx-auto mb-4 bg-black/20 rounded-full flex items-center justify-center">
-                    <Image
-                      width={380}
-                      height={380}
-                      alt='Mentor Image'
-                      src={"https://i.pinimg.com/1200x/7a/75/f6/7a75f6682f7fcc2bc0b9a7e9800587b0.jpg"}
-                      className=" text-[#C5FF00]/50 rounded-2xl" 
-                    />
-                  </div>
-                  <div className="bg-black/30 backdrop-blur-sm rounded-lg px-6 py-2 inline-block border border-white/10">
-                    <p className="text-lg font-bold">Trendy Traders</p>
-                    <p className="text-sm text-gray-300">Academy</p>
-                  </div>
+                <div className="bg-white/70 backdrop-blur-sm rounded-xl px-8 py-4 text-center border border-gray-200/30 shadow-md">
+                  <p className="text-2xl font-bold text-gray-900">Mr. Suresh Latiyal</p>
+                  <p className="text-gray-600 mt-1">Mahabali Price Action</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Right Section - Form */}
-        <div className="bg-gradient-to-b from-[#1a1a1a] to-[#0f0f0f] p-8 lg:p-12 flex items-center overflow-y-auto border-l border-[#C5FF00]/10">
-          <div className="w-full max-w-2xl mx-auto">
+        {/* RIGHT - Form Section (always visible) */}
+        <div className="bg-gradient-to-b from-white to-gray-50 px-5 py-12 sm:p-10 lg:p-12 flex items-center relative z-10">
+          <div className="w-full max-w-xl mx-auto">
             {/* Heading */}
-            <div className="mb-8">
-              <h1 className="text-3xl lg:text-4xl font-bold text-white mb-2">
+            <div className="text-center mb-10">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
                 Let Our Experts Walk You Through The Details
               </h1>
-              <div className="flex items-center gap-2">
-                <p className="text-lg text-gray-300">Step-By-Step Clarity, Zero Confusion</p>
-                <div className="w-3 h-3 bg-[#C5FF00] rounded-full"></div>
-              </div>
+              <p className="mt-4 text-lg sm:text-xl text-gray-600 flex items-center justify-center gap-3">
+                Step-By-Step Clarity, Zero Confusion
+                <span className="w-3 h-3 bg-[#00D9B8] rounded-full inline-block animate-pulse" />
+              </p>
             </div>
 
             {/* Form */}
             <div className="space-y-6">
-              {/* Name and Email */}
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-300 mb-2">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-[#C5FF00] focus:border-transparent outline-none transition text-white placeholder-gray-400"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-300 mb-2">
-                    Email <span className="text-red-400">*</span>
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-[#C5FF00] focus:border-transparent outline-none transition text-white placeholder-gray-400"
-                  />
-                </div>
+              {/* Name */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Name <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  placeholder="Enter your name"
+                  required
+                  className="w-full px-5 py-4 bg-white border border-gray-300 rounded-xl 
+                           focus:ring-2 focus:ring-[#00D9B8]/60 focus:border-[#00D9B8]/40 
+                           outline-none transition-all text-gray-900 placeholder-gray-500"
+                />
               </div>
 
-              {/* Phone Number */}
+              {/* Email */}
               <div>
-                <label className="block text-sm font-semibold text-gray-300 mb-2">
-                  Phone Number <span className="text-red-400">*</span>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Email <span className="text-red-500">*</span>
                 </label>
-                <div className="flex gap-2">
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="Enter your email"
+                  required
+                  className="w-full px-5 py-4 bg-white border border-gray-300 rounded-xl 
+                           focus:ring-2 focus:ring-[#00D9B8]/60 focus:border-[#00D9B8]/40 
+                           outline-none transition-all text-gray-900 placeholder-gray-500"
+                />
+              </div>
+
+              {/* Phone */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Phone Number <span className="text-red-500">*</span>
+                </label>
+                <div className="flex gap-3">
                   <input
                     type="text"
                     value="+91"
                     disabled
-                    className="w-20 px-4 py-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-300 font-medium"
+                    className="w-20 sm:w-24 px-3 sm:px-4 py-4 border border-gray-300 rounded-xl 
+                             bg-gray-100 text-gray-600 font-medium text-center"
                   />
                   <input
                     type="tel"
@@ -162,102 +154,42 @@ export default function LearningForm() {
                     value={formData.phone}
                     onChange={handleChange}
                     placeholder="Enter your phone number"
-                    className="flex-1 px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-[#C5FF00] focus:border-transparent outline-none transition text-white placeholder-gray-400"
+                    required
+                    className="flex-1 px-5 py-4 bg-white border border-gray-300 rounded-xl 
+                             focus:ring-2 focus:ring-[#00D9B8]/60 focus:border-[#00D9B8]/40 
+                             outline-none transition-all text-gray-900 placeholder-gray-500"
                   />
                 </div>
               </div>
 
-              {/* Age */}
-              <div>
-                <label className="block text-sm font-semibold text-gray-300 mb-2">
-                  Age (Please fill the form only if you are 18+) <span className="text-red-400">*</span>
-                </label>
-                <input
-                  type="number"
-                  name="age"
-                  value={formData.age}
-                  onChange={handleChange}
-                  min="18"
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-[#C5FF00] focus:border-transparent outline-none transition text-white placeholder-gray-400"
-                />
-              </div>
-
-              {/* Amount and Occupation */}
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-300 mb-2">
-                    Amount you want to trade with? <span className="text-red-400">*</span>
-                  </label>
-                  <select
-                    name="amount"
-                    value={formData.amount}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-[#C5FF00] focus:border-transparent outline-none transition text-white appearance-none cursor-pointer"
-                  >
-                    <option>₹20,000 to ₹50,000</option>
-                    <option>₹50,000 to ₹1,00,000</option>
-                    <option>₹1,00,000 to ₹2,00,000</option>
-                    <option>₹2,00,000+</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-300 mb-2">
-                    What is your occupation? <span className="text-red-400">*</span>
-                  </label>
-                  <select
-                    name="occupation"
-                    value={formData.occupation}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-[#C5FF00] focus:border-transparent outline-none transition text-white appearance-none cursor-pointer"
-                  >
-                    <option>Student</option>
-                    <option>Employed</option>
-                    <option>Self-Employed</option>
-                    <option>Business Owner</option>
-                    <option>Other</option>
-                  </select>
-                </div>
-              </div>
-
-              {/* WhatsApp */}
-              <div>
-                <label className="block text-sm font-semibold text-gray-300 mb-2">
-                  I would like to receive the brochure via WhatsApp <span className="text-red-400">*</span>
-                </label>
-                <select
-                  name="whatsapp"
-                  value={formData.whatsapp}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-[#C5FF00] focus:border-transparent outline-none transition text-white appearance-none cursor-pointer"
-                >
-                  <option>Yes</option>
-                  <option>No</option>
-                </select>
-              </div>
-
-              {/* Email Updates Checkbox */}
-              <div className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  name="emailUpdates"
-                  id="emailUpdates"
-                  checked={formData.emailUpdates}
-                  onChange={handleChange}
-                  className="w-5 h-5 text-[#C5FF00] border-gray-600 rounded focus:ring-[#C5FF00] bg-gray-800 cursor-pointer"
-                />
-                <label htmlFor="emailUpdates" className="text-sm text-gray-300 cursor-pointer">
-                  I agree to receive email updates
-                </label>
-              </div>
-
-              {/* Submit Button */}
+              {/* Submit */}
               <button
                 onClick={handleSubmit}
-                className="w-full bg-[#C5FF00] hover:bg-[#d4ff33] text-black font-bold py-4 px-6 rounded-lg transition duration-300 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-[0_0_30px_rgba(197,255,0,0.3)]"
+                className="w-full mt-4 bg-[#00D9B8] hover:bg-[#00f0c9] 
+                         text-gray-900 font-bold text-lg py-5 px-8 rounded-xl 
+                         transition-all duration-300 transform hover:scale-[1.02] 
+                         active:scale-[0.98] shadow-lg hover:shadow-[0_0_40px_rgba(0,217,184,0.35)]"
               >
-                Enquire Now
+                Enquire Now →
               </button>
             </div>
+          </div>
+        </div>
+
+        {/* Mobile-only simple mentor teaser */}
+        <div className="lg:hidden px-6 py-10 bg-gradient-to-b from-gray-50/80 to-white border-t border-gray-100">
+          <div className="max-w-md mx-auto text-center">
+            <div className="w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-[#00D9B8]/30 shadow-xl">
+              <Image
+                width={128}
+                height={128}
+                alt="Mahabali Price"
+                src="/tradingWeb.png"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900">Mr. Suresh Latiyal</h3>
+            <p className="text-gray-600 mt-1">Mahabali Price Action</p>
           </div>
         </div>
       </div>

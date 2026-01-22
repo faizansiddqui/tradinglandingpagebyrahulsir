@@ -19,9 +19,6 @@ function Hero() {
         <TradingProgram />
         <GallerySection />
         <LearningForm />
-        <TradingAcademyFeatures />
-        <EnrollNowSection />
-        <Testimonials />
       </main>
     </div>
   );

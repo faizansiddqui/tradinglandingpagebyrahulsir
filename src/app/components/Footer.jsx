@@ -24,7 +24,7 @@ export default function Footer() {
               <span>Join 25K+ Happy Traders</span>
             </div>
             <p className="text-gray-400">
-              © 2025 <span className="text-[#C5FF00] font-semibold">Trendy Traders Academy</span>. All rights reserved.
+              © 2025 <span className="text-[#C5FF00] font-semibold">Mahabali Price Action Academy</span>. All rights reserved.
             </p>
             <div className="flex items-center gap-4 text-gray-400">
               <a href="#" className="hover:text-[#C5FF00] transition-colors">Privacy Policy</a>

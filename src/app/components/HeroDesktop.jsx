@@ -1,140 +1,148 @@
-import { TrendingUp } from 'lucide-react';
-import Image from 'next/image';
+import React, { useState, useEffect, useRef } from 'react';
 
-export default function HeroDesktopUi() {
+const HeroDesktop = () => {
+  
+  const [headerVisible, setHeaderVisible] = useState(true);
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const current = window.scrollY;
+      if (current > lastScrollY.current && current > 120) {
+        setHeaderVisible(false);
+      } else {
+        setHeaderVisible(true);
+      }
+      lastScrollY.current = current;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <div className="relative w-full min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 overflow-hidden">
-      <div
-        className="absolute inset-0 opacity-20"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 50 L20 45 L40 55 L60 40 L80 48 L100 35' stroke='%2334D399' stroke-width='1' fill='none'/%3E%3C/svg%3E")`,
-          backgroundSize: '200px 200px',
-          backgroundRepeat: 'repeat'
-        }}
+    <div id="hero" className="relative min-h-screen bg-[#0a0e17] overflow-hidden flex flex-col">
+      {/* Background layers */}
+      <div className="absolute inset-0 bg-[url('/chart-bg1.png')] bg-cover bg-center opacity-[0.09]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/60 to-black/80" />
+      <div className="absolute inset-0 bg-gradient-to-tr from-emerald-900/10 via-transparent to-blue-950/10 pointer-events-none" />
 
-      />
+      {/* Floating glow orbs */}
+      <div className="absolute -left-40 top-40 w-96 h-96 bg-emerald-600/10 rounded-full blur-3xl animate-slow-pulse" />
+      <div className="absolute -right-40 bottom-20 w-80 h-80 bg-cyan-600/8 rounded-full blur-3xl animate-slow-pulse delay-1000" />
 
-      <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-emerald-500/10 via-transparent to-transparent" />
-      <div className="absolute bottom-0 left-0 w-full h-96 bg-gradient-to-t from-emerald-500/10 via-transparent to-transparent" />
-
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-8 lg:py-4 min-h-screen flex flex-col justify-between">
-
-        <header className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-6">
-          <div className="flex flex-col items-center sm:items-start">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <Image
-                src={'/finalLogo.png'}
-                width={60}
-                height={70}
-                alt='Logo'
-                className='rounded-full'
-              />
-              <span className="text-2xl sm:text-3xl lg:text-5xl font-black text-emerald-400 tracking-tight">MahaBull</span>
+      {/* Header */}
+      <header
+        className={`fixed inset-x-0 top-0 z-[9999] transition-all duration-500 ${headerVisible ? 'translate-y-0' : '-translate-y-full'
+          }`}
+      >
+        <div className="backdrop-blur-xl bg-black/40 border-b border-white/5">
+          <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+            <div className="flex items-center gap-3.5">
+              <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-xl overflow-hidden ring-1 ring-emerald-500/30">
+                <img src="/finalLogo.png" alt="MahaBali" className="w-full h-full object-cover" />
+              </div>
+              <div className="hidden sm:block">
+                <h2 className="text-white text-xl font-bold tracking-tight">MahaBali</h2>
+                <p className="text-emerald-400 text-xs font-semibold tracking-wider">TRADING ACADEMY</p>
+              </div>
             </div>
-            <span className="text-emerald-400/90 text-xs sm:text-sm lg:text-base tracking-[0.3em] mt-1 ml-0 sm:ml-12 lg:ml-16 font-light">PRICE ACTION</span>
-          </div>
-
-          <div className="text-center sm:text-right">
-            <div className="text-gray-300 text-2xl sm:text-3xl lg:text-5xl font-black tracking-tight leading-none">
-              INDIA'S 1<sup className="text-base sm:text-xl lg:text-3xl">ST</sup>
+            <div className="text-right">
+              <div className="text-white text-lg sm:text-2xl font-black tracking-wider">
+                INDIA'S <span className="text-emerald-400">№1</span>
+              </div>
+              <p className="text-emerald-400/90 text-xs sm:text-sm font-bold tracking-widest uppercase mt-0.5">
+                Price Behavior Program
+              </p>
             </div>
-            <div className="text-emerald-400 text-base sm:text-lg lg:text-2xl font-bold mt-1 sm:mt-2">Price Behavior Program</div>
           </div>
-        </header>
+        </div>
+      </header>
 
-        <main className="flex-1 flex items-center justify-center py-8 sm:py-12 lg:py-16">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-12 xl:gap-20 items-center max-w-7xl w-full">
+      {/* Main Content - Perfect one-screen fit */}
+      <div className="relative z-10 flex-1 flex items-center  px-5 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+        <div className="grid lg:grid-cols-2 gap-10 xl:gap-16 items-center w-full">
+          {/* LEFT - Text + CTA */}
+          <div className="space-y-6 lg:space-y-8 text-center lg:text-left">
+            <h1 className="text-4xl sm:text-5xl lg:text-5xl xl:text-6xl mt-20 font-black tracking-tight leading-tight text-white">
+              <span className="block text-emerald-400">REVEALED</span>
+              <span className="block mt-1">SECRET OF</span>
+              <span className="block mt-1">SUCCESSFUL</span>
+              <span className="block text-emerald-400 mt-1">TRADERS</span>
+            </h1>
 
-            <div className="text-center lg:text-right space-y-3 sm:space-y-4 lg:space-y-6 order-1">
+            {/* LIVE Badge */}
+            <div className="inline-flex items-center gap-20 bg-black/40 backdrop-blur-lg border border-white/10 rounded-2xl px-5 py-3 mx-auto lg:mx-0">
+
               <div>
-                <div className="text-red-500 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black italic drop-shadow-lg animate-pulse">
-                  LIVE
+
+                <div className="relative flex items-center gap-2">
+                  <span className="absolute flex h-4 w-4">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-4 w-4 bg-red-500"></span>
+                  </span>
+                  <span className="ml-5 text-red-400 font-black text-2xl tracking-widest">LIVE</span>
                 </div>
-                <div className="text-white/90 text-lg sm:text-xl lg:text-2xl xl:text-3xl font-light italic mt-1 sm:mt-2">
-                  TRAINING
-                </div>
+                <span className="text-white/70 text-sm font-semibold tracking-wider uppercase">Training</span>
+
               </div>
-              <div className="pt-2 sm:pt-4">
-                <div className="text-white text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black tracking-tight leading-none bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent animate-fade-in-up">
-                  2700+
-                </div>
-                <div className="text-gray-300 text-sm sm:text-base lg:text-xl xl:text-2xl font-light tracking-widest mt-2 uppercase">
-                  Success Stories
-                </div>
-              </div>
+
+              <button className="w-[300px] py-5 px-8 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white text-xl font-black uppercase tracking-wide rounded-2xl shadow-xl shadow-emerald-900/40 hover:shadow-2xl hover:shadow-emerald-700/50 transform hover:scale-[1.03] active:scale-[0.98] transition-all duration-300">
+                Register Now — It's Free
+              </button>
+
             </div>
 
-            <div className="relative w-full max-w-sm sm:max-w-md lg:max-w-xl order-2 mx-auto lg:mx-0">
-             
-              <div className="relative rounded-3xl  overflow-visible border-2 border-emerald-500/30 hover:border-emerald-400/50 transition-colors duration-300 p-2 sm:p-3 lg:p-4">
-             
+            {/* CTA Card */}
+            <div className="bg-gradient-to-br from-slate-900/80 to-black/70 border border-white/5 rounded-3xl p-6 sm:p-8 backdrop-blur-xl max-w-md mx-auto lg:mx-0">
 
-                <div className="relative flex items-center justify-center p-4 sm:p-6 lg:p-8 z-10">
-                  <div className="text-center w-full space-y-6 sm:space-y-8">
-                    <div className="relative inline-block">
-                      <Image
-                        src={'/neerajSirImg.png'}
-                        alt='Neeraj Sir'
-                        width={400}
-                        height={400}
-                        className="rounded-full shadow-2xl border-4 border-emerald-400/40 w-52 h-52 sm:w-56 sm:h-56 lg:w-72 lg:h-72 xl:w-80 xl:h-80 object-contain hover:scale-105 transition-transform duration-500 hover:shadow-emerald-500/20 max-w-full max-h-full"
-                        sizes="(max-width: 768px) 208px, (max-width: 1024px) 224px, 288px"
-                      />
-                    </div>
 
-                    <div className="inline-block">
-                      <div className="bg-gradient-to-r from-emerald-400 to-cyan-400 py-3 px-6 sm:py-3.5 sm:px-8 lg:py-4 lg:px-10 rounded-full shadow-xl transform hover:scale-110 transition-all duration-300 hover:shadow-emerald-500/30">
-                        <span className="text-black text-base sm:text-lg lg:text-xl xl:text-2xl font-bold whitespace-nowrap">
-                          Neeraj Sir
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="text-center lg:text-left space-y-3 sm:space-y-4 lg:space-y-6 order-3">
-              <div>
-                <div className="text-white text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black italic leading-none tracking-tight animate-fade-in-up delay-200">
-                  14 YEAR
-                </div>
-                <div className="text-gray-300 text-sm sm:text-base lg:text-xl xl:text-2xl font-light tracking-widest italic mt-2 uppercase">
-                  Experience
-                </div>
-              </div>
-              <div className="hidden lg:block pt-4">
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-emerald-400 animate-fade-in-up delay-400">
-                    <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
-                    <span className="text-sm xl:text-base">Expert Training</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-emerald-400 animate-fade-in-up delay-500">
-                    <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" style={{ animationDelay: '0.1s' }}></div>
-                    <span className="text-sm xl:text-base">Live Market Analysis</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-emerald-400 animate-fade-in-up delay-600">
-                    <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" style={{ animationDelay: '0.2s' }}></div>
-                    <span className="text-sm xl:text-base">Proven Strategies</span>
-                  </div>
+              <div className="mt-7 space-y-3  text-center lg:text-left">
+                <p className="text-emerald-400/80 text-sm font-bold tracking-widest uppercase">
+                  ₹10,000 VALUE PROGRAM
+                </p>
+                <p className="text-3xl font-black text-white tracking-tight">
+                  Now <span className="text-emerald-400">FREE</span>
+                </p>
+                <div className="pt-3 border-t border-white/10">
+                  <p className="text-slate-400 text-xs uppercase tracking-wider">Mentored by</p>
+                  <p className="text-white text-xl font-bold mt-1">Mr. Suresh Latiyal</p>
                 </div>
               </div>
             </div>
           </div>
-        </main>
 
-        <footer className="text-center pb-4 sm:pb-6 lg:pb-8">
-          <button className="group relative bg-gradient-to-r from-emerald-400 via-emerald-500 to-cyan-500 hover:from-emerald-500 hover:via-emerald-600 hover:to-cyan-600 text-black text-lg sm:text-xl lg:text-2xl xl:text-3xl font-black py-4 sm:py-5 lg:py-6 px-10 sm:px-14 lg:px-18 xl:px-24 rounded-full shadow-2xl transform hover:scale-105 active:scale-95 transition-all duration-300 uppercase tracking-wider w-full sm:w-auto max-w-lg mx-auto overflow-hidden animate-bounce-slow">
-            <span className="relative z-10">Register Now</span>
-            <div className="absolute inset-0 bg-white/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
-          </button>
-          <p className="text-gray-400 text-sm sm:text-base mt-3 sm:mt-4 animate-fade-in-up delay-800">Limited seats available - Join today!</p>
-        </footer>
+          {/* RIGHT - Mentor Image (perfectly centered) */}
+          <div className="flex justify-center lg:justify-center">
+            <div className="relative w-full max-w-sm lg:max-w-md xl:max-w-sm">
+              <div className="relative rounded-3xl overflow-hidden border border-white/5 shadow-2xl shadow-black/70 mentor-glow">
+                <img
+                  src="/instructor.png"
+                  alt="Mr. Suresh Latiyal"
+                  className="w-full h-full object-cover scale-105 transition-transform duration-700 hover:scale-110"
+                />
+
+                {/* Left Stat */}
+                <div className="absolute -left-4 top-1/3 glass-panel backdrop-blur-lg bg-black/50 border border-white/10 p-4 rounded-2xl animate-float">
+                  <p className="text-4xl font-black text-white">2700+</p>
+                  <p className="text-slate-300 text-sm font-medium mt-1">Success Stories</p>
+                </div>
+
+                {/* Right Stat */}
+                <div className="absolute -right-4 bottom-1/3 glass-panel backdrop-blur-lg bg-black/50 border border-white/10 p-4 rounded-2xl animate-float delay-500">
+                  <p className="text-4xl font-black text-white">14</p>
+                  <p className="text-slate-300 text-sm font-medium mt-1">Years Experience</p>
+                </div>
+
+                {/* Bottom glow */}
+                <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-emerald-900/40 to-transparent pointer-events-none" />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-
-      <div className="absolute bottom-0 left-0 w-64 sm:w-80 lg:w-96 h-64 sm:h-80 lg:h-96 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none -translate-x-1/2 translate-y-1/2 animate-pulse" />
-      <div className="absolute bottom-0 right-0 w-64 sm:w-80 lg:w-96 h-64 sm:h-80 lg:h-96 bg-cyan-500/20 rounded-full blur-3xl pointer-events-none translate-x-1/2 translate-y-1/2 animate-pulse" style={{ animationDelay: '1s' }} />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 sm:w-[500px] lg:w-[600px] h-96 sm:h-[500px] lg:h-[600px] bg-emerald-500/5 rounded-full blur-3xl pointer-events-none animate-pulse" style={{ animationDelay: '2s' }} />
     </div>
   );
-}
+};
+
+export default HeroDesktop;
