@@ -39,10 +39,10 @@ const HeroDesktop = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl overflow-hidden ring-2 ring-emerald-500/20 shadow-lg shadow-emerald-500/10">
-                <img src="/finalLogo.png" alt="MahaBali" className="w-full h-full object-cover" />
+                <img src="/finalLogo.png" alt="Mahhabali" className="w-full h-full object-cover" />
               </div>
               <div>
-                <h2 className="text-white text-base sm:text-xl font-bold leading-tight tracking-tight">MahaBali Education</h2>
+                <h2 className="text-white text-base sm:text-xl font-bold leading-tight tracking-tight">Mahhabali Education</h2>
                 <p className="text-emerald-400 text-[10px] sm:text-xs font-bold tracking-[0.2em] uppercase"></p>
               </div>
             </div>
