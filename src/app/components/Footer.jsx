@@ -25,7 +25,7 @@ export default function Footer() {
               <span>Join 25K+ Happy Traders</span>
             </div>
             <p className="text-gray-400">
-              © 2025 <span className="text-[#C5FF00] font-semibold">Mahabali Price Action Education</span>. All rights reserved.
+              © 2025 <span className="text-[#C5FF00] font-semibold">Mahhabali Education</span>. All rights reserved.
             </p>
             <div className="flex items-center gap-4 text-gray-400">
               <Link href="/privacy-policy" className="hover:text-[#C5FF00] transition-colors">Privacy Policy 
