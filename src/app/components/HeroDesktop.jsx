@@ -42,7 +42,7 @@ const HeroDesktop = () => {
                 <img src="/finalLogo.png" alt="MahaBali" className="w-full h-full object-cover" />
               </div>
               <div>
-                <h2 className="text-white text-base sm:text-xl font-bold leading-tight tracking-tight">MahaBali</h2>
+                <h2 className="text-white text-base sm:text-xl font-bold leading-tight tracking-tight">MahaBali Education</h2>
                 <p className="text-emerald-400 text-[10px] sm:text-xs font-bold tracking-[0.2em] uppercase"></p>
               </div>
             </div>
