@@ -1,8 +1,8 @@
 import React from "react";
 
 export const metadata = {
-  title: "Terms of Service | Mahabali Price Action",
-  description: "Terms of Service of Mahabali Price Action / Mahabali Trades",
+  title: "Terms of Service | Mahhabali Price Action",
+  description: "Terms of Service of Mahhabali Price Action / Mahhabali Trades",
 };
 
 const Page = () => {
@@ -35,7 +35,7 @@ const Page = () => {
 
           <TermsBlock title="2) Services Provided">
             <p>
-              Mahabali Price Action / Mahabali Trades provides trading education and learning services including
+              Mahhabali Price Action / Mahhabali Trades provides trading education and learning services including
               price action training, market structure education, training videos, PDFs, mentorship/community support
               (if available).
             </p>
@@ -92,7 +92,7 @@ const Page = () => {
           <TermsBlock title="8) Intellectual Property Rights">
             <p>
               All website content and course materials including videos, lessons, PDFs, logos, branding, text, graphics,
-              and designs are the intellectual property of Mahabali Price Action / Mahabali Trades.
+              and designs are the intellectual property of Mahhabali Price Action / Mahhabali Trades.
             </p>
             <p className="mt-2">
               You may not copy, record, resell, redistribute, re-upload, or publish any content without written permission.
