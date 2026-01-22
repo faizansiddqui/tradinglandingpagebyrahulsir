@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Users, Video, Award, Star } from 'lucide-react';
+import { Users, Video, Award, Star, User, Mail, Phone, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 
 export default function LearningForm() {
@@ -17,182 +17,183 @@ export default function LearningForm() {
     }));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     console.log('Form submitted:', formData);
-    alert('Thank you for your enquiry! We will contact you soon.');
+    alert('Thank you for your enquiry! Our team will contact you shortly.');
   };
 
   return (
-    <div id="webinar" className="min-h-screen bg-white text-gray-900 relative overflow-hidden">
-      {/* Background gradients */}
-      <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-white to-white pointer-events-none" />
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-20 -right-20 sm:top-1/4 sm:right-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-[#00D9B8]/5 rounded-full blur-3xl animate-pulse" />
-        <div
-          className="absolute -bottom-20 -left-20 sm:bottom-1/4 sm:left-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-[#00D9B8]/4 rounded-full blur-3xl animate-pulse"
-          style={{ animationDelay: '1.2s' }}
-        />
+    <div id="webinar" className="relative min-h-screen bg-[#f8fafc] flex items-center justify-center overflow-hidden py-12 px-4">
+      {/* --- Background Design --- */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(#00D9B8_0.5px,transparent_0.5px)] [background-size:24px_24px] opacity-[0.15]" />
+        <div className="absolute -top-24 -right-24 w-96 h-96 bg-[#00D9B8]/10 rounded-full blur-[100px]" />
+        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-blue-500/5 rounded-full blur-[100px]" />
       </div>
 
-      <div className="relative grid grid-cols-1 lg:grid-cols-2 min-h-screen">
-        {/* LEFT - Image + Badges Section */}
-        <div className="relative hidden lg:flex lg:bg-gradient-to-br lg:from-white lg:to-gray-50 p-6 xl:p-12 items-center justify-center overflow-hidden border-r border-[#00D9B8]/10">
-          {/* Floating badges - only on desktop */}
-          <div className="absolute z-1 top-8 left-8 bg-[#00D9B8]/10 backdrop-blur-md rounded-2xl px-4 py-3 shadow-xl border border-[#00D9B8]/20 text-sm">
-            <div className="flex items-center gap-2 font-bold text-gray-900">
-              <Star className="w-4 h-4 text-[#00D9B8] fill-[#00D9B8]" />
-              4.8
-            </div>
-            <div className="flex items-center gap-1.5 text-gray-600 mt-1">
-              <Users className="w-4 h-4 text-[#00D9B8]" />
-              30K+ happy users
-            </div>
-          </div>
-
-          <div className="absolute z-1 top-8 right-8 bg-white/60 backdrop-blur-md rounded-full px-5 py-2.5 shadow-lg border border-gray-200/40 flex items-center gap-2 text-sm font-semibold">
-            <Video className="w-4 h-4 text-[#00D9B8]" />
-            Online Classes
-          </div>
-
-          <div className="absolute z-1 bottom-16 right-12 bg-[#00D9B8]/10 backdrop-blur-md rounded-full px-5 py-2.5 shadow-lg border border-[#00D9B8]/20 flex items-center gap-2 text-sm font-bold">
-            <Award className="w-4 h-4 text-[#00D9B8]" />
-            Best Mentor in India
-          </div>
-
-          {/* Mentor Image - centered */}
-          <div className="relative w-full max-w-md xl:max-w-lg">
-            <div className="aspect-[3/4] bg-gradient-to-b from-white to-gray-50 rounded-3xl overflow-hidden border border-[#00D9B8]/20 shadow-2xl">
-              <div className="w-full h-full flex flex-col items-center justify-end pb-10 px-6">
-                <div className="w-full max-w-[340px] mb-6 bg-white/50 rounded-2xl overflow-hidden shadow-md">
-                  <Image
-                    width={400}
-                    height={400}
-                    alt="Mentor Mahabali Price"
-                    src="/tradingWeb.png"
-                    className="w-full h-auto object-contain"
-                    priority
-                  />
+      <div className="relative z-10 w-full max-w-6xl bg-white rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-white overflow-hidden">
+        <div className="grid lg:grid-cols-2">
+          
+          {/* LEFT PANEL: Mentor Visuals (Desktop) */}
+          <div className="relative hidden lg:flex flex-col items-center justify-center p-12 bg-gradient-to-br from-slate-50 to-white border-r border-slate-100">
+            {/* Badges */}
+            <div className="absolute top-10 left-10 animate-float">
+              <div className="bg-white/80 backdrop-blur-md p-3 rounded-2xl shadow-lg border border-slate-100 flex items-center gap-3">
+                <div className="bg-yellow-400 p-2 rounded-lg">
+                  <Star className="w-5 h-5 text-white fill-white" />
                 </div>
-
-                <div className="bg-white/70 backdrop-blur-sm rounded-xl px-8 py-4 text-center border border-gray-200/30 shadow-md">
-                  <p className="text-2xl font-bold text-gray-900">Mr. Suresh Latiyal</p>
-                  <p className="text-gray-600 mt-1">Mahabali Price Action</p>
+                <div>
+                  <p className="text-sm font-black text-slate-800 leading-none">4.8/5</p>
+                  <p className="text-[10px] text-slate-500 font-bold uppercase tracking-tighter">Top Rated Mentor</p>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        {/* RIGHT - Form Section (always visible) */}
-        <div className="bg-gradient-to-b from-white to-gray-50 px-5 py-12 sm:p-10 lg:p-12 flex items-center relative z-10">
-          <div className="w-full max-w-xl mx-auto">
-            {/* Heading */}
-            <div className="text-center mb-10">
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
-                Let Our Experts Walk You Through The Details
-              </h1>
-              <p className="mt-4 text-lg sm:text-xl text-gray-600 flex items-center justify-center gap-3">
-                Step-By-Step Clarity, Zero Confusion
-                <span className="w-3 h-3 bg-[#00D9B8] rounded-full inline-block animate-pulse" />
+            <div className="absolute bottom-20 right-10 animate-float delay-700">
+              <div className="bg-white/80 backdrop-blur-md p-3 rounded-2xl shadow-lg border border-slate-100 flex items-center gap-3">
+                <div className="bg-[#00D9B8] p-2 rounded-lg text-white">
+                  <Users className="w-5 h-5" />
+                </div>
+                <div>
+                  <p className="text-sm font-black text-slate-800 leading-none">30K+</p>
+                  <p className="text-[10px] text-slate-500 font-bold uppercase tracking-tighter">Active Students</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Main Mentor Image Container */}
+            <div className="relative group">
+              <div className="absolute inset-0 bg-[#00D9B8]/20 rounded-full blur-3xl group-hover:bg-[#00D9B8]/30 transition-all duration-500" />
+              <div className="relative w-72 h-96 xl:w-120 xl:h-[500px] bg-white rounded-[3rem] overflow-hidden border-8 border-white shadow-2xl">
+                <Image
+                  fill
+                  alt="Mentor Mahabali"
+                  src="/tradingWeb.png"
+                  className="object-cover object-top hover:scale-105 transition-transform duration-700"
+                />
+              </div>
+            </div>
+
+            <div className="mt-8 text-center">
+              <h3 className="text-2xl font-black text-slate-800">Mr. Suresh Latiyal</h3>
+              <p className="text-[#00D9B8] font-bold tracking-[0.2em] uppercase text-sm mt-1">Price Action Expert</p>
+            </div>
+          </div>
+
+          {/* RIGHT PANEL: Form Section */}
+          <div className="p-8 sm:p-12 lg:p-16">
+            <div className="max-w-md mx-auto">
+              <div className="mb-10 text-center lg:text-left">
+                <h2 className="text-3xl sm:text-4xl font-black text-slate-900 leading-[1.15]">
+                  Start Your <span className="text-[#00D9B8]">Trading</span> Journey Today
+                </h2>
+                <p className="mt-4 text-slate-500 font-medium">
+                  Fill the form below to get a personalized roadmap from our experts.
+                </p>
+
+                {/* Mobile Mentor Teaser (Hidden on Desktop) */}
+                <div className="flex lg:hidden items-center gap-4 mt-8 p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                   <div className="w-12 h-12 rounded-full overflow-hidden bg-white border-2 border-[#00D9B8]">
+                      <Image width={48} height={48} src="/tradingWeb.png" alt="Suresh Latiyal" className="object-cover" />
+                   </div>
+                   <div className="text-left">
+                      <p className="text-sm font-bold text-slate-800">Mr. Suresh Latiyal</p>
+                      <div className="flex items-center gap-1 text-[10px] text-[#00D9B8] font-black uppercase tracking-widest">
+                        <Users className="w-3 h-3" /> 30k+ Learners
+                      </div>
+                   </div>
+                </div>
+              </div>
+
+              <form onSubmit={handleSubmit} className="space-y-5">
+                {/* Name Field */}
+                <div className="space-y-1.5">
+                  <label className="text-xs font-black uppercase tracking-widest text-slate-400 ml-1">Full Name</label>
+                  <div className="relative group">
+                    <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-[#00D9B8] transition-colors" />
+                    <input
+                      type="text"
+                      name="name"
+                      required
+                      value={formData.name}
+                      onChange={handleChange}
+                      placeholder="e.g. Rahul Sharma"
+                      className="w-full pl-12 pr-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-[#00D9B8]/20 focus:border-[#00D9B8] transition-all text-slate-800"
+                    />
+                  </div>
+                </div>
+
+                {/* Email Field */}
+                <div className="space-y-1.5">
+                  <label className="text-xs font-black uppercase tracking-widest text-slate-400 ml-1">Email Address</label>
+                  <div className="relative group">
+                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-[#00D9B8] transition-colors" />
+                    <input
+                      type="email"
+                      name="email"
+                      required
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="rahul@example.com"
+                      className="w-full pl-12 pr-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-[#00D9B8]/20 focus:border-[#00D9B8] transition-all text-slate-800"
+                    />
+                  </div>
+                </div>
+
+                {/* Phone Field */}
+                <div className="space-y-1.5">
+                  <label className="text-xs font-black uppercase tracking-widest text-slate-400 ml-1">Phone Number</label>
+                  <div className="flex gap-3">
+                    <div className="flex items-center justify-center w-16 bg-slate-100 border border-slate-200 rounded-2xl text-slate-500 font-bold text-sm">
+                      +91
+                    </div>
+                    <div className="relative flex-1 group">
+                      <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-[#00D9B8] transition-colors" />
+                      <input
+                        type="tel"
+                        name="phone"
+                        required
+                        value={formData.phone}
+                        onChange={handleChange}
+                        placeholder="98765 43210"
+                        className="w-full pl-12 pr-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-[#00D9B8]/20 focus:border-[#00D9B8] transition-all text-slate-800"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Submit Button */}
+                <button
+                  type="submit"
+                  className="w-full group mt-4 bg-slate-900 hover:bg-[#00D9B8] text-white font-black text-lg py-5 rounded-2xl transition-all duration-300 shadow-xl shadow-slate-200 flex items-center justify-center gap-2"
+                >
+                  Send Enquiry
+                  <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </button>
+              </form>
+
+              <p className="mt-8 text-center text-xs text-slate-400 font-medium">
+                By submitting, you agree to our <span className="underline cursor-pointer">Terms</span> & <span className="underline cursor-pointer">Privacy Policy</span>
               </p>
             </div>
-
-            {/* Form */}
-            <div className="space-y-6">
-              {/* Name */}
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Name <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  placeholder="Enter your name"
-                  required
-                  className="w-full px-5 py-4 bg-white border border-gray-300 rounded-xl 
-                           focus:ring-2 focus:ring-[#00D9B8]/60 focus:border-[#00D9B8]/40 
-                           outline-none transition-all text-gray-900 placeholder-gray-500"
-                />
-              </div>
-
-              {/* Email */}
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Email <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="Enter your email"
-                  required
-                  className="w-full px-5 py-4 bg-white border border-gray-300 rounded-xl 
-                           focus:ring-2 focus:ring-[#00D9B8]/60 focus:border-[#00D9B8]/40 
-                           outline-none transition-all text-gray-900 placeholder-gray-500"
-                />
-              </div>
-
-              {/* Phone */}
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Phone Number <span className="text-red-500">*</span>
-                </label>
-                <div className="flex gap-3">
-                  <input
-                    type="text"
-                    value="+91"
-                    disabled
-                    className="w-20 sm:w-24 px-3 sm:px-4 py-4 border border-gray-300 rounded-xl 
-                             bg-gray-100 text-gray-600 font-medium text-center"
-                  />
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    placeholder="Enter your phone number"
-                    required
-                    className="flex-1 px-5 py-4 bg-white border border-gray-300 rounded-xl 
-                             focus:ring-2 focus:ring-[#00D9B8]/60 focus:border-[#00D9B8]/40 
-                             outline-none transition-all text-gray-900 placeholder-gray-500"
-                  />
-                </div>
-              </div>
-
-              {/* Submit */}
-              <button
-                onClick={handleSubmit}
-                className="w-full mt-4 bg-[#00D9B8] hover:bg-[#00f0c9] 
-                         text-gray-900 font-bold text-lg py-5 px-8 rounded-xl 
-                         transition-all duration-300 transform hover:scale-[1.02] 
-                         active:scale-[0.98] shadow-lg hover:shadow-[0_0_40px_rgba(0,217,184,0.35)]"
-              >
-                Enquire Now →
-              </button>
-            </div>
           </div>
-        </div>
 
-        {/* Mobile-only simple mentor teaser */}
-        <div className="lg:hidden px-6 py-10 bg-gradient-to-b from-gray-50/80 to-white border-t border-gray-100">
-          <div className="max-w-md mx-auto text-center">
-            <div className="w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-[#00D9B8]/30 shadow-xl">
-              <Image
-                width={128}
-                height={128}
-                alt="Mahabali Price"
-                src="/tradingWeb.png"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <h3 className="text-2xl font-bold text-gray-900">Mr. Suresh Latiyal</h3>
-            <p className="text-gray-600 mt-1">Mahabali Price Action</p>
-          </div>
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-15px); }
+        }
+        .animate-float {
+          animation: float 5s ease-in-out infinite;
+        }
+        .delay-700 {
+          animation-delay: 0.7s;
+        }
+      `}</style>
     </div>
   );
 }

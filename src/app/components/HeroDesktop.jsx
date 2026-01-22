@@ -43,7 +43,7 @@ const HeroDesktop = () => {
               </div>
               <div>
                 <h2 className="text-white text-base sm:text-xl font-bold leading-tight tracking-tight">MahaBali</h2>
-                <p className="text-emerald-400 text-[10px] sm:text-xs font-bold tracking-[0.2em] uppercase">Academy</p>
+                <p className="text-emerald-400 text-[10px] sm:text-xs font-bold tracking-[0.2em] uppercase"></p>
               </div>
             </div>
             <div className="text-right">
@@ -118,10 +118,10 @@ const HeroDesktop = () => {
                 {/* Image Wrapper */}
                 <div className="relative h-full w-full rounded-[2.5rem] overflow-hidden border border-white/10 shadow-2xl">
                   <img
-                    src="/instructor.png"
+                    src="/neerajSirImg.png"
                     alt="Mr. Suresh Latiyal"
                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
-                  />
+                  /> 
                   <div className="absolute inset-0 bg-gradient-to-t from-[#06090f] via-transparent to-transparent opacity-60" />
                 </div>
 

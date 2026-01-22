@@ -15,7 +15,7 @@ function Navbar() {
         </div>
         <div className="hidden lg:flex items-center gap-8">
           <a href="#features" className="text-gray-300 hover:text-[#00D9B8] transition-colors font-medium">Features</a>
-          <a href="#learning" className="text-gray-300 hover:text-[#00D9B8] transition-colors font-medium">Learn</a>
+          <a href="#learning" className="tex-gray-300 hover:text-[#00D9B8] transition-colors font-medium">Learn</a>
           <a href="#testimonials" className="text-gray-300 hover:text-[#00D9B8] transition-colors font-medium">Reviews</a>
           <a href="#pricing" className="text-gray-300 hover:text-[#00D9B8] transition-colors font-medium">Pricing</a>
         </div>
