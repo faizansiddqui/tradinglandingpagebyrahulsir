@@ -5,25 +5,42 @@ const testimonials = [
     id: "1",
     title: "Transformed My Trading in 30 Days",
     description: "I started with basic knowledge and zero experience in day trading. After following the strategies taught here, I've developed a consistent approach that actually works. The key was understanding risk management and technical analysis. Now I'm seeing profits I never thought possible as a beginner trader.",
-    videoId: "dQw4w9WgXcQ",
+    videoId: "5RskS9g03Rc",
   },
   {
     id: "2",
     title: "From Losses to Consistent Gains",
     description: "After years of losing money trying different approaches, I finally found what works. The systematic approach to forex trading changed everything for me. Learning proper entry and exit points, along with emotional discipline, made all the difference in my trading journey.",
-    videoId: "dQw4w9WgXcQ",
+    videoId: "_mqVRykdHjk",
   },
   {
     id: "3",
     title: "Options Trading Success Story",
     description: "Options seemed complicated until I learned the right strategies. Now I understand how to use them for both income and protection. The weekly strategy sessions helped me grasp complex concepts and apply them in real market conditions with confidence.",
-    videoId: "dQw4w9WgXcQ",
+    videoId: "KGsxezObd0Q",
   },
   {
     id: "4",
     title: "Building Wealth Through Smart Trading",
     description: "Swing trading fits perfectly with my lifestyle. I don't need to watch charts all day, and I'm still making steady profits. The community support and mentorship program provided insights that books and courses never did. Highly recommend this approach to anyone serious about trading.",
-    videoId: "dQw4w9WgXcQ",
+    videoId: "YX2ZQPaUkcI",
+  },
+   {
+    id: "5",
+    title: "From Beginner to Confident Trader",
+    description: "I started with basic knowledge and zero experience in day trading. After following the strategies taught here, I've developed a consistent approach that actually works. The key was understanding risk management and technical analysis. Now I'm seeing profits I never thought possible as a beginner trader.",
+  },
+  {
+    id: "6",
+    title: "From Losses to Consistent Gains",
+    description: "After years of losing money trying different approaches, I finally found what works. The systematic approach to forex trading changed everything for me. Learning proper entry and exit points, along with emotional discipline, made all the difference in my trading journey.",
+    videoId: "VctTjg9D1ZA",
+  },
+  {
+    id: "7",
+    title: "Options Trading Success Story",
+    description: "Options seemed complicated until I learned the right strategies. Now I understand how to use them for both income and protection. The weekly strategy sessions helped me grasp complex concepts and apply them in real market conditions with confidence.",
+    videoId: "umVpG2O83bI",
   },
 
  
