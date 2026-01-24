@@ -19,6 +19,13 @@ const HeroDesktop = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const scrollToSection = (id) => {
+    const section = document.getElementById(id);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <div id="hero" className="relative min-h-screen bg-[#06090f] text-white overflow-hidden flex flex-col">
       {/* --- Background Elements --- */}
@@ -90,7 +97,10 @@ const HeroDesktop = () => {
                   </div>
                 </div>
                 
-                <button className="w-full sm:flex-1 py-4 px-8 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white font-black uppercase tracking-wider rounded-2xl shadow-xl shadow-emerald-900/20 transition-all duration-300 transform hover:scale-[1.02] active:scale-95">
+                <button 
+                  onClick={() => scrollToSection('webinar')}
+                  className="w-full sm:flex-1 py-4 px-8 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white font-black uppercase tracking-wider rounded-2xl shadow-xl shadow-emerald-900/20 transition-all duration-300 transform hover:scale-[1.02] active:scale-95 cursor-pointer animate-btn-breath"
+                >
                   Register Now — Free
                 </button>
               </div>
@@ -148,6 +158,20 @@ const HeroDesktop = () => {
           0%, 100% { transform: translateY(0); }
           50% { transform: translateY(-10px); }
         }
+        
+        @keyframes btn-breath {
+          0%, 100% { 
+            box-shadow: 0 12px 28px rgba(16, 185, 129, 0.4), 0 8px 16px rgba(16, 185, 129, 0.2);
+          }
+          50% { 
+            box-shadow: 0 12px 32px rgba(16, 185, 129, 0.6), 0 10px 20px rgba(16, 185, 129, 0.3);
+          }
+        }
+        
+        .animate-btn-breath {
+          animation: btn-breath 2s ease-in-out infinite;
+        }
+        
         .animate-bounce-slow {
           animation: bounce-slow 4s ease-in-out infinite;
         }

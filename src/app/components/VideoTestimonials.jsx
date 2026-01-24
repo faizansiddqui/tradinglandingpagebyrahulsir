@@ -93,7 +93,7 @@ const VideoCard = ({ testimonial, isActive, onBecomeActive }) => {
       </div>
       
       <div className="p-6 space-y-3 bg-gradient-to-br from-card to-muted/20">
-        <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
+        <h3 className="text-lg font-semibold text-black group-hover:text-primary transition-colors duration-300">
           {testimonial.title}
         </h3>
         <div 
@@ -117,7 +117,7 @@ const VideoTestimonials = () => {
   const [activeVideoId, setActiveVideoId] = useState(null);
 
   return (
-    <section className="min-h-screen w-full bg-gradient-to-b from-background via-muted/30 to-background py-16 px-4 sm:px-6 lg:px-8">
+    <section className="min-h-screen w-full bg-white from-background via-muted/30 to-background py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-[1600px] mx-auto">
         {/* Header */}
         <div className="text-center mb-16 space-y-4 animate-slide-in">

@@ -1,13 +1,40 @@
-import React, { useState } from 'react';
-import { Users, Video, Award, Star, User, Mail, Phone, ChevronRight } from 'lucide-react';
-import Image from 'next/image';
+import React, { useState, useEffect } from "react";
+import {
+  Users,
+  Video,
+  Award,
+  Star,
+  User,
+  Mail,
+  Phone,
+  ChevronRight,
+  Clock,
+} from "lucide-react";
+import Image from "next/image";
 
 export default function LearningForm() {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
+    name: "",
+    email: "",
+    phone: "",
   });
+
+  const [remainingTime, setRemainingTime] = useState(30 * 60); // 30 minutes in seconds
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setRemainingTime((prev) => {
+        if (prev <= 1) {
+          // Timer reached 0, reset to 30 minutes
+          return 30 * 60;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(timer);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -17,14 +44,33 @@ export default function LearningForm() {
     }));
   };
 
+  const formatTime = (seconds) => {
+    const hrs = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+    return `${hrs.toString().padStart(2, "0")}h ${mins
+      .toString()
+      .padStart(2, "0")}m ${secs.toString().padStart(2, "0")}s`;
+  };
+
+  const scrollToForm = () => {
+    const formElement = document.getElementById("webinar");
+    if (formElement) {
+      formElement.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    alert('Thank you for your enquiry! Our team will contact you shortly.');
+    console.log("Form submitted:", formData);
+    alert("Thank you for your enquiry! Our team will contact you shortly.");
   };
 
   return (
-    <div id="webinar" className="relative min-h-screen bg-[#f8fafc] flex items-center justify-center overflow-hidden py-12 px-4">
+    <div
+      id="webinar"
+      className="relative min-h-screen bg-[#f8fafc] flex items-center justify-center overflow-hidden py-12 px-4"
+    >
       {/* --- Background Design --- */}
       <div className="absolute inset-0 z-0">
         <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(#00D9B8_0.5px,transparent_0.5px)] [background-size:24px_24px] opacity-[0.15]" />
@@ -34,7 +80,6 @@ export default function LearningForm() {
 
       <div className="relative z-10 w-full max-w-6xl bg-white rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-white overflow-hidden">
         <div className="grid lg:grid-cols-2">
-          
           {/* LEFT PANEL: Mentor Visuals (Desktop) */}
           <div className="relative hidden lg:flex flex-col items-center justify-center p-12 bg-gradient-to-br from-slate-50 to-white border-r border-slate-100">
             {/* Badges */}
@@ -44,8 +89,12 @@ export default function LearningForm() {
                   <Star className="w-5 h-5 text-white fill-white" />
                 </div>
                 <div>
-                  <p className="text-sm font-black text-slate-800 leading-none">4.8/5</p>
-                  <p className="text-[10px] text-slate-500 font-bold uppercase tracking-tighter">Top Rated Mentor</p>
+                  <p className="text-sm font-black text-slate-800 leading-none">
+                    4.8/5
+                  </p>
+                  <p className="text-[10px] text-slate-500 font-bold uppercase tracking-tighter">
+                    Top Rated Mentor
+                  </p>
                 </div>
               </div>
             </div>
@@ -56,8 +105,12 @@ export default function LearningForm() {
                   <Users className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="text-sm font-black text-slate-800 leading-none">30K+</p>
-                  <p className="text-[10px] text-slate-500 font-bold uppercase tracking-tighter">Active Students</p>
+                  <p className="text-sm font-black text-slate-800 leading-none">
+                    30K+
+                  </p>
+                  <p className="text-[10px] text-slate-500 font-bold uppercase tracking-tighter">
+                    Active Students
+                  </p>
                 </div>
               </div>
             </div>
@@ -76,8 +129,12 @@ export default function LearningForm() {
             </div>
 
             <div className="mt-8 text-center">
-              <h3 className="text-2xl font-black text-slate-800">Mr. Suresh Latiyal</h3>
-              <p className="text-[#00D9B8] font-bold tracking-[0.2em] uppercase text-sm mt-1">Price Action Expert</p>
+              <h3 className="text-2xl font-black text-slate-800">
+                Mr. Suresh Latiyal
+              </h3>
+              <p className="text-[#00D9B8] font-bold tracking-[0.2em] uppercase text-sm mt-1">
+                Price Action Expert
+              </p>
             </div>
           </div>
 
@@ -86,30 +143,42 @@ export default function LearningForm() {
             <div className="max-w-md mx-auto">
               <div className="mb-10 text-center lg:text-left">
                 <h2 className="text-3xl sm:text-4xl font-black text-slate-900 leading-[1.15]">
-                  Start Your <span className="text-[#00D9B8]">Trading</span> Journey Today
+                  Start Your <span className="text-[#00D9B8]">Trading</span>{" "}
+                  Journey Today
                 </h2>
                 <p className="mt-4 text-slate-500 font-medium">
-                  Fill the form below to get a personalized roadmap from our experts.
+                  Fill the form below to get a personalized roadmap from our
+                  experts.
                 </p>
 
                 {/* Mobile Mentor Teaser (Hidden on Desktop) */}
                 <div className="flex lg:hidden items-center gap-4 mt-8 p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                   <div className="w-12 h-12 rounded-full overflow-hidden bg-white border-2 border-[#00D9B8]">
-                      <Image width={48} height={48} src="/tradingWeb.png" alt="Suresh Latiyal" className="object-cover" />
-                   </div>
-                   <div className="text-left">
-                      <p className="text-sm font-bold text-slate-800">Mr. Suresh Latiyal</p>
-                      <div className="flex items-center gap-1 text-[10px] text-[#00D9B8] font-black uppercase tracking-widest">
-                        <Users className="w-3 h-3" /> 30k+ Learners
-                      </div>
-                   </div>
+                  <div className="w-12 h-12 rounded-full overflow-hidden bg-white border-2 border-[#00D9B8]">
+                    <Image
+                      width={48}
+                      height={48}
+                      src="/tradingWeb.png"
+                      alt="Suresh Latiyal"
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="text-left">
+                    <p className="text-sm font-bold text-slate-800">
+                      Mr. Suresh Latiyal
+                    </p>
+                    <div className="flex items-center gap-1 text-[10px] text-[#00D9B8] font-black uppercase tracking-widest">
+                      <Users className="w-3 h-3" /> 30k+ Learners
+                    </div>
+                  </div>
                 </div>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-5">
                 {/* Name Field */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-black uppercase tracking-widest text-slate-400 ml-1">Full Name</label>
+                  <label className="text-xs font-black uppercase tracking-widest text-slate-400 ml-1">
+                    Full Name
+                  </label>
                   <div className="relative group">
                     <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-[#00D9B8] transition-colors" />
                     <input
@@ -126,7 +195,9 @@ export default function LearningForm() {
 
                 {/* Email Field */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-black uppercase tracking-widest text-slate-400 ml-1">Email Address</label>
+                  <label className="text-xs font-black uppercase tracking-widest text-slate-400 ml-1">
+                    Email Address
+                  </label>
                   <div className="relative group">
                     <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-[#00D9B8] transition-colors" />
                     <input
@@ -143,7 +214,9 @@ export default function LearningForm() {
 
                 {/* Phone Field */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-black uppercase tracking-widest text-slate-400 ml-1">Phone Number</label>
+                  <label className="text-xs font-black uppercase tracking-widest text-slate-400 ml-1">
+                    Phone Number
+                  </label>
                   <div className="flex gap-3">
                     <div className="flex items-center justify-center w-16 bg-slate-100 border border-slate-200 rounded-2xl text-slate-500 font-bold text-sm">
                       +91
@@ -174,24 +247,86 @@ export default function LearningForm() {
               </form>
 
               <p className="mt-8 text-center text-xs text-slate-400 font-medium">
-                By submitting, you agree to our <span className="underline cursor-pointer">Terms</span> & <span className="underline cursor-pointer">Privacy Policy</span>
+                By submitting, you agree to our{" "}
+                <span className="underline cursor-pointer">Terms</span> &{" "}
+                <span className="underline cursor-pointer">Privacy Policy</span>
               </p>
             </div>
           </div>
+        </div>
+      </div>
 
+      {/* Fixed Bottom Access Button */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 p-3 md:p-4 bg-gradient-to-r from-[#00D9B8] to-emerald-500 shadow-2xl">
+        <div className="flex flex-col px-12 sm:flex-row items-center justify-between gap-3 max-w-6xl mx-auto">
+          <div className="text-center sm:text-left text-white text-[0.9rem] sm:text-[1rem]">
+            <h3 className="font-semibold">Offer Expires In</h3>
+            <div className="text-[1.4rem] sm:text-[1.6rem] font-bold">
+              {formatTime(remainingTime)}
+            </div>
+          </div>
+          <button
+            onClick={() => scrollToForm()}
+            className="py-3 sm:py-2.5 px-6 sm:px-8 font-[700] cursor-pointer bg-white text-[#00c0a0] hover:bg-[#00c186] hover:text-white hover:border-2 hover:border-white text-[0.9rem] sm:text-[1rem] rounded-full w-full sm:w-auto transition-all duration-300 transform btn-animated"
+          >
+            Free Access Now
+          </button>
         </div>
       </div>
 
       <style jsx>{`
         @keyframes float {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-15px); }
+          0%,
+          100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-15px);
+          }
         }
+
+        @keyframes blink {
+          0%,
+          100% {
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+          }
+          50% {
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.8),
+              0 0 30px rgba(255, 255, 255, 1);
+          }
+        }
+
+        @keyframes breathe {
+          0%,
+          100% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.03);
+          }
+        }
+
         .animate-float {
           animation: float 5s ease-in-out infinite;
         }
         .delay-700 {
           animation-delay: 0.7s;
+        }
+        .animate-blink {
+          animation: blink 1.5s ease-in-out infinite;
+        }
+        .animate-breathe {
+          animation: breathe 2s ease-in-out infinite;
+        }
+
+        .btn-animated {
+          animation: blink 2s ease-in-out infinite;
+          box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        
+        .btn-animated:hover {
+          border-color: white !important;
+          animation: blink 2s ease-in-out infinite;
         }
       `}</style>
     </div>
