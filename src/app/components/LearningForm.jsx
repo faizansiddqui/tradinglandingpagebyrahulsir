@@ -257,11 +257,11 @@ export default function LearningForm() {
       </div>
 
       {/* Fixed Bottom Access Button */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 p-2 md:p-4 bg-gradient-to-r from-[#00D9B8] to-emerald-500 shadow-2xl">
+      <div className="fixed bottom-0 left-0 right-0 z-50 p-2 bg-gradient-to-r from-[#00D9B8] to-emerald-500 shadow-2xl">
         <div className="flex flex-row items-center justify-between gap-3 max-w-6xl mx-auto px-4">
-          <div className="text-left text-white text-[1rem]">
-            <h3 className="font-[400]">Offer Expires In</h3>
-            <div className="text-[1.6rem] font-bold">
+          <div className="text-left text-white">
+            <h3 className="font-[400] text-[0.9rem] xs:text-[1rem] sm:text-[1.5rem]">Offer Expires In</h3>
+            <div className="text-[1rem] xs:text-[0.9rem] sm:text-[1.7rem] font-bold">
               {formatTime(remainingTime)}
             </div>
           </div>
