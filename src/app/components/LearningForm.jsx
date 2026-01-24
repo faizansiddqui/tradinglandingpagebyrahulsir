@@ -46,7 +46,7 @@ export default function LearningForm() {
         if (typeof window !== "undefined") {
           localStorage.setItem("learningFormTimer", newTime.toString());
         }
-        
+
         if (newTime <= 0) {
           // Timer reached 0, reset to 30 minutes
           const resetTime = 30 * 60;
