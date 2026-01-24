@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Users,
   Video,
@@ -19,31 +19,40 @@ export default function LearningForm() {
     phone: "",
   });
 
-  const [remainingTime, setRemainingTime] = useState(() => {
-    // Check if there's a saved timer state in localStorage
-    const savedTimer = localStorage.getItem("learningFormTimer");
-    if (savedTimer) {
-      const parsedTimer = parseInt(savedTimer, 10);
-      // If timer is still valid (greater than 0), use it
-      if (parsedTimer > 0) {
-        return parsedTimer;
+  const [remainingTime, setRemainingTime] = useState(30 * 60); // Initialize to 30 minutes
+
+  // Load saved timer state after component mounts (client-side only)
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const savedTimer = localStorage.getItem("learningFormTimer");
+      if (savedTimer) {
+        const parsedTimer = parseInt(savedTimer, 10);
+        // If timer is still valid (greater than 0), use it
+        if (parsedTimer > 0 && parsedTimer !== remainingTime) {
+          // Only update if different to avoid unnecessary renders
+          setTimeout(() => {
+            setRemainingTime(parsedTimer);
+          }, 0);
+        }
       }
     }
-    // Otherwise initialize to 30 minutes
-    return 30 * 60;
-  });
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
       setRemainingTime((prev) => {
         const newTime = prev - 1;
-        // Save current timer state to localStorage
-        localStorage.setItem("learningFormTimer", newTime.toString());
-
+        // Save current timer state to localStorage (only in browser)
+        if (typeof window !== "undefined") {
+          localStorage.setItem("learningFormTimer", newTime.toString());
+        }
+        
         if (newTime <= 0) {
           // Timer reached 0, reset to 30 minutes
           const resetTime = 30 * 60;
-          localStorage.setItem("learningFormTimer", resetTime.toString());
+          if (typeof window !== "undefined") {
+            localStorage.setItem("learningFormTimer", resetTime.toString());
+          }
           return resetTime;
         }
         return newTime;
