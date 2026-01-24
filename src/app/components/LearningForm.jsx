@@ -257,17 +257,17 @@ export default function LearningForm() {
       </div>
 
       {/* Fixed Bottom Access Button */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 p-3 md:p-4 bg-gradient-to-r from-[#00D9B8] to-emerald-500 shadow-2xl">
-        <div className="flex flex-col px-12 sm:flex-row items-center justify-between gap-3 max-w-6xl mx-auto">
-          <div className="text-center sm:text-left text-white text-[0.9rem] sm:text-[1rem]">
-            <h3 className="font-semibold">Offer Expires In</h3>
-            <div className="text-[1.4rem] sm:text-[1.6rem] font-bold">
+      <div className="fixed bottom-0 left-0 right-0 z-50 p-2 md:p-4 bg-gradient-to-r from-[#00D9B8] to-emerald-500 shadow-2xl">
+        <div className="flex flex-row items-center justify-between gap-3 max-w-6xl mx-auto px-4">
+          <div className="text-left text-white text-[1rem]">
+            <h3 className="font-[400]">Offer Expires In</h3>
+            <div className="text-[1.6rem] font-bold">
               {formatTime(remainingTime)}
             </div>
           </div>
           <button
             onClick={() => scrollToForm()}
-            className="py-3 sm:py-2.5 px-6 sm:px-8 font-[700] cursor-pointer bg-white text-[#00c0a0] hover:bg-[#00c186] hover:text-white hover:border-2 hover:border-white text-[0.9rem] sm:text-[1rem] rounded-full w-full sm:w-auto transition-all duration-300 transform btn-animated"
+            className="py-2.5 px-8 font-[600] cursor-pointer bg-white text-[#00c0a0] hover:bg-[#00c186] hover:text-white hover:border-2 hover:border-white text-[1rem] rounded-full w-auto transition-all duration-300 transform btn-animated"
           >
             Free Access Now
           </button>
@@ -323,7 +323,7 @@ export default function LearningForm() {
           animation: blink 2s ease-in-out infinite;
           box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
         }
-        
+
         .btn-animated:hover {
           border-color: white !important;
           animation: blink 2s ease-in-out infinite;
