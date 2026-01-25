@@ -25,89 +25,114 @@ const testimonials = [
     description: "Swing trading fits perfectly with my lifestyle. I don't need to watch charts all day, and I'm still making steady profits. The community support and mentorship program provided insights that books and courses never did. Highly recommend this approach to anyone serious about trading.",
     videoId: "YX2ZQPaUkcI",
   },
-   {
+  {
     id: "5",
     title: "From Beginner to Confident Trader",
-    description: "I started with basic knowledge and zero experience in day trading. After following the strategies taught here, I've developed a consistent approach that actually works. The key was understanding risk management and technical analysis. Now I'm seeing profits I never thought possible as a beginner trader.",
-  },
-  {
-    id: "6",
-    title: "From Losses to Consistent Gains",
-    description: "After years of losing money trying different approaches, I finally found what works. The systematic approach to forex trading changed everything for me. Learning proper entry and exit points, along with emotional discipline, made all the difference in my trading journey.",
+    description: "I started with basic knowledge and zero experience in day trading. After following the strategies taught here, I've developed a consistent approach that actually works. The key was understanding risk management and technical analysis.",
     videoId: "VctTjg9D1ZA",
   },
   {
-    id: "7",
-    title: "Options Trading Success Story",
-    description: "Options seemed complicated until I learned the right strategies. Now I understand how to use them for both income and protection. The weekly strategy sessions helped me grasp complex concepts and apply them in real market conditions with confidence.",
+    id: "6",
+    title: "The Systematic Approach",
+    description: "After years of losing money trying different approaches, I finally found what works. The systematic approach to forex trading changed everything for me. Learning proper entry and exit points is crucial.",
     videoId: "umVpG2O83bI",
   },
-
- 
 ];
 
 const VideoCard = ({ testimonial, isActive, onBecomeActive }) => {
-  const videoRef = useRef(null);
+  const containerRef = useRef(null);
   const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+          // Jab video 60% screen par dikhega tab active hoga
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.6) {
             onBecomeActive();
           }
         });
       },
       {
-        threshold: 0.5,
+        threshold: 0.6, // Sensitivity adjust karne ke liye (0.5 to 1.0)
       }
     );
 
-    if (videoRef.current) {
-      observer.observe(videoRef.current);
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
     }
 
     return () => {
-      if (videoRef.current) {
-        observer.unobserve(videoRef.current);
+      if (containerRef.current) {
+        observer.unobserve(containerRef.current);
       }
     };
   }, [onBecomeActive]);
 
   const truncatedDescription = testimonial.description.slice(0, 100) + "...";
 
+  // YouTube Parameters Explanation:
+  // autoplay=1: Auto play on load
+  // mute=0: Try to play with Sound (Browser policy may block if user hasn't interacted)
+  // controls=0: Hide bottom player controls
+  // modestbranding=1: Remove big YouTube logo
+  // rel=0: Show videos from same channel only
+  // disablekb=1: Disable keyboard controls
+  const embedUrl = `https://www.youtube.com/embed/${testimonial.videoId}?autoplay=1&mute=0&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1&playsinline=1`;
+
   return (
     <div
-      ref={videoRef}
-      className="group relative overflow-hidden rounded-2xl bg-card shadow-sm hover:shadow-md transition-all duration-500 animate-fade-in"
+      ref={containerRef}
+      className={`group relative flex flex-col overflow-hidden rounded-xl bg-white transition-all duration-300 ${
+        isActive 
+          ? "ring-2 ring-green-500 shadow-xl scale-[1.01] z-10" 
+          : "border border-gray-100 shadow-sm opacity-90 hover:opacity-100"
+      }`}
     >
-      <div className="aspect-video w-full overflow-hidden bg-muted">
-        <iframe
-          src={`https://www.youtube.com/embed/${testimonial.videoId}?autoplay=${isActive ? 1 : 0}&mute=1&controls=1&rel=0&modestbranding=1`}
-          title={testimonial.title}
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-          className="h-full w-full border-0"
-        />
+      {/* Video Section - No overlay, No icons */}
+      <div className="relative w-full aspect-video bg-black">
+        {isActive ? (
+          <iframe
+            src={embedUrl}
+            title={testimonial.title}
+            className="absolute top-0 left-0 w-full h-full object-cover"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen={false} // Fullscreen off for cleaner look
+            loading="lazy"
+          />
+        ) : (
+          // High Quality Thumbnail jab video pause ho
+          <img 
+             src={`https://img.youtube.com/vi/${testimonial.videoId}/maxresdefault.jpg`}
+             onError={(e) => { e.target.src = `https://img.youtube.com/vi/${testimonial.videoId}/hqdefault.jpg` }}
+             alt={testimonial.title}
+             className="w-full h-full object-cover opacity-80"
+          />
+        )}
       </div>
-      
-      <div className="p-6 space-y-3 bg-gradient-to-br from-card to-muted/20">
-        <h3 className="text-lg font-semibold text-black group-hover:text-primary transition-colors duration-300">
-          {testimonial.title}
-        </h3>
-        <div 
-          className="text-sm text-muted-foreground leading-relaxed"
-          onDoubleClick={() => setIsExpanded(false)}
-        >
-          <p>{isExpanded ? testimonial.description : truncatedDescription}</p>
-          <button
-            onClick={() => setIsExpanded(!isExpanded)}
-            className="mt-2 text-green-800 text-primary hover:text-primary/80 font-medium transition-colors"
+
+      {/* Text Section - Professional Typography */}
+      <div className="flex-1 p-5 md:p-6 flex flex-col justify-between">
+        <div>
+          <h3 className={`text-lg font-bold mb-2 leading-tight ${isActive ? 'text-green-900' : 'text-gray-800'}`}>
+            {testimonial.title}
+          </h3>
+          
+          <div 
+            className="text-sm text-gray-600 leading-relaxed font-normal"
           >
-            {isExpanded ? "See less" : "See more"}
-          </button>
+            <p>{isExpanded ? testimonial.description : truncatedDescription}</p>
+          </div>
         </div>
+
+        {/* Minimal Read More Link */}
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="mt-3 self-start text-xs font-semibold uppercase tracking-wide text-green-600 hover:text-green-800 transition-colors"
+        >
+          {isExpanded ? "Close" : "Read Full Story"}
+        </button>
       </div>
     </div>
   );
@@ -117,44 +142,32 @@ const VideoTestimonials = () => {
   const [activeVideoId, setActiveVideoId] = useState(null);
 
   return (
-    <section className="min-h-screen w-full bg-white from-background via-muted/30 to-background py-16 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-[1600px] mx-auto">
-        {/* Header */}
-        <div className="text-center mb-16 space-y-4 animate-slide-in">
-          <div className="inline-block">
-            <span className="inline-flex text-green-500 items-center gap-2 px-4 py-2 rounded-full bg-gradient-accent text-sm font-semibold text-primary-foreground shadow-lg">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-foreground opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary-foreground"></span>
-              </span>
-              Success Stories
-            </span>
-          </div>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl text-gray-900 font-bold bg-gradient-primary bg-clip-text ">
-            Trader Testimonials
-          </h1>
-          <p className="text-lg sm:text-xl text-gray-800 text-muted-foreground max-w-2xl mx-auto">
-            Real traders, real results. See how our community is achieving consistent profits
+    <section className="w-full bg-gray-50 py-20 px-4">
+      <div className="max-w-7xl mx-auto">
+        {/* Clean Header */}
+        <div className="text-center mb-16 max-w-3xl mx-auto">
+          <span className="text-green-600 font-semibold tracking-wider text-sm uppercase mb-2 block">
+            Success Stories
+          </span>
+          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-6">
+            Real Traders, Real Results
+          </h2>
+          <p className="text-lg text-gray-500 font-light">
+            Hear directly from our community members who have transformed their trading journey.
           </p>
         </div>
 
-        {/* Video Grid */}
-        <div className="grid grid-cols-1 text-gray-800 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
-          {testimonials.map((testimonial, index) => (
-            <div
+        {/* Grid Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+          {testimonials.map((testimonial) => (
+            <VideoCard 
               key={testimonial.id}
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              <VideoCard 
-                testimonial={testimonial}
-                isActive={activeVideoId === testimonial.id}
-                onBecomeActive={() => setActiveVideoId(testimonial.id)}
-              />
-            </div>
+              testimonial={testimonial}
+              isActive={activeVideoId === testimonial.id}
+              onBecomeActive={() => setActiveVideoId(testimonial.id)}
+            />
           ))}
         </div>
-
-  
       </div>
     </section>
   );
