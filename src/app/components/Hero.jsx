@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 
 const Index = () => {
-  const [open, setOpen] = useState(false);
   const [headerVisible, setHeaderVisible] = useState(true);
   const lastScrollY = useRef(0);
 
+  // Scroll Handler for Sticky Header
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
+      if (currentScrollY > lastScrollY.current && currentScrollY > 50) {
         setHeaderVisible(false);
       } else {
         setHeaderVisible(true);
@@ -24,211 +24,161 @@ const Index = () => {
     const section = document.getElementById(id);
     if (section) {
       section.scrollIntoView({ behavior: "smooth" });
-      setOpen(false);
     }
   };
 
   return (
-    <div
-      id="hero"
-      className="min-h-screen relative bg-[hsl(220_26%_8%)] overflow-hidden"
-    >
-      {/* Background Chart Image */}
-      <div className="absolute inset-0 bg-[url('/chart1.png')] bg-cover bg-center opacity-70"></div>
+    <div className="min-h-screen relative bg-slate-950 overflow-hidden font-sans text-slate-50 selection:bg-emerald-500/30">
+      {/* --- BACKGROUND FX --- */}
+      
+      {/* 1. Grid Pattern */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+      
+      {/* 2. Main Glow (Spotlight) */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-emerald-500/20 rounded-full blur-[120px] pointer-events-none opacity-50 mix-blend-screen" />
 
-      {/* Premium Black Overlay */}
-      <div className="absolute inset-0 bg-black/50"></div>
+      {/* 3. Bottom Gradient */}
+      <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-slate-950 to-transparent pointer-events-none z-0" />
 
-      {/* Green Glow Effect */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[hsl(142_76%_45%_/_0.2)] via-transparent to-[hsl(142_76%_45%_/_0.1)] pointer-events-none" />
-
-      {/* Header */}
+      {/* --- HEADER --- */}
       <header
-        className={`fixed left-0 w-full z-[9999] bg-[hsl(220_20%_15%_/_0.6)] backdrop-blur-xl border-b border-white/10 shadow-2xl transition-transform duration-300 ease-in-out ${
-          headerVisible ? "translate-y-0" : "-translate-y-full"
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+          headerVisible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
         }`}
       >
-        <div className="max-w-7xl mx-auto flex items-center justify-between px-3 py-3">
-          {/* LOGO - LEFT */}
-          <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center p-1.5">
-            <img
-              src="/finalLogo.png"
-              alt="MahaBali Logo"
-              className="w-full h-full rounded-full object-contain drop-shadow-md"
-            />
+        <div className="absolute inset-0 bg-slate-900/70 backdrop-blur-xl border-b border-white/5 shadow-lg supports-[backdrop-filter]:bg-slate-900/40"></div>
+        <div className="relative max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+          
+          {/* Logo Area */}
+          <div className="flex items-center gap-3">
+            <div className="relative group">
+              <div className="absolute -inset-1 bg-gradient-to-r from-emerald-600 to-teal-600 rounded-full blur opacity-40 group-hover:opacity-75 transition duration-500"></div>
+              <div className="relative w-12 h-12 rounded-full bg-slate-900 border border-white/10 flex items-center justify-center overflow-hidden">
+                <img
+                  src="/finalLogo.png"
+                  alt="Logo"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
           </div>
 
-          {/* TEXT - RIGHT */}
-          <div className="leading-tight text-right">
-            <h1 className="text-white text-base sm:text-2xl font-extrabold tracking-wide uppercase drop-shadow-lg">
-              India's
-              <span className="ml-1 text-xl sm:text-2xl font-black">1</span>
-              <sup className="text-xs sm:text-sm font-bold ml-0.5">st</sup>
+          {/* Right Text */}
+          <div className="text-right flex flex-col items-end justify-center">
+            <h1 className="flex items-center text-sm font-bold tracking-wider text-slate-300 uppercase">
+              India's 
+              <span className="mx-1 text-lg font-black text-white bg-gradient-to-br from-white to-slate-400 bg-clip-text text-transparent">
+                1<sup className="text-xs ml-0.5">st</sup>
+              </span>
             </h1>
-            <p className="text-emerald-400 text-xs sm:text-base font-bold uppercase tracking-wide mt-0.5 drop-shadow-md">
+            <p className="text-[10px] font-bold text-emerald-400 tracking-widest uppercase bg-emerald-400/10 px-1.5 py-0.5 rounded border border-emerald-400/20">
               Price Behavior Program
             </p>
           </div>
         </div>
       </header>
 
-      {/* Content Container */}
-      <div className="relative z-10 max-w-lg mx-auto pt-20 min-h-screen flex flex-col">
-        {/* Headline */}
-        <div className="px-4 pt-3 pb-2">
-          {/* PREMIUM MOBILE-FRIENDLY HEADLINE */}
-          <h1
-            className="text-center uppercase font-extrabold 
-                 text-[18px] sm:text-[24px] 
-                 leading-[1.2] tracking-wide 
-                 text-white drop-shadow-[0_0_6px_rgba(255,255,255,0.3)]"
-          >
-            <span className="block text-[hsl(48_100%_60%)]">
-              REVEALED SECRET OF
+      {/* --- MAIN CONTENT --- */}
+      <div className="relative z-10 pt-28 pb-12 px-4 max-w-md mx-auto flex flex-col gap-8 min-h-screen justify-between">
+        
+        {/* 1. HEADLINE SECTION */}
+        <div className="text-center space-y-5">
+          {/* Live Badge */}
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-500/10 border border-red-500/20 backdrop-blur-md shadow-[0_0_15px_-3px_rgba(239,68,68,0.3)] animate-fade-in-up">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
             </span>
-            <span className="block mt-0.5 text-[hsl(0,0%,100%)]">
-              SUCCESSFUL TRADER
+            <span className="text-[10px] font-bold text-red-500 tracking-[0.2em] uppercase">
+              Live Training
+            </span>
+          </div>
+
+          {/* Main Title */}
+          <h1 className="flex flex-col items-center justify-center">
+            <span className="text-sm sm:text-base font-bold text-amber-400 tracking-[0.2em] mb-1 animate-pulse">
+              REVEALED SECRET
+            </span>
+            <span className="text-3xl sm:text-4xl font-black italic tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-slate-400 drop-shadow-2xl">
+              OF SUCCESSFUL
+            </span>
+            <span className="text-3xl sm:text-4xl font-black italic tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-slate-400 drop-shadow-2xl">
+              TRADER
             </span>
           </h1>
+        </div>
 
-          {/* LIVE Badge */}
-          <div className="flex justify-center mt-3">
-            <div className="relative group">
-              {/* Glow */}
-              <div
-                className="absolute inset-0 rounded-2xl blur-xl bg-red-500 opacity-40 
-                      group-hover:opacity-60 transition-all duration-300"
-              />
+        {/* 2. MENTOR IMAGE SECTION */}
+        <div className="relative w-full max-w-[280px] mx-auto group">
+            
+            {/* Background Glow behind image */}
+            <div className="absolute inset-0 bg-emerald-500/30 blur-[60px] rounded-full group-hover:bg-emerald-500/40 transition-all duration-700"></div>
 
-              {/* Button */}
-              <div
-                className="relative rounded-2xl px-2.5 py-1.5 bg-gradient-to-br 
-                      from-red-600 to-red-700 shadow-2xl border border-white/10"
-              >
-                <div className="flex items-center justify-center gap-2">
-                  <div className="flex items-center justify-center gap-0">
-                    <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
-                    <div className="w-2.5 h-2.5 bg-white rounded-full animate-ping" />
-                  </div>
-                  <span className="text-white text-base sm:text-lg font-extrabold tracking-widest drop-shadow-lg">
-                    LIVE
-                  </span>
+            {/* Image Container */}
+            <div className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-gradient-to-b from-slate-800/50 to-slate-900/50 backdrop-blur-sm">
+                <img
+                src="/neerajSirImg.png"
+                alt="Mentor"
+                className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                />
+                
+                {/* Overlay Gradient at bottom of image for readability */}
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80"></div>
+            </div>
+
+            {/* Floating Stats - Left */}
+            <div className="absolute -left-4 top-1/4 bg-slate-900/80 backdrop-blur-md border border-white/10 p-3 rounded-2xl shadow-xl transform -rotate-6 group-hover:-rotate-3 transition-transform duration-500">
+                <p className="text-emerald-400 text-xl font-black">2.7k+</p>
+                <p className="text-slate-400 text-[9px] font-bold uppercase tracking-wider">Success<br/>Stories</p>
+            </div>
+
+             {/* Floating Stats - Right */}
+             <div className="absolute -right-4 bottom-1/4 bg-slate-900/80 backdrop-blur-md border border-white/10 p-3 rounded-2xl shadow-xl transform rotate-6 group-hover:rotate-3 transition-transform duration-500">
+                <p className="text-amber-400 text-xl font-black">14 Yr</p>
+                <p className="text-slate-400 text-[9px] font-bold uppercase tracking-wider">Market<br/>Experience</p>
+            </div>
+        </div>
+
+        {/* 3. CTA CARD SECTION */}
+        <div className="relative">
+            {/* Glass Card */}
+            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[32px] p-5 shadow-2xl relative overflow-hidden group">
+                
+                {/* Subtle shine effect on card */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+
+                <div className="flex flex-col items-center gap-4 relative z-10">
+                    
+                    {/* Main Button */}
+                    <button
+                        onClick={() => scrollToSection("webinar")}
+                        className="w-full group relative overflow-hidden bg-gradient-to-r from-emerald-400 to-emerald-600 text-slate-900 py-4 px-6 rounded-2xl font-black uppercase tracking-wider shadow-[0_0_20px_-5px_rgba(52,211,153,0.5)] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                    >
+                        <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out skew-y-6"></div>
+                        <span className="relative flex items-center justify-center gap-2">
+                            Register Now
+                            <span className="bg-slate-900 text-white text-[10px] py-0.5 px-2 rounded-full">FREE</span>
+                        </span>
+                    </button>
+
+                    {/* Details */}
+                    <div className="text-center w-full">
+                        <div className="flex items-center justify-center gap-4 text-xs font-bold text-slate-400 mb-3">
+                            <span className="line-through decoration-red-500/60 decoration-2">₹10,000</span>
+                            <span className="text-emerald-400 animate-pulse">100% OFF TODAY</span>
+                        </div>
+
+                        <div className="h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent my-3"></div>
+
+                        <div className="space-y-1">
+                            <p className="text-[10px] text-slate-500 uppercase tracking-[0.2em] font-bold">Training By</p>
+                            <p className="text-white text-lg font-bold tracking-tight">Mr. Suresh Latiyal</p>
+                        </div>
+                    </div>
                 </div>
-              </div>
-
-              <p className="text-white text-[10px] font-bold text-center mt-1.5 tracking-[0.2em]">
-                TRAINING
-              </p>
             </div>
-          </div>
         </div>
 
-        {/* Mentor Section - Compact */}
-        <div className="relative px-4 py-0">
-          <div className="w-full max-w-[240px] mx-auto relative">
-            {/* Mentor Image - Smaller with glow */}
-            <div
-              className="relative w-full aspect-[4/5] rounded-2xl overflow-hidden border border-[hsl(220_20%_25%_/_0.3)]
-                   "
-            >
-              <img
-                src={"/neerajSirImg.png"}
-                alt="Mr. Suresh Latiyal - Professional Trading Instructor"
-                className="w-full h-full object-cover  shadow-[0_15px_40px_rgba(34,197,94,0.3),_-15px_0_40px_rgba(34,197,94,0.2),_15px_0_40px_rgba(34,197,94,0.2)]"
-              />
-
-              {/* Stats Overlays - Compact */}
-              <div className="absolute left-1.5 top-1/2 -translate-y-1/2 bg-[hsl(220_26%_8%_/_0.95)] backdrop-blur-sm p-2 rounded-lg shadow-xl border border-[hsl(142_76%_45%_/_0.2)]">
-                <p className="text-white text-xl sm:text-2xl font-black leading-none uppercase">
-                  2700+
-                </p>
-                <p className="text-white text-[10px] font-black leading-tight mt-0.5 uppercase">
-                  Success
-                  <br />
-                  Stories
-                </p>
-              </div>
-
-              <div className="absolute right-1.5 top-1/2 -translate-y-1/2 bg-[hsl(220_26%_8%_/_0.95)] backdrop-blur-sm p-2 rounded-lg shadow-xl border border-[hsl(142_76%_45%_/_0.2)]">
-                <div className="flex items-baseline gap-0.5">
-                  <p className="text-white text-xl sm:text-2xl font-black leading-none uppercase">
-                    14
-                  </p>
-                  <span className="text-white text-[10px] font-black uppercase">
-                    Year
-                  </span>
-                </div>
-                <p className="text-white text-[10px] font-black leading-tight mt-0.5 uppercase">
-                  Experience
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* CTA Section - Compact */}
-        <div className="mt-0 px-3 pb-3">
-          <div
-            className="w-full bg-[hsl(220_20%_15%_/_0.6)] backdrop-blur-xl 
-                  rounded-3xl border border-white/10 shadow-2xl 
-                  p-3 flex flex-col items-center"
-          >
-            {/* REGISTER BUTTON */}
-            <button
-              onClick={() => scrollToSection("webinar")}
-              className="
-              w-full max-w-xs py-3 
-              rounded-3xl 
-              text-lg sm:text-xl font-extrabold uppercase 
-              bg-gradient-to-r from-green-400 to-green-600
-             text-gray-900
-              hover:shadow-[0_12px_28px_rgba(16,185,129,0.6)]
-              hover:scale-[1.07] active:scale-[0.96]
-              transition-all duration-300 ease-out
-              animate-pulse
-              cursor-pointer
-              "
-            >
-              Register Now — Free
-            </button>
-
-            {/* DETAILS BLOCK */}
-            <div className="text-center mt-2.5">
-              <p className="text-white/80 text-[10px] font-extrabold uppercase tracking-[0.15em]">
-                For Training
-              </p>
-
-              <p className="text-white text-base font-extrabold uppercase tracking-wide">
-                Program
-              </p>
-
-              {/* VALUE SECTION */}
-              <div className="mt-2">
-                <p className="text-white text-xl font-black tracking-tight drop-shadow">
-                  10,000 VALUE
-                </p>
-
-                <p className="mt-1 text-sm sm:text-base font-black uppercase">
-                  <span className="text-[hsl(142_76%_45%)]">Program for </span>
-                  <span className="bg-gradient-to-r from-yellow-300 to-yellow-500 bg-clip-text text-transparent">
-                    "Free Now"
-                  </span>
-                </p>
-              </div>
-
-              {/* DIVIDER */}
-              <div className="w-16 h-[1px] mx-auto mt-2 mb-1.5 bg-white/10"></div>
-
-              {/* MENTOR */}
-              <p className="text-white/60 text-[10px] tracking-[0.2em] uppercase">
-                With
-              </p>
-              <p className="text-white text-base font-extrabold mt-0.5 drop-shadow">
-                Mr. Suresh Latiyal
-              </p>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );
