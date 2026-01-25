@@ -21,6 +21,8 @@ export default function LearningForm() {
 
   const [remainingTime, setRemainingTime] = useState(30 * 60); // Initialize to 30 minutes
 
+  const formRef = useRef(null);
+
   // Load saved timer state after component mounts (client-side only)
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -81,9 +83,16 @@ export default function LearningForm() {
   };
 
   const scrollToForm = () => {
-    const formElement = document.getElementById("webinar");
-    if (formElement) {
-      formElement.scrollIntoView({ behavior: "smooth" });
+    if (formRef.current) {
+      // Calculate offset for fixed bottom bar (approx 80-100px on mobile)
+      const offset = 100;
+      const elementPosition = formRef.current.getBoundingClientRect().top + window.pageYOffset;
+      const offsetPosition = elementPosition - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
     }
   };
 
@@ -95,8 +104,7 @@ export default function LearningForm() {
 
   return (
     <div
-      id="webinar"
-      className="relative min-h-screen bg-[#f8fafc] flex items-center justify-center overflow-hidden py-12 px-4"
+      className="relative min-h-screen bg-[#f8fafc] flex items-center justify-center overflow-hidden py-12 px-4 pb-24" // Added pb-24 to prevent bottom bar overlap
     >
       {/* --- Background Design --- */}
       <div className="absolute inset-0 z-0">
@@ -200,7 +208,7 @@ export default function LearningForm() {
                 </div>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form ref={formRef} onSubmit={handleSubmit} className="space-y-5 scroll-mt-24">
                 {/* Name Field */}
                 <div className="space-y-1.5">
                   <label className="text-xs font-black uppercase tracking-widest text-slate-400 ml-1">
@@ -284,79 +292,52 @@ export default function LearningForm() {
       </div>
 
       {/* Fixed Bottom Access Button */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 p-2 bg-[#0d0e0a] shadow-2xl">
-        <div className="flex flex-row items-center justify-between gap-3 max-w-6xl mx-auto px-4">
-          <div className="text-left text-white">
-            <h3 className="font-[400] text-[0.9rem] xs:text-[1rem] sm:text-[1.5rem]">
-              Offer Expires In
-            </h3>
-            <div className="text-[1rem] xs:text-[0.9rem] sm:text-[1.7rem] font-bold">
-              {formatTime(remainingTime)}
+      <div className="fixed bottom-0 left-0 w-full z-[100] bg-black/80 backdrop-blur-xl border-t border-white/10 shadow-[0_-10px_40px_rgba(0,0,0,0.4)]">
+        <div className="max-w-7xl mx-auto px-4 py-3 sm:py-4">
+          <div className="flex flex-row items-center justify-between gap-4">
+            
+            {/* Timer Section */}
+            <div className="flex items-center gap-2 sm:gap-4">
+              <div className="bg-red-500/20 p-2 rounded-xl hidden xs:block">
+                <Clock className="w-5 h-5 text-red-500 animate-pulse" />
+              </div>
+              <div>
+                <p className="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-widest leading-none mb-1">Offer Ends In</p>
+                <div className="text-lg sm:text-2xl font-mono font-black text-white tabular-nums tracking-tighter">
+                  {formatTime(remainingTime)}
+                </div>
+              </div>
             </div>
+
+            {/* Premium Button */}
+            <button
+              onClick={scrollToForm}
+              className="relative group overflow-hidden bg-white hover:bg-[#00D9B8] text-black hover:text-white font-black text-sm sm:text-lg px-6 sm:px-12 py-3 sm:py-4 rounded-xl sm:rounded-2xl transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.1)] active:scale-95"
+            >
+              {/* Shimmer Animation */}
+              <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover:animate-shimmer pointer-events-none" />
+              
+              <span className="relative flex items-center gap-2">
+                FREE ACCESS <span className="hidden sm:inline">NOW</span>
+                <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </span>
+            </button>
+            
           </div>
-          <button
-            onClick={() => scrollToForm()}
-            className="py-2.5 px-8 font-[600] cursor-pointer bg-white text-[#0d0e0a] hover:bg-[#0d0e0a] hover:text-white hover:border-2 hover:border-white text-[1rem] rounded-full w-auto transition-all duration-300 transform btn-animated"
-          >
-            Free Access Now
-          </button>
         </div>
       </div>
 
       <style jsx>{`
         @keyframes float {
-          0%,
-          100% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-15px);
-          }
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-15px); }
         }
-
-        @keyframes blink {
-          0%,
-          100% {
-            box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
-          }
-          50% {
-            box-shadow: 0 0 5px rgba(255, 255, 255, 0.8),
-              0 0 15px rgba(255, 255, 255, 1);
-          }
+        @keyframes shimmer {
+          0% { transform: translateX(-100%) skewX(-15deg); }
+          100% { transform: translateX(200%) skewX(-15deg); }
         }
-
-        @keyframes breathe {
-          0%,
-          100% {
-            transform: scale(1);
-          }
-          50% {
-            transform: scale(1.03);
-          }
-        }
-
-        .animate-float {
-          animation: float 5s ease-in-out infinite;
-        }
-        .delay-700 {
-          animation-delay: 0.7s;
-        }
-        .animate-blink {
-          animation: blink 1.5s ease-in-out infinite;
-        }
-        .animate-breathe {
-          animation: breathe 2s ease-in-out infinite;
-        }
-
-        .btn-animated {
-          animation: blink 2s ease-in-out infinite;
-          box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-        }
-
-        .btn-animated:hover {
-          border-color: white !important;
-          animation: blink 2s ease-in-out infinite;
-        }
+        .animate-float { animation: float 5s ease-in-out infinite; }
+        .animate-shimmer { animation: shimmer 2s infinite; }
       `}</style>
     </div>
   );
