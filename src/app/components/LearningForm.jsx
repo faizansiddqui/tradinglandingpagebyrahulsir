@@ -174,7 +174,9 @@ export default function LearningForm() {
           </div>
 
           {/* RIGHT PANEL: Form Section */}
-          <div className="p-8 sm:p-12 lg:p-16">
+          <div className="p-8 sm:p-12 lg:p-16"
+            ref={formRef}
+          >
             <div className="max-w-md mx-auto">
               <div className="mb-10 text-center lg:text-left">
                 <h2 className="text-3xl sm:text-4xl font-black text-slate-900 leading-[1.15]">
@@ -208,7 +210,7 @@ export default function LearningForm() {
                 </div>
               </div>
 
-              <form ref={formRef} onSubmit={handleSubmit} className="space-y-5 scroll-mt-24">
+              <form onSubmit={handleSubmit} className="space-y-5 scroll-mt-24">
                 {/* Name Field */}
                 <div className="space-y-1.5">
                   <label className="text-xs font-black uppercase tracking-widest text-slate-400 ml-1">
@@ -295,7 +297,7 @@ export default function LearningForm() {
       <div className="fixed bottom-0 left-0 w-full z-[100] bg-black/80 backdrop-blur-xl border-t border-white/10 shadow-[0_-10px_40px_rgba(0,0,0,0.4)]">
         <div className="max-w-7xl mx-auto px-4 py-3 sm:py-4">
           <div className="flex flex-row items-center justify-between gap-4">
-            
+
             {/* Timer Section */}
             <div className="flex items-center gap-2 sm:gap-4">
               <div className="bg-red-500/20 p-2 rounded-xl hidden xs:block">
@@ -316,13 +318,13 @@ export default function LearningForm() {
             >
               {/* Shimmer Animation */}
               <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover:animate-shimmer pointer-events-none" />
-              
+
               <span className="relative flex items-center gap-2">
                 FREE ACCESS <span className="hidden sm:inline">NOW</span>
                 <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </span>
             </button>
-            
+
           </div>
         </div>
       </div>
