@@ -1,3 +1,4 @@
+// File: app/layout.jsx
 import Footer from "./components/Footer";
 import "./globals.css";
 
@@ -52,11 +53,74 @@ export default function RootLayout({ children }) {
           name="google-site-verification"
           content="<!-- add your Google Search Console verification code here -->"
         />
+
+        {/* Meta Pixel Code - injected into the head so it runs as soon as possible on the client */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '26021697834109599');
+fbq('track', 'PageView');`,
+          }}
+        />
       </head>
       <body>
+        {/* Noscript fallback for users with JS disabled */}
+        <noscript
+          dangerouslySetInnerHTML={{
+            __html:
+              `<img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=26021697834109599&ev=PageView&noscript=1" />`,
+          }}
+        />
+
+        {/* Optional: For the Next.js app router (single-page navigation) you should call fbq on route changes.
+            Add the small client component below (components/FbPixelClient.jsx) and include <FbPixelClient /> here
+            so PageView is tracked on route changes as well. */}
+
         {children}
         <Footer />
       </body>
     </html>
   );
 }
+
+
+// ==========================
+// File: components/FbPixelClient.jsx
+// (Create this file and import it into the layout if you want SPA route-change tracking.)
+// ==========================
+
+// "use client";
+// import { useEffect } from "react";
+// import { usePathname } from "next/navigation";
+//
+// export default function FbPixelClient() {
+//   const pathname = usePathname();
+//
+//   useEffect(() => {
+//     // fbq is injected by the head script above. Only run on client.
+//     if (typeof window !== "undefined" && window.fbq) {
+//       window.fbq("track", "PageView");
+//     }
+//   }, [pathname]);
+//
+//   return null;
+// }
+
+
+// --------------------------
+// Notes & usage
+// --------------------------
+// 1) Replace the Pixel ID '26021697834109599' with your real Pixel ID if different.
+// 2) Place app/layout.jsx in your app/ directory (Next.js 13+ app router). Create components/FbPixelClient.jsx
+//    with the code above and then import it into the layout (e.g. `import FbPixelClient from "./components/FbPixelClient";`)
+//    and add <FbPixelClient /> just above {children} to track client-side navigation (recommended).
+// 3) To track custom events (Lead, Purchase, etc.) call `window.fbq('track', 'Lead')` from client-side code (e.g. onClick handlers).
+// 4) Verify with the Facebook Pixel Helper Chrome extension or in Events Manager.
+// 5) If you prefer using next/script or want me to add the client component into the repo for you, tell me and I will update.
