@@ -202,10 +202,10 @@ const Index = () => {
               </span>
             </button>
             {/* DETAILS BLOCK */}
-            <div className="text-center mt-6 p-6 rounded-3xl  border border-white/10 backdrop-blur-sm">
+            <div className="text-center mt-6 p-6 rounded-3xl  ">
               {/* TOP LABEL */}
               <div className="flex items-center justify-center gap-2 mb-1">
-                <span className="h-[1px] w-8 bg-[#75c13f]/50"></span>
+                <span className="h-[1px] w-8  bg-[#75c13f]/50"></span>
                 <p className="text-white/60 text-xs font-bold uppercase tracking-[0.3em]">
                   Training Program
                 </p>
