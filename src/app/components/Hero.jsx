@@ -44,9 +44,8 @@ const Index = () => {
 
       {/* Header */}
       <header
-        className={`fixed left-0 w-full z-[9999] bg-[hsl(220_20%_15%_/_0.6)] backdrop-blur-xl border-b border-white/10 shadow-2xl transition-transform duration-300 ease-in-out ${
-          headerVisible ? "translate-y-0" : "-translate-y-full"
-        }`}
+        className={`fixed left-0 w-full z-[9999] bg-[hsl(220_20%_15%_/_0.6)] backdrop-blur-xl border-b border-white/10 shadow-2xl transition-transform duration-300 ease-in-out ${headerVisible ? "translate-y-0" : "-translate-y-full"
+          }`}
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between px-3 py-3">
           {/* LOGO - LEFT */}
@@ -177,55 +176,70 @@ const Index = () => {
             <button
               onClick={() => scrollToSection("webinar")}
               className="
-              w-full max-w-xs py-3 
-              rounded-3xl 
-              text-lg sm:text-xl font-extrabold uppercase 
-              bg-gradient-to-r from-green-400 to-green-600
-             text-gray-900
-              hover:shadow-[0_12px_28px_rgba(16,185,129,0.6)]
-              hover:scale-[1.07] active:scale-[0.96]
-              transition-all duration-300 ease-out
-              animate-pulse
-              cursor-pointer
-              "
+    group relative overflow-hidden
+    w-full max-w-xs py-4
+    rounded-full 
+    text-lg sm:text-xl font-black uppercase tracking-wider
+    bg-[#75c13f]
+    text-gray-900
+    /* Depth and Dimension */
+    hover:shadow-[0_4px_0_rgb(93,156,50)]
+    /* Glow effect matching your color */
+    hover:shadow-[0_20px_40px_-10px_rgba(117,193,63,0.5)]
+    /* Movement */
+    translate-y-[2px]
+    hover:-translate-y-[4px]
+    active:translate-y-[2px] active:shadow-none
+    transition-all duration-150 ease-in-out
+    cursor-pointer
+  "
             >
-              Register Now — Free
+              {/* Glass Shine Effect */}
+              <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full animate-[shimmer_1.5s_infinite]"></span>
+
+              <span className="relative z-10">
+                Register Now — Free
+              </span>
             </button>
-
             {/* DETAILS BLOCK */}
-            <div className="text-center mt-2.5">
-              <p className="text-white/80 text-[10px] font-extrabold uppercase tracking-[0.15em]">
-                For Training
-              </p>
-
-              <p className="text-white text-base font-extrabold uppercase tracking-wide">
-                Program
-              </p>
-
-              {/* VALUE SECTION */}
-              <div className="mt-2">
-                <p className="text-white text-xl font-black tracking-tight drop-shadow">
-                  10,000 VALUE
+            <div className="text-center mt-6 p-6 rounded-3xl  border border-white/10 backdrop-blur-sm">
+              {/* TOP LABEL */}
+              <div className="flex items-center justify-center gap-2 mb-1">
+                <span className="h-[1px] w-8 bg-[#75c13f]/50"></span>
+                <p className="text-white/60 text-xs font-bold uppercase tracking-[0.3em]">
+                  Training Program
                 </p>
-
-                <p className="mt-1 text-sm sm:text-base font-black uppercase">
-                  <span className="text-[hsl(142_76%_45%)]">Program for </span>
-                  <span className="bg-gradient-to-r from-yellow-300 to-yellow-500 bg-clip-text text-transparent">
-                    "Free Now"
-                  </span>
-                </p>
+                <span className="h-[1px] w-8 bg-[#75c13f]/50"></span>
               </div>
 
-              {/* DIVIDER */}
-              <div className="w-16 h-[1px] mx-auto mt-2 mb-1.5 bg-white/10"></div>
+              {/* VALUE SECTION */}
+              <div className="relative inline-block mt-2">
+                <p className="text-white/40 text-lg font-bold line-through decoration-[#75c13f]/50 mb-[-8px]">
+                  ₹10,000 VALUE
+                </p>
+                <h2 className="text-white text-4xl sm:text-5xl font-black tracking-tighter italic drop-shadow-2xl">
+                  FREE <span className="text-[#75c13f]">NOW</span>
+                </h2>
+              </div>
 
-              {/* MENTOR */}
-              <p className="text-white/60 text-[10px] tracking-[0.2em] uppercase">
-                With
+              {/* CALL TO ACTION SUBTEXT */}
+              <p className="mt-3 text-sm font-medium text-white/80 flex items-center justify-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#75c13f] animate-pulse"></span>
+                Exclusive Access for Early Birds
               </p>
-              <p className="text-white text-base font-extrabold mt-0.5 drop-shadow">
-                Mr. Suresh Latiyal
-              </p>
+
+              {/* MENTOR SECTION */}
+              <div className="mt-6 pt-4 border-t border-white/10">
+                <p className="text-[#75c13f] text-[10px] font-black tracking-[0.25em] uppercase mb-1">
+                  Masterclass Lead By
+                </p>
+                <p className="text-white text-xl font-extrabold tracking-tight">
+                  Mr. Suresh Latiyal
+                </p>
+                <p className="text-white/40 text-[10px] uppercase font-medium mt-1">
+                  Industry Expert & Mentor
+                </p>
+              </div>
             </div>
           </div>
         </div>

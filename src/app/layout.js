@@ -3,9 +3,12 @@ import Footer from "./components/Footer";
 import "./globals.css";
 
 export const metadata = {
+  
   title: "Mahabali Price Action | Learn Professional Price Action Trading",
+
   description:
     "Mahabali Price Action is your ultimate resource to master price action trading. Learn chart reading, candlestick patterns, supply-demand, and real-world trading psychology from experts.",
+
   keywords: [
     "Mahabali Price Action",
     "price action trading",
@@ -18,6 +21,7 @@ export const metadata = {
     "supply and demand trading",
     "price action strategy",
   ],
+
   authors: [{ name: "Mahabali Price Action" }],
   openGraph: {
     title: "Mahabali Price Action | Learn Professional Price Action Trading",
