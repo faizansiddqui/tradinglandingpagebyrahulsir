@@ -12,8 +12,10 @@ import {
   Loader2,
 } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function LearningForm() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -148,6 +150,19 @@ export default function LearningForm() {
       const result = await response.json();
 
       if (result.success) {
+        // Store form data in localStorage for thank-you page
+        const thankYouData = {
+          name: formData.name,
+          email: formData.email,
+          phone: formattedPhone,
+          timestamp: new Date().toISOString()
+        };
+        localStorage.setItem("thankyouData", JSON.stringify(thankYouData));
+        
+        // Redirect to thank-you page
+        router.push('/thank-you');
+        
+        // Optionally, you can still show success message locally too
         setSubmitSuccess(true);
 
         // Reset form after successful submission

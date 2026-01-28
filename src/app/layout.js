@@ -1,9 +1,10 @@
 // File: app/layout.jsx
 import Footer from "./components/Footer";
+import ConditionalFooter from "./components/ConditionalFooter";
 import "./globals.css";
 
 export const metadata = {
-  
+
   title: "Mahabali Price Action | Learn Professional Price Action Trading",
 
   description:
@@ -88,7 +89,7 @@ fbq('track', 'PageView');`,
             so PageView is tracked on route changes as well. */}
 
         {children}
-        <Footer />
+        <ConditionalFooter />
       </body>
     </html>
   );
