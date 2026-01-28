@@ -302,14 +302,6 @@ export default function LearningForm() {
                   </div>
                 </div>
 
-                {/* Success Message */}
-                {submitSuccess && (
-                  <div className="mt-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded-lg">
-                    ✅ Thank you for your enquiry! Data saved successfully. Our
-                    team will contact you shortly.
-                  </div>
-                )}
-
                 {/* Error Message */}
                 {errorMessage && (
                   <div className="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg">
