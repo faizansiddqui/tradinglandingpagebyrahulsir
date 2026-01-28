@@ -9,6 +9,7 @@ import {
   Phone,
   ChevronRight,
   Clock,
+  Loader2,
 } from "lucide-react";
 import Image from "next/image";
 
@@ -18,6 +19,10 @@ export default function LearningForm() {
     email: "",
     phone: "",
   });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [remainingTime, setRemainingTime] = useState(30 * 60); // Initialize to 30 minutes
 
@@ -71,6 +76,11 @@ export default function LearningForm() {
       ...prev,
       [name]: value,
     }));
+
+    // Clear error message when user starts typing
+    if (errorMessage) {
+      setErrorMessage("");
+    }
   };
 
   const formatTime = (seconds) => {
@@ -86,7 +96,8 @@ export default function LearningForm() {
     if (formRef.current) {
       // Calculate offset for fixed bottom bar (approx 80-100px on mobile)
       const offset = 100;
-      const elementPosition = formRef.current.getBoundingClientRect().top + window.pageYOffset;
+      const elementPosition =
+        formRef.current.getBoundingClientRect().top + window.pageYOffset;
       const offsetPosition = elementPosition - offset;
 
       window.scrollTo({
@@ -96,10 +107,79 @@ export default function LearningForm() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    alert("Thank you for your enquiry! Our team will contact you shortly.");
+
+    setIsSubmitting(true);
+    setSubmitSuccess(false);
+    setErrorMessage("");
+
+    try {
+      // Prepare phone number without country code
+      let formattedPhone = formData.phone.trim();
+      if (formattedPhone.startsWith("91")) {
+        formattedPhone = formattedPhone.substring(2);
+      } else if (formattedPhone.startsWith("+91")) {
+        formattedPhone = formattedPhone.substring(3);
+      } else if (formattedPhone.startsWith("0")) {
+        formattedPhone = formattedPhone.substring(1);
+      }
+      
+      // Ensure we have a 10-digit number
+      if (formattedPhone.length !== 10) {
+        throw new Error("Invalid phone number. Must be 10 digits.");
+      }
+
+      // Create payload with properly formatted phone
+      const payload = {
+        ...formData,
+        phone: formattedPhone,
+      };
+
+      // Call the API route
+      const response = await fetch("/api/whatsapp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setSubmitSuccess(true);
+
+        // Reset form after successful submission
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+        });
+
+        // Show success message temporarily
+        setTimeout(() => {
+          setSubmitSuccess(false);
+        }, 5000);
+      } else {
+        // Handle API error safely
+        const errorMessage =
+          result.message || result.error || "Submission failed";
+        throw new Error(
+          typeof errorMessage === "string"
+            ? errorMessage
+            : "Unknown error occurred"
+        );
+      }
+    } catch (error) {
+      console.error("Form submission error:", error);
+      setErrorMessage(
+        error.message ||
+          "An error occurred while submitting the form. Please try again."
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -174,9 +254,7 @@ export default function LearningForm() {
           </div>
 
           {/* RIGHT PANEL: Form Section */}
-          <div className="p-8 sm:p-12 lg:p-16"
-            ref={formRef}
-          >
+          <div className="p-8 sm:p-12 lg:p-16" ref={formRef}>
             <div className="max-w-md mx-auto">
               <div className="mb-10 text-center lg:text-left">
                 <h2 className="text-3xl sm:text-4xl font-black text-slate-900 leading-[1.15]">
@@ -208,6 +286,21 @@ export default function LearningForm() {
                     </div>
                   </div>
                 </div>
+
+                {/* Success Message */}
+                {submitSuccess && (
+                  <div className="mt-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded-lg">
+                    ✅ Thank you for your enquiry! Data saved successfully. Our
+                    team will contact you shortly.
+                  </div>
+                )}
+
+                {/* Error Message */}
+                {errorMessage && (
+                  <div className="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+                    {errorMessage}
+                  </div>
+                )}
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-5 scroll-mt-24">
@@ -276,10 +369,24 @@ export default function LearningForm() {
                 {/* Submit Button */}
                 <button
                   type="submit"
-                  className="w-full group mt-4 bg-slate-900 hover:bg-[#00D9B8] text-white font-black text-lg py-5 rounded-2xl transition-all duration-300 shadow-xl shadow-slate-200 flex items-center justify-center gap-2"
+                  disabled={isSubmitting}
+                  className={`w-full group mt-4 font-black text-lg py-5 rounded-2xl transition-all duration-300 shadow-xl flex items-center justify-center gap-2 ${
+                    isSubmitting
+                      ? "bg-gray-400 cursor-not-allowed"
+                      : "bg-slate-900 hover:bg-[#00D9B8] text-white"
+                  }`}
                 >
-                  Send Enquiry
-                  <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      Send Enquiry
+                      <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    </>
+                  )}
                 </button>
               </form>
 
@@ -297,14 +404,15 @@ export default function LearningForm() {
       <div className="fixed bottom-0 left-0 w-full z-[100] bg-black/80 backdrop-blur-xl border-t border-white/10 shadow-[0_-10px_40px_rgba(0,0,0,0.4)]">
         <div className="max-w-7xl mx-auto px-4 py-3 sm:py-4">
           <div className="flex flex-row items-center justify-between gap-4">
-
             {/* Timer Section */}
             <div className="flex items-center gap-2 sm:gap-4">
               <div className="bg-red-500/20 p-2 rounded-xl hidden xs:block">
                 <Clock className="w-5 h-5 text-red-500 animate-pulse" />
               </div>
               <div>
-                <p className="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-widest leading-none mb-1">Offer Ends In</p>
+                <p className="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-widest leading-none mb-1">
+                  Offer Ends In
+                </p>
                 <div className="text-lg sm:text-2xl font-mono font-black text-white tabular-nums tracking-tighter">
                   {formatTime(remainingTime)}
                 </div>
@@ -317,29 +425,41 @@ export default function LearningForm() {
               className="relative group overflow-hidden bg-white hover:bg-[#00D9B8] text-black hover:text-white font-black text-sm sm:text-lg px-6 sm:px-12 py-3 sm:py-4 rounded-xl sm:rounded-2xl transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.1)] active:scale-95"
             >
               {/* Shimmer Animation */}
-              <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover:animate-shimmer pointer-events-none" />
+              <div className="absolute inset-0 w-full h-full bg-gradient-from-transparent via-white/40 to-transparent -translate-x-full group-hover:animate-shimmer pointer-events-none" />
 
               <span className="relative flex items-center gap-2">
                 FREE ACCESS <span className="hidden sm:inline">NOW</span>
                 <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </span>
             </button>
-
           </div>
         </div>
       </div>
 
       <style jsx>{`
         @keyframes float {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-15px); }
+          0%,
+          100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-15px);
+          }
         }
         @keyframes shimmer {
-          0% { transform: translateX(-100%) skewX(-15deg); }
-          100% { transform: translateX(200%) skewX(-15deg); }
+          0% {
+            transform: translateX(-100%) skewX(-15deg);
+          }
+          100% {
+            transform: translateX(200%) skewX(-15deg);
+          }
         }
-        .animate-float { animation: float 5s ease-in-out infinite; }
-        .animate-shimmer { animation: shimmer 2s infinite; }
+        .animate-float {
+          animation: float 5s ease-in-out infinite;
+        }
+        .animate-shimmer {
+          animation: shimmer 2s infinite;
+        }
       `}</style>
     </div>
   );
