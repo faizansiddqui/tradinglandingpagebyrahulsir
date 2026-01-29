@@ -9,6 +9,8 @@ export default function ConditionalFooter() {
   // Don't show footer on thank-you page
   if (pathname === '/thank-you/') {
     return null;
+  } else if (pathname === '/form/') {
+    return null;
   }
   
   return <Footer />;

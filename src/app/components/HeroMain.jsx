@@ -1,6 +1,7 @@
 'use client'; // Add this if using Next.js App Router for client-side detection
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import HeroDesktopUi from '../components/HeroDesktop'; // Adjust import path as needed
 import HeroMobileUI from '../components/Hero'; // Adjust import path as needed
 

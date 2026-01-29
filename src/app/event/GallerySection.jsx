@@ -120,7 +120,7 @@ const GallerySection = () => {
                 Limited seats available for upcoming sessions
               </p>
             </div>
-            <button className="rounded-lg bg-gradient-to-r from-[#75c13f] to-[#5da432] hover:from-[#75c13f] hover:to-[#5da432] text-gray-900 cursor-pointer px-6 py-3 text-sm font-semibold transition-all duration-300 hover:bg-[#00D9B8]/90 hover:scale-105 hover:shadow-lg hover:shadow-md sm:text-base">
+            <button onClick={() => window.location.href='/form'} className="rounded-lg bg-gradient-to-r from-[#75c13f] to-[#5da432] hover:from-[#75c13f] hover:to-[#5da432] text-gray-900 cursor-pointer px-6 py-3 text-sm font-semibold transition-all duration-300 hover:bg-[#00D9B8]/90 hover:scale-105 hover:shadow-lg hover:shadow-md sm:text-base">
               Enroll Now
             </button>
           </div>

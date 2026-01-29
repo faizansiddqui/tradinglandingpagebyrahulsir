@@ -98,7 +98,7 @@ const HeroDesktop = () => {
                 </div>
                 
                 <button 
-                  onClick={() => scrollToSection('webinar')}
+                  onClick={() => window.location.href='/form'}
                   className="w-full sm:flex-1 py-4 px-8 bg-gradient-to-r from-[#75c13f] to-[#5da432] hover:from-[#75c13f] hover:to-[#5da432] text-gray-900 font-black uppercase tracking-wider rounded-2xl shadow-[0_0_20px_rgba(117,193,63,0.3)] hover:shadow-[0_0_30px_rgba(117,193,63,0.5)] transition-all duration-300 transform hover:scale-[1.02] active:scale-95 cursor-pointer animate-btn-breath"
                 >
                   Register Now — Free

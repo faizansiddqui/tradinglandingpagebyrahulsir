@@ -174,7 +174,7 @@ const Index = () => {
           >
             {/* REGISTER BUTTON */}
             <button
-              onClick={() => scrollToSection("webinar")}
+              onClick={() => window.location.href='/form'}
               className="
     group relative overflow-hidden
     w-full max-w-xs py-4

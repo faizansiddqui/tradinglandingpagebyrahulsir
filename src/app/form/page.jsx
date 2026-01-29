@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useEffect, useRef } from "react";
 import {
   Users,
@@ -12,9 +13,10 @@ import {
   Loader2,
 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-export default function LearningForm() {
+export default function FormPage() {
   const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
@@ -199,7 +201,7 @@ export default function LearningForm() {
 
   return (
     <div
-      className="relative min-h-screen bg-[#f8fafc] flex items-center justify-center overflow-hidden py-12 px-4 pb-24" // Added pb-24 to prevent bottom bar overlap
+      className="relative min-h-screen bg-[#f8fafc] flex items-center justify-center overflow-hidden py-12 px-4" // Added pb-24 to prevent bottom bar overlap
     >
       {/* --- Background Design --- */}
       <div className="absolute inset-0 z-0">
@@ -300,8 +302,7 @@ export default function LearningForm() {
                       Mr. Suresh Latiyal
                     </p>
                     <div className="flex items-center gap-1 text-[10px] bg-gradient-to-r from-[#75c13f] to-[#5da432] bg-clip-text text-transparent font-black uppercase tracking-widest">
-                      <Users className="w-3 h-3 text-[#75c13f]" /> 30k+
-                      Learners
+                      <Users className="w-3 h-3 text-[#75c13f]" /> 30k+ Learners
                     </div>
                   </div>
                 </div>
@@ -406,43 +407,29 @@ export default function LearningForm() {
                 <span className="underline cursor-pointer">Terms</span> &{" "}
                 <span className="underline cursor-pointer">Privacy Policy</span>
               </p>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      {/* Fixed Bottom Access Button */}
-      <div className="fixed bottom-0 left-0 w-full z-[100] bg-black/80 backdrop-blur-xl border-t border-white/10 shadow-[0_-10px_40px_rgba(0,0,0,0.4)]">
-        <div className="max-w-7xl mx-auto px-4 py-3 sm:py-4">
-          <div className="flex flex-row items-center justify-between gap-4">
-            {/* Timer Section */}
-            <div className="flex items-center gap-2 sm:gap-4">
-              <div className="bg-red-500/20 p-2 rounded-xl hidden xs:block">
-                <Clock className="w-5 h-5 text-red-500 animate-pulse" />
+              {/* Back to Home Button */}
+              <div className="flex items-center justify-center mt-4">
+                <Link
+                  href="/"
+                  className="flex items-center gap-2 text-[#75c13f] font-bold hover:text-[#5da432] transition-colors"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  Back to Home
+                </Link>
               </div>
-              <div>
-                <p className="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-widest leading-none mb-1">
-                  Offer Ends In
-                </p>
-                <div className="text-lg sm:text-2xl font-mono font-black text-white tabular-nums tracking-tighter">
-                  {formatTime(remainingTime)}
-                </div>
-              </div>
             </div>
-
-            {/* Premium Button */}
-            <button
-              onClick={() => window.location.href='/form'}
-              className="relative group overflow-hidden bg-white cursor-pointer hover:bg-[#75c13f] text-black hover:text-gray-900 font-black text-sm sm:text-lg px-6 sm:px-12 py-3 sm:py-4 rounded-xl sm:rounded-2xl transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.1)] active:scale-95"
-            >
-              {/* Shimmer Animation */}
-              <div className="absolute inset-0 w-full h-full bg-gradient-from-transparent via-white/40 to-transparent -translate-x-full group-hover:animate-shimmer pointer-events-none" />
-
-              <span className="relative flex items-center gap-2">
-                FREE ACCESS <span className="hidden sm:inline">NOW</span>
-                <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </span>
-            </button>
           </div>
         </div>
       </div>
