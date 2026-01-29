@@ -381,7 +381,7 @@ export default function LearningForm() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className={`w-full group mt-4 font-black text-lg py-5 rounded-2xl transition-all duration-300 shadow-xl flex items-center justify-center gap-2 ${
+                  className={`w-full group mt-4 font-black cursor-pointer text-lg py-5 rounded-2xl transition-all duration-300 shadow-xl flex items-center justify-center gap-2 ${
                     isSubmitting
                       ? "bg-gray-400 cursor-not-allowed"
                       : "bg-slate-900 hover:bg-gradient-to-r from-[#75c13f] to-[#5da432] text-white hover:text-gray-900"
