@@ -84,11 +84,11 @@ const GallerySection = () => {
     <section id="gallery" className="py-16 sm:py-24 md:py-32 bg-gradient-to-b from-gray-50 to-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mx-auto mb-12 max-w-3xl text-center md:mb-16 lg:mb-20">
-          <span className="mb-4 inline-block rounded-full bg-[#00D9B8]/10 px-3 py-1 text-xs font-medium uppercase tracking-wide text-[#00D9B8] sm:px-4 sm:py-1.5">
+          <span className="mb-4 inline-block rounded-full bg-[#75c13f]/10 px-3 py-1 text-xs font-medium uppercase tracking-wide text-[#75c13f] sm:px-4 sm:py-1.5">
             Event Gallery
           </span>
           <h2 className="mb-4 text-3xl text-gray-900 font-bold tracking-tight sm:text-4xl md:text-5xl">
-            Moments That <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#00D9B8] to-[#00D9B8]/70">Define Excellence</span>
+            Moments That <span className="bg-gradient-to-r from-[#75c13f] to-[#5da432] hover:from-[#75c13f] hover:to-[#5da432] bg-clip-text text-transparent">Define Excellence</span>
           </h2>
           <p className="text-base text-gray-600 sm:text-lg md:text-xl max-w-2xl mx-auto">
             From intense exam halls to electrifying workshops, witness the journey of traders pushing their limits and achieving breakthroughs.
@@ -111,7 +111,7 @@ const GallerySection = () => {
         </div>
 
         <div className="mt-12 text-center md:mt-16 lg:mt-20">
-          <div className="inline-flex flex-col items-center gap-4 rounded-2xl bg-white/50 p-6 shadow-md backdrop-blur-md transition-all duration-300 hover:shadow-lg hover:scale-105 sm:flex-row sm:p-8">
+          <div className="inline-flex flex-col items-center gap-4 rounded-2xl bg-white/50 p-6 shadow-md backdrop-blur-md transition-all duration-300 sm:flex-row sm:p-8">
             <div className="text-center sm:text-left">
               <p className="text-lg font-semibold text-gray-900">
                 Ready to join the next batch?
@@ -120,7 +120,7 @@ const GallerySection = () => {
                 Limited seats available for upcoming sessions
               </p>
             </div>
-            <button className="rounded-lg bg-[#00D9B8] px-6 py-3 text-sm font-semibold text-white transition-all duration-300 hover:bg-[#00D9B8]/90 hover:shadow-md sm:text-base">
+            <button className="rounded-lg bg-gradient-to-r from-[#75c13f] to-[#5da432] hover:from-[#75c13f] hover:to-[#5da432] text-gray-900 cursor-pointer px-6 py-3 text-sm font-semibold transition-all duration-300 hover:bg-[#00D9B8]/90 hover:scale-105 hover:shadow-lg hover:shadow-md sm:text-base">
               Enroll Now
             </button>
           </div>

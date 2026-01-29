@@ -64,7 +64,7 @@ const Index = () => {
               <span className="ml-1 text-xl sm:text-2xl font-black">1</span>
               <sup className="text-xs sm:text-sm font-bold ml-0.5">st</sup>
             </h1>
-            <p className="text-emerald-400 text-xs sm:text-base font-bold uppercase tracking-wide mt-0.5 drop-shadow-md">
+            <p className="text-[#75c13f] text-xs sm:text-base font-bold uppercase tracking-wide mt-0.5 drop-shadow-md">
               Price Behavior Program
             </p>
           </div>

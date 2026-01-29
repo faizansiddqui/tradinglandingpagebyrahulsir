@@ -83,11 +83,11 @@ export default function ThankYouPage() {
       <div className="relative bg-[#1A1A1A] border border-white/10 backdrop-blur-md rounded-[2rem] shadow-2xl p-6 sm:p-10 max-w-xl w-full overflow-hidden">
         {/* Success Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-emerald-500/20 to-emerald-600/20 rounded-full mb-4">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-[#75c13f]/20 to-[#5da432]/20 rounded-full mb-4">
             <span className="text-4xl">✅</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-white mb-2">
-            REGISTRATION <span className="bg-gradient-to-r from-emerald-500 to-emerald-600 bg-clip-text text-transparent">SUCCESSFUL!</span>
+            REGISTRATION <span className="bg-gradient-to-r from-[#75c13f] to-[#5da432] bg-clip-text text-transparent">SUCCESSFUL!</span>
           </h1>
           <p className="text-gray-400 text-sm sm:text-base">
             Welcome to the community of successful traders.
@@ -97,7 +97,7 @@ export default function ThankYouPage() {
         <div className="grid gap-6 md:grid-cols-2">
           {/* Details Section */}
           <div className="bg-white/5 rounded-2xl p-5 border border-white/5">
-            <h2 className="bg-gradient-to-r from-emerald-500 to-emerald-600 bg-clip-text text-transparent font-bold text-xs uppercase tracking-widest mb-4">
+            <h2 className="bg-gradient-to-r from-[#75c13f] to-[#5da432] bg-clip-text text-transparent font-bold text-xs uppercase tracking-widest mb-4">
               Your Profile
             </h2>
             <div className="space-y-4">
@@ -124,12 +124,12 @@ export default function ThankYouPage() {
 
           {/* Instructions Section */}
           <div className="bg-white/5 rounded-2xl p-5 border border-white/5">
-            <h3 className="bg-gradient-to-r from-emerald-500 to-emerald-600 bg-clip-text text-transparent font-bold text-xs uppercase tracking-widest mb-4">
+            <h3 className="bg-gradient-to-r from-[#75c13f] to-[#5da432] bg-clip-text text-transparent font-bold text-xs uppercase tracking-widest mb-4">
               Next Steps
             </h3>
             <ul className="space-y-3 text-sm">
               <li className="flex gap-2">
-                <span className="bg-gradient-to-r from-emerald-500 to-emerald-600 bg-clip-text text-transparent font-bold">01.</span>
+                <span className="bg-gradient-to-r from-[#75c13f] to-[#5da432] bg-clip-text text-transparent font-bold">01.</span>
                 <span className="text-gray-300">
                   Check your{" "}
                   <span className="text-white font-medium">WhatsApp</span> for
@@ -137,13 +137,13 @@ export default function ThankYouPage() {
                 </span>
               </li>
               <li className="flex gap-2">
-                <span className="bg-gradient-to-r from-emerald-500 to-emerald-600 bg-clip-text text-transparent font-bold">02.</span>
+                <span className="bg-gradient-to-r from-[#75c13f] to-[#5da432] bg-clip-text text-transparent font-bold">02.</span>
                 <span className="text-gray-300">
                   Save our official number to receive updates.
                 </span>
               </li>
               <li className="flex gap-2">
-                <span className="bg-gradient-to-r from-emerald-500 to-emerald-600 bg-clip-text text-transparent font-bold">03.</span>
+                <span className="bg-gradient-to-r from-[#75c13f] to-[#5da432] bg-clip-text text-transparent font-bold">03.</span>
                 <span className="text-gray-300">
                   Join 10 mins early for the Live Session.
                 </span>
@@ -156,7 +156,7 @@ export default function ThankYouPage() {
         <div className="mt-8">
           <Link
             href="/"
-            className="w-full py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white font-black uppercase tracking-tighter text-center block rounded-xl transition-all duration-300 shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] active:scale-95"
+            className="w-full py-4 bg-gradient-to-r from-[#75c13f] to-[#5da432] hover:from-[#75c13f] hover:to-[#5da432] text-gray-900 font-black uppercase tracking-tighter text-center block rounded-xl transition-all duration-300 shadow-[0_0_20px_rgba(117,193,63,0.3)] hover:shadow-[0_0_30px_rgba(117,193,63,0.5)] active:scale-95"
           >
             Go to Dashboard
           </Link>

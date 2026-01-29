@@ -55,7 +55,7 @@ const HeroDesktop = () => {
             </div>
             <div className="text-right">
               <div className="text-white text-sm sm:text-xl font-black italic">
-                INDIA'S <span className="text-emerald-400">№1</span>
+                INDIA'S <span className="text-[#75c13f]">№1</span>
               </div>
               <p className="text-white/50 text-[9px] sm:text-[11px] font-bold tracking-widest uppercase">
                 Price Behavior
@@ -73,14 +73,14 @@ const HeroDesktop = () => {
             {/* Left Content */}
             <div className="flex flex-col space-y-8 text-center lg:text-left order-2 lg:order-1">
               <div className="space-y-2">
-                <span className="inline-block py-1 px-3 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold tracking-widest uppercase mb-4">
+                <span className="inline-block py-1 px-3 rounded-full bg-[#75c13f]/10 border border-[#75c13f]/20 text-[#75c13f] text-xs font-bold tracking-widest uppercase mb-4">
                   Official Training Program
                 </span>
                 <h1 className="text-4xl sm:text-6xl xl:text-7xl font-black tracking-tight leading-[1.1]">
-                  <span className="text-emerald-400">REVEALED:</span><br />
+                  <span className="text-[#75c13f]">REVEALED:</span><br />
                   SECRET OF<br />
                   SUCCESSFUL<br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">TRADERS</span>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#75c13f] to-[#5da432]">TRADERS</span>
                 </h1>
               </div>
 
@@ -99,7 +99,7 @@ const HeroDesktop = () => {
                 
                 <button 
                   onClick={() => scrollToSection('webinar')}
-                  className="w-full sm:flex-1 py-4 px-8 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white font-black uppercase tracking-wider rounded-2xl shadow-xl shadow-emerald-900/20 transition-all duration-300 transform hover:scale-[1.02] active:scale-95 cursor-pointer animate-btn-breath"
+                  className="w-full sm:flex-1 py-4 px-8 bg-gradient-to-r from-[#75c13f] to-[#5da432] hover:from-[#75c13f] hover:to-[#5da432] text-gray-900 font-black uppercase tracking-wider rounded-2xl shadow-[0_0_20px_rgba(117,193,63,0.3)] hover:shadow-[0_0_30px_rgba(117,193,63,0.5)] transition-all duration-300 transform hover:scale-[1.02] active:scale-95 cursor-pointer animate-btn-breath"
                 >
                   Register Now — Free
                 </button>
@@ -109,7 +109,7 @@ const HeroDesktop = () => {
               <div className="flex items-center justify-center lg:justify-start gap-6 pt-4">
                 <div className="h-12 w-[1px] bg-gradient-to-b from-transparent via-white/20 to-transparent hidden sm:block" />
                 <div className="text-center lg:text-left">
-                  <p className="text-emerald-400/80 text-[10px] font-bold tracking-[0.2em] uppercase">
+                  <p className="text-[#75c13f] text-[10px] font-bold tracking-[0.2em] uppercase">
                     ₹10,000 VALUE PROGRAM
                   </p>
                   <p className="text-white/60 text-sm">
@@ -137,13 +137,13 @@ const HeroDesktop = () => {
 
                 {/* Floating Stat 1 */}
                 <div className="absolute -left-6 top-1/4 backdrop-blur-md bg-white/10 border border-white/20 p-3 sm:p-4 rounded-2xl shadow-2xl animate-bounce-slow">
-                  <p className="text-xl sm:text-2xl font-black text-emerald-400 leading-none">2700+</p>
+                  <p className="text-xl sm:text-2xl font-black text-[#75c13f] leading-none">2700+</p>
                   <p className="text-[10px] sm:text-xs font-bold text-white/70 uppercase mt-1">Students</p>
                 </div>
 
                 {/* Floating Stat 2 */}
                 <div className="absolute -right-6 bottom-1/4 backdrop-blur-md bg-white/10 border border-white/20 p-3 sm:p-4 rounded-2xl shadow-2xl animate-bounce-slow delay-700">
-                  <p className="text-xl sm:text-2xl font-black text-white leading-none">14+</p>
+                  <p className="text-xl sm:text-2xl font-black text-[#75c13f] leading-none">14+</p>
                   <p className="text-[10px] sm:text-xs font-bold text-white/70 uppercase mt-1">Years Exp.</p>
                 </div>
               </div>
@@ -161,10 +161,10 @@ const HeroDesktop = () => {
         
         @keyframes btn-breath {
           0%, 100% { 
-            box-shadow: 0 12px 28px rgba(16, 185, 129, 0.4), 0 8px 16px rgba(16, 185, 129, 0.2);
+            box-shadow: 0 12px 28px rgba(117, 193, 63, 0.4), 0 8px 16px rgba(117, 193, 63, 0.2);
           }
           50% { 
-            box-shadow: 0 12px 32px rgba(16, 185, 129, 0.6), 0 10px 20px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 12px 32px rgba(117, 193, 63, 0.6), 0 10px 20px rgba(117, 193, 63, 0.3);
           }
         }
         

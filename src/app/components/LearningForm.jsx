@@ -126,7 +126,7 @@ export default function LearningForm() {
       } else if (formattedPhone.startsWith("0")) {
         formattedPhone = formattedPhone.substring(1);
       }
-      
+
       // Ensure we have a 10-digit number
       if (formattedPhone.length !== 10) {
         throw new Error("Invalid phone number. Must be 10 digits.");
@@ -155,13 +155,13 @@ export default function LearningForm() {
           name: formData.name,
           email: formData.email,
           phone: formattedPhone,
-          timestamp: new Date().toISOString()
+          timestamp: new Date().toISOString(),
         };
         localStorage.setItem("thankyouData", JSON.stringify(thankYouData));
-        
+
         // Redirect to thank-you page
-        router.push('/thank-you');
-        
+        router.push("/thank-you");
+
         // Optionally, you can still show success message locally too
         setSubmitSuccess(true);
 
@@ -231,7 +231,7 @@ export default function LearningForm() {
 
             <div className="absolute bottom-20 right-10 animate-float delay-700">
               <div className="bg-white/80 backdrop-blur-md p-3 rounded-2xl shadow-lg border border-slate-100 flex items-center gap-3">
-                <div className="bg-[#00D9B8] p-2 rounded-lg text-white">
+                <div className="bg-gradient-to-r from-[#75c13f] to-[#5da432] p-2 rounded-lg text-white">
                   <Users className="w-5 h-5" />
                 </div>
                 <div>
@@ -262,7 +262,7 @@ export default function LearningForm() {
               <h3 className="text-2xl font-black text-slate-800">
                 Mr. Suresh Latiyal
               </h3>
-              <p className="text-[#00D9B8] font-bold tracking-[0.2em] uppercase text-sm mt-1">
+              <p className="text-sm font-bold text-slate-800 bg-gradient-to-r from-[#75c13f] to-[#5da432] bg-clip-text text-transparent uppercase tracking-[0.2em]">
                 Price Action Expert
               </p>
             </div>
@@ -273,7 +273,10 @@ export default function LearningForm() {
             <div className="max-w-md mx-auto">
               <div className="mb-10 text-center lg:text-left">
                 <h2 className="text-3xl sm:text-4xl font-black text-slate-900 leading-[1.15]">
-                  Start Your <span className="text-[#00D9B8]">Trading</span>{" "}
+                  Start Your{" "}
+                  <span className="bg-gradient-to-r from-[#75c13f] to-[#5da432] bg-clip-text text-transparent">
+                    Trading
+                  </span>{" "}
                   Journey Today
                 </h2>
                 <p className="mt-4 text-slate-500 font-medium">
@@ -283,7 +286,7 @@ export default function LearningForm() {
 
                 {/* Mobile Mentor Teaser (Hidden on Desktop) */}
                 <div className="flex lg:hidden items-center gap-4 mt-8 p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                  <div className="w-12 h-12 rounded-full overflow-hidden bg-white border-2 border-[#00D9B8]">
+                  <div className="w-12 h-12 rounded-full overflow-hidden bg-white border-2 border-[#75c13f]">
                     <Image
                       width={48}
                       height={48}
@@ -296,8 +299,9 @@ export default function LearningForm() {
                     <p className="text-sm font-bold text-slate-800">
                       Mr. Suresh Latiyal
                     </p>
-                    <div className="flex items-center gap-1 text-[10px] text-[#00D9B8] font-black uppercase tracking-widest">
-                      <Users className="w-3 h-3" /> 30k+ Learners
+                    <div className="flex items-center gap-1 text-[10px] bg-gradient-to-r from-[#75c13f] to-[#5da432] bg-clip-text text-transparent font-black uppercase tracking-widest">
+                      <Users className="w-3 h-3 text-[#75c13f]" /> 30k+
+                      Learners
                     </div>
                   </div>
                 </div>
@@ -317,7 +321,7 @@ export default function LearningForm() {
                     Full Name
                   </label>
                   <div className="relative group">
-                    <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-[#00D9B8] transition-colors" />
+                    <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-[#75c13f] transition-colors" />
                     <input
                       type="text"
                       name="name"
@@ -325,7 +329,7 @@ export default function LearningForm() {
                       value={formData.name}
                       onChange={handleChange}
                       placeholder="e.g. Rahul Sharma"
-                      className="w-full pl-12 pr-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-[#00D9B8]/20 focus:border-[#00D9B8] transition-all text-slate-800"
+                      className="w-full pl-12 pr-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-[#75c13f]/20 focus:border-[#75c13f] transition-all text-slate-800"
                     />
                   </div>
                 </div>
@@ -336,7 +340,7 @@ export default function LearningForm() {
                     Email Address
                   </label>
                   <div className="relative group">
-                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-[#00D9B8] transition-colors" />
+                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-[#75c13f] transition-colors" />
                     <input
                       type="email"
                       name="email"
@@ -344,7 +348,7 @@ export default function LearningForm() {
                       value={formData.email}
                       onChange={handleChange}
                       placeholder="rahul@example.com"
-                      className="w-full pl-12 pr-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-[#00D9B8]/20 focus:border-[#00D9B8] transition-all text-slate-800"
+                      className="w-full pl-12 pr-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-[#75c13f]/20 focus:border-[#75c13f] transition-all text-slate-800"
                     />
                   </div>
                 </div>
@@ -359,7 +363,7 @@ export default function LearningForm() {
                       +91
                     </div>
                     <div className="relative flex-1 group">
-                      <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-[#00D9B8] transition-colors" />
+                      <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-[#75c13f] transition-colors" />
                       <input
                         type="tel"
                         name="phone"
@@ -367,7 +371,7 @@ export default function LearningForm() {
                         value={formData.phone}
                         onChange={handleChange}
                         placeholder="98765 43210"
-                        className="w-full pl-12 pr-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-[#00D9B8]/20 focus:border-[#00D9B8] transition-all text-slate-800"
+                        className="w-full pl-12 pr-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-[#75c13f]/20 focus:border-[#75c13f] transition-all text-slate-800"
                       />
                     </div>
                   </div>
@@ -380,7 +384,7 @@ export default function LearningForm() {
                   className={`w-full group mt-4 font-black text-lg py-5 rounded-2xl transition-all duration-300 shadow-xl flex items-center justify-center gap-2 ${
                     isSubmitting
                       ? "bg-gray-400 cursor-not-allowed"
-                      : "bg-slate-900 hover:bg-[#00D9B8] text-white"
+                      : "bg-slate-900 hover:bg-gradient-to-r from-[#75c13f] to-[#5da432] text-white hover:text-gray-900"
                   }`}
                 >
                   {isSubmitting ? (
@@ -429,7 +433,7 @@ export default function LearningForm() {
             {/* Premium Button */}
             <button
               onClick={scrollToForm}
-              className="relative group overflow-hidden bg-white hover:bg-[#00D9B8] text-black hover:text-white font-black text-sm sm:text-lg px-6 sm:px-12 py-3 sm:py-4 rounded-xl sm:rounded-2xl transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.1)] active:scale-95"
+              className="relative group overflow-hidden bg-white hover:bg-[#75c13f] text-black hover:text-gray-900 font-black text-sm sm:text-lg px-6 sm:px-12 py-3 sm:py-4 rounded-xl sm:rounded-2xl transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.1)] active:scale-95"
             >
               {/* Shimmer Animation */}
               <div className="absolute inset-0 w-full h-full bg-gradient-from-transparent via-white/40 to-transparent -translate-x-full group-hover:animate-shimmer pointer-events-none" />

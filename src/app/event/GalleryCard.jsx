@@ -33,14 +33,14 @@ const GalleryCard = ({
         
         <div className="flex flex-wrap gap-2">
           {participants && (
-            <span className="inline-flex items-center gap-1 rounded-full bg-[#00D9B8]/10 px-3 py-1 text-sm text-[#00D9B8] font-medium">
-              <Users className="h-4 w-4" />
+            <span className="inline-flex items-center gap-1 rounded-full bg-[#75c13f]/10 px-3 py-1 text-sm text-[#75c13f] font-medium">
+              <Users className="h-4 w-4 text-[#75c13f]" />
               {participants}
             </span>
           )}
           {date && (
-            <span className="inline-flex items-center gap-1 rounded-full bg-[#00D9B8]/10 px-3 py-1 text-sm text-[#00D9B8] font-medium">
-              <Calendar className="h-4 w-4" />
+            <span className="inline-flex items-center gap-1 rounded-full bg-[#75c13f]/10 px-3 py-1 text-sm text-[#75c13f] font-medium">
+              <Calendar className="h-4 w-4 text-[#75c13f]" />
               {date}
             </span>
           )}
@@ -49,13 +49,13 @@ const GalleryCard = ({
         <div className="flex flex-wrap items-center gap-4">
           {location && (
             <div className="flex items-center gap-1 text-sm text-gray-600">
-              <MapPin className="h-4 w-4 text-[#00D9B8]" />
+              <MapPin className="h-4 w-4 text-[#75c13f]" />
               {location}
             </div>
           )}
           {highlight && (
-            <div className="flex items-center gap-1 text-sm text-[#00D9B8] font-medium">
-              <TrendingUp className="h-4 w-4" />
+            <div className="flex items-center gap-1 text-sm text-[#75c13f] font-medium">
+              <TrendingUp className="h-4 w-4 text-[#75c13f]" />
               {highlight}
             </div>
           )}

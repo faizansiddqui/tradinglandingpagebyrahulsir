@@ -85,7 +85,7 @@ const VideoCard = ({ testimonial, isActive, onBecomeActive }) => {
       ref={containerRef}
       className={`group relative flex flex-col overflow-hidden rounded-xl bg-white transition-all duration-300 ${
         isActive 
-          ? "ring-2 ring-green-500 shadow-xl scale-[1.01] z-10" 
+          ? "ring-2 ring-[#75c13f] shadow-xl scale-[1.01] z-10" 
           : "border border-gray-100 shadow-sm opacity-90 hover:opacity-100"
       }`}
     >
@@ -129,7 +129,7 @@ const VideoCard = ({ testimonial, isActive, onBecomeActive }) => {
         {/* Minimal Read More Link */}
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="mt-3 self-start text-xs font-semibold uppercase tracking-wide text-green-600 hover:text-green-800 transition-colors"
+          className="mt-3 self-start text-xs font-semibold uppercase tracking-wide text-[#75c13f] cursor-pointer hover:text-[#75c13f] transition-colors"
         >
           {isExpanded ? "Close" : "Read Full Story"}
         </button>
@@ -146,7 +146,7 @@ const VideoTestimonials = () => {
       <div className="max-w-7xl mx-auto">
         {/* Clean Header */}
         <div className="text-center mb-16 max-w-3xl mx-auto">
-          <span className="text-green-600 font-semibold tracking-wider text-sm uppercase mb-2 block">
+          <span className="mb-4 inline-block rounded-full bg-[#75c13f]/10 px-3 py-1 text-xs font-medium uppercase tracking-wide text-[#75c13f] sm:px-4 sm:py-1.5">
             Success Stories
           </span>
           <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-6">

@@ -21,11 +21,11 @@ export default function Footer() {
           {/* Bottom Bar */}
           <div className="pt-8 border-t border-[#C5FF00]/10 flex flex-col md:flex-row justify-between items-center gap-4 text-sm">
             <div className="flex items-center gap-2 text-gray-400">
-              <Users className="w-4 h-4 text-[#C5FF00]" />
+              <Users className="w-4 h-4 text-[#75c13f]" />
               <span>Join 25K+ Happy Traders</span>
             </div>
             <p className="text-gray-400">
-              © 2025 <span className="text-[#C5FF00] font-semibold">Mahhabali Education</span>. All rights reserved.
+              © 2025 <span className="text-[#75c13f] font-semibold">Mahhabali Education</span>. All rights reserved.
             </p>
             <div className="flex items-center gap-4 text-gray-400">
               <Link href="/privacy-policy" className="hover:text-[#C5FF00] transition-colors">Privacy Policy 

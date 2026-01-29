@@ -34,12 +34,12 @@ const TradingProgram = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mx-auto mb-16 max-w-3xl text-center md:mb-20 lg:mb-24"> {/* Increased margins */}
-          <span className="mb-6 inline-block rounded-full bg-[#00D9B8]/10 px-4 py-2 text-sm font-medium uppercase tracking-wide text-[#00D9B8] sm:px-5 sm:py-2.5"> {/* Increased text size and padding */}
+          <span className="mb-6 inline-block rounded-full bg-[#75c13f]/10 px-4 py-2 text-sm font-medium uppercase tracking-wide text-[#75c13f] sm:px-5 sm:py-2.5"> {/* Increased text size and padding */}
             What You'll Learn
           </span>
           <h2 className="mb-6 text-4xl text-gray-900 font-bold tracking-tight sm:text-5xl md:text-6xl"> {/* Increased text size */}
             Market Education{" "}
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#00D9B8] to-[#00D9B8]/70">
+            <span className="bg-gradient-to-r from-[#75c13f] to-[#5da432]  bg-clip-text text-transparent">
               Highlights
             </span>
           </h2>
@@ -57,7 +57,7 @@ const TradingProgram = () => {
             >
               <div className="flex flex-row items-start gap-4 sm:gap-5 lg:gap-6"> {/* Changed to items-start for top alignment */}
                 {/* Image - Always on left side */}
-                <div className="shrink-0 w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 rounded-lg sm:rounded-xl bg-[#00D9B8]/10 overflow-hidden group-hover:scale-105 transition-transform duration-300"> {/* Further increased image sizes for better visibility */}
+                <div className="shrink-0 w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 rounded-lg sm:rounded-xl bg-[#75c13f]/10 overflow-hidden group-hover:scale-105 transition-transform duration-300"> {/* Further increased image sizes for better visibility */}
                   <img
                     src={item.image}
                     alt={item.title}
