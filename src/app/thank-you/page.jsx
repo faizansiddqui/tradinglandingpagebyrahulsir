@@ -6,169 +6,164 @@ import { useRouter } from "next/navigation";
 export default function ThankYouPage() {
   const router = useRouter();
   const [data, setData] = useState(null);
-  const [isValidAccess, setIsValidAccess] = useState(false);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    
-    // Check if this is a valid form submission by looking for a timestamp
+  // Validate access and get data - pure function, no side effects
+  const validateAccess = () => {
+    if (typeof window === "undefined") return null;
+
     const saved = localStorage.getItem("thankyouData");
-    if (!saved) {
-      router.push("/");
-      return;
-    }
-    
+    if (!saved) return null;
+
     try {
       const parsedData = JSON.parse(saved);
-      
-      // Additional validation: check if data has required fields and recent timestamp
-      if (!parsedData.name || !parsedData.email || !parsedData.phone || !parsedData.timestamp) {
-        router.push("/");
-        return;
+      if (
+        !parsedData.name ||
+        !parsedData.email ||
+        !parsedData.phone ||
+        !parsedData.timestamp
+      ) {
+        return null;
       }
-      
+
       const submissionTime = new Date(parsedData.timestamp);
       const currentTime = new Date();
       const timeDiff = currentTime - submissionTime;
-      
-      // Allow access only if form was submitted within last 1 hour
-      if (timeDiff >= 60 * 60 * 1000) { // 1 hour in milliseconds
-        // Expired submission
+
+      if (timeDiff >= 60 * 60 * 1000) {
         localStorage.removeItem("thankyouData");
-        router.push("/");
-        return;
+        return null;
       }
-      
-      // Valid submission - set data and allow access
-      setData(parsedData);
-      setIsValidAccess(true);
-      
-      // Clear the data after displaying it (one-time access)
-      const timer = setTimeout(() => {
-        localStorage.removeItem("thankyouData");
-      }, 5000); // Remove after 5 seconds
-      
-      // Cleanup timer
-      return () => clearTimeout(timer);
+
+      return parsedData;
     } catch (e) {
-      // Invalid JSON
-      router.push("/");
+      return null;
     }
-  }, []); // Only run once on mount
+  };
 
-  // Show loading state while checking
-  if (!isValidAccess) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0A2F1F] via-[#0D3D2A] to-[#0A2F1F] text-white">
-        <div className="text-center p-8 rounded-2xl bg-white/10 backdrop-blur-lg border border-white/20 shadow-2xl">
-          <div className="animate-spin rounded-full h-16 w-16 border-4 border-[#00D9B8] border-t-transparent mx-auto"></div>
-          <p className="mt-6 text-xl font-bold text-[#00D9B8]">Verifying your submission...</p>
-          <p className="mt-2 text-gray-300">Please wait while we process your request</p>
-        </div>
-      </div>
-    );
-  }
+  useEffect(() => {
+    // Only run validation logic, don't set state directly
+    const userData = validateAccess();
 
+    if (!userData) {
+      router.push("/");
+      return;
+    }
+
+    // Set state outside the immediate effect execution
+    setTimeout(() => {
+      setData(userData);
+    }, 0);
+
+    // Setup cleanup timer
+    const timer = setTimeout(() => {
+      localStorage.removeItem("thankyouData");
+    }, 10000);
+
+    // Cleanup function
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [router]);
+
+  // Show loading state while checking or if no data
   if (!data) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0A2F1F] via-[#0D3D2A] to-[#0A2F1F] text-white p-4">
-        <div className="text-center bg-white/10 backdrop-blur-lg rounded-2xl p-10 border border-white/20 shadow-2xl max-w-md w-full">
-          <div className="text-6xl mb-4">🔒</div>
-          <h2 className="text-2xl font-bold text-red-400 mb-4">Access Denied</h2>
-          <p className="text-gray-300 mb-6">This page is only accessible after form submission</p>
-          <Link 
-            href="/" 
-            className="inline-block bg-[#00D9B8] hover:bg-[#00B894] text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
-          >
-            ⬅ Back to Home
-          </Link>
-        </div>
+      <div className="min-h-screen flex items-center justify-center bg-[#121212] text-white">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-[#A3E635] border-solid"></div>
       </div>
     );
   }
 
-  
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0A2F1F] via-[#0D3D2A] to-[#0A2F1F] text-white flex items-center justify-center p-4">
-      <div className="bg-white/10 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 p-8 max-w-md w-full mt-12">
-        {/* Header */}
+    <div className="min-h-screen bg-[#121212] text-white flex items-center justify-center p-4 sm:p-6 lg:p-8">
+      {/* Background Glows for modern look */}
+      <div className="fixed top-0 left-1/4 w-64 h-64 bg-[#A3E635]/10 blur-[100px] rounded-full"></div>
+      <div className="fixed bottom-0 right-1/4 w-64 h-64 bg-[#A3E635]/10 blur-[100px] rounded-full"></div>
+
+      <div className="relative bg-[#1A1A1A] border border-white/10 backdrop-blur-md rounded-[2rem] shadow-2xl p-6 sm:p-10 max-w-xl w-full overflow-hidden">
+        {/* Success Header */}
         <div className="text-center mb-8">
-          <div className="text-6xl mb-4">✅</div>
-          <h1 className="text-3xl font-black text-[#00D9B8] mb-2">
-            Thank You!
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-emerald-500/20 to-emerald-600/20 rounded-full mb-4">
+            <span className="text-4xl">✅</span>
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-white mb-2">
+            REGISTRATION <span className="bg-gradient-to-r from-emerald-500 to-emerald-600 bg-clip-text text-transparent">SUCCESSFUL!</span>
           </h1>
-          <p className="text-gray-300">Your submission was successful</p>
+          <p className="text-gray-400 text-sm sm:text-base">
+            Welcome to the community of successful traders.
+          </p>
         </div>
 
-        {/* User Data */}
-        <div className="bg-white/5 rounded-2xl p-6 mb-6 border border-white/10">
-          <h2 className="text-lg font-bold text-[#00D9B8] mb-4 flex items-center gap-2">
-            <span>📋</span> Your Details
-          </h2>
-          
-          <div className="space-y-3">
-            <div className="flex items-center gap-3">
-              <div className="bg-[#00D9B8]/20 p-2 rounded-lg">
-                <span className="text-[#00D9B8] font-bold">👤</span>
+        <div className="grid gap-6 md:grid-cols-2">
+          {/* Details Section */}
+          <div className="bg-white/5 rounded-2xl p-5 border border-white/5">
+            <h2 className="bg-gradient-to-r from-emerald-500 to-emerald-600 bg-clip-text text-transparent font-bold text-xs uppercase tracking-widest mb-4">
+              Your Profile
+            </h2>
+            <div className="space-y-4">
+              <div>
+                <p className="text-[10px] text-gray-500 uppercase font-bold">
+                  Full Name
+                </p>
+                <p className="text-sm font-semibold truncate">{data.name}</p>
               </div>
               <div>
-                <p className="text-xs text-gray-400 uppercase tracking-wider font-bold">Name</p>
-                <p className="text-white font-medium">{data.name}</p>
-              </div>
-            </div>
-            
-            <div className="flex items-center gap-3">
-              <div className="bg-[#00D9B8]/20 p-2 rounded-lg">
-                <span className="text-[#00D9B8] font-bold">@</span>
+                <p className="text-[10px] text-gray-500 uppercase font-bold">
+                  Email Address
+                </p>
+                <p className="text-sm font-semibold truncate">{data.email}</p>
               </div>
               <div>
-                <p className="text-xs text-gray-400 uppercase tracking-wider font-bold">Email</p>
-                <p className="text-white font-medium">{data.email}</p>
-              </div>
-            </div>
-            
-            <div className="flex items-center gap-3">
-              <div className="bg-[#00D9B8]/20 p-2 rounded-lg">
-                <span className="text-[#00D9B8] font-bold">📞</span>
-              </div>
-              <div>
-                <p className="text-xs text-gray-400 uppercase tracking-wider font-bold">Phone</p>
-                <p className="text-white font-medium">+91 {data.phone}</p>
+                <p className="text-[10px] text-gray-500 uppercase font-bold">
+                  Contact No.
+                </p>
+                <p className="text-sm font-semibold">+91 {data.phone}</p>
               </div>
             </div>
           </div>
+
+          {/* Instructions Section */}
+          <div className="bg-white/5 rounded-2xl p-5 border border-white/5">
+            <h3 className="bg-gradient-to-r from-emerald-500 to-emerald-600 bg-clip-text text-transparent font-bold text-xs uppercase tracking-widest mb-4">
+              Next Steps
+            </h3>
+            <ul className="space-y-3 text-sm">
+              <li className="flex gap-2">
+                <span className="bg-gradient-to-r from-emerald-500 to-emerald-600 bg-clip-text text-transparent font-bold">01.</span>
+                <span className="text-gray-300">
+                  Check your{" "}
+                  <span className="text-white font-medium">WhatsApp</span> for
+                  the session link.
+                </span>
+              </li>
+              <li className="flex gap-2">
+                <span className="bg-gradient-to-r from-emerald-500 to-emerald-600 bg-clip-text text-transparent font-bold">02.</span>
+                <span className="text-gray-300">
+                  Save our official number to receive updates.
+                </span>
+              </li>
+              <li className="flex gap-2">
+                <span className="bg-gradient-to-r from-emerald-500 to-emerald-600 bg-clip-text text-transparent font-bold">03.</span>
+                <span className="text-gray-300">
+                  Join 10 mins early for the Live Session.
+                </span>
+              </li>
+            </ul>
+          </div>
         </div>
 
-        {/* Instructions */}
-        <div className="bg-white/5 rounded-2xl p-6 mb-6 border border-white/10">
-          <h3 className="font-bold text-[#00D9B8] mb-4 flex items-center gap-2">
-            <span>📌</span> Next Steps
-          </h3>
-          <ul className="space-y-3">
-            <li className="flex items-start gap-3">
-              <span className="text-[#00D9B8] mt-1">✓</span>
-              <span className="text-gray-300">Our team will contact you on <span className="text-[#00D9B8] font-bold">WhatsApp</span></span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="text-[#00D9B8] mt-1">✓</span>
-              <span className="text-gray-300">Please save our number for future communication</span>
-            </li>
-          </ul>
+        {/* Action Button */}
+        <div className="mt-8">
+          <Link
+            href="/"
+            className="w-full py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white font-black uppercase tracking-tighter text-center block rounded-xl transition-all duration-300 shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] active:scale-95"
+          >
+            Go to Dashboard
+          </Link>
+          <p className="text-center text-[10px] text-gray-600 mt-4 uppercase font-bold tracking-widest">
+            Mahhabali Education • India&apos;s No.1 Price Behavior Training
+          </p>
         </div>
-
-        {/* CTA Button */}
-        <Link
-          href="/"
-          className="w-full block text-center bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white font-black py-4 px-6 rounded-2xl transition-all duration-300 transform hover:scale-[1.02] shadow-lg hover:shadow-[#00D9B8]/30"
-        >
-          ⬅ Back to Home
-        </Link>
-
-        {/* Footer Note */}
-        <p className="text-center text-xs text-gray-500 mt-4">
-          We will get back to you within 24 hours
-        </p>
       </div>
     </div>
   );
