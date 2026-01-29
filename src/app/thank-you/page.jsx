@@ -133,13 +133,13 @@ export default function ThankYouPage() {
                 <span className="text-gray-300">
                   Check your{" "}
                   <span className="text-white font-medium">WhatsApp</span> for
-                  the session link.
+                  the updates.
                 </span>
               </li>
               <li className="flex gap-2">
                 <span className="bg-gradient-to-r from-[#75c13f] to-[#5da432] bg-clip-text text-transparent font-bold">02.</span>
                 <span className="text-gray-300">
-                  Save our official number to receive updates.
+                  Our team will contact you shortly.
                 </span>
               </li>
               <li className="flex gap-2">
@@ -158,7 +158,7 @@ export default function ThankYouPage() {
             href="/"
             className="w-full py-4 bg-gradient-to-r from-[#75c13f] to-[#5da432] hover:from-[#75c13f] hover:to-[#5da432] text-gray-900 font-black uppercase tracking-tighter text-center block rounded-xl transition-all duration-300 shadow-[0_0_20px_rgba(117,193,63,0.3)] hover:shadow-[0_0_30px_rgba(117,193,63,0.5)] active:scale-95"
           >
-            Go to Dashboard
+            Go to Home
           </Link>
           <p className="text-center text-[10px] text-gray-600 mt-4 uppercase font-bold tracking-widest">
             Mahhabali Education • India&apos;s No.1 Price Behavior Training
