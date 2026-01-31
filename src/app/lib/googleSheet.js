@@ -1,6 +1,6 @@
 import { google } from "googleapis";
 
-export async function saveToSheet({ name, email, phone, source }) {
+export async function saveToSheet({ name, email, phone, source, webinarDay, webinarDate, webinarTime, webinarType }) {
   try {
     const auth = new google.auth.GoogleAuth({
       credentials: {
@@ -19,7 +19,7 @@ export async function saveToSheet({ name, email, phone, source }) {
 
     await sheets.spreadsheets.values.append({
       spreadsheetId: process.env.GOOGLE_SHEET_ID,
-      range: "Sheet1!A:E",
+      range: "Sheet1!A:I",
       valueInputOption: "USER_ENTERED",
       requestBody: {
         values: [[
@@ -28,6 +28,10 @@ export async function saveToSheet({ name, email, phone, source }) {
           email,
           phone,
           source,
+          webinarDay,
+          webinarDate,
+          webinarTime,
+          webinarType
         ]],
       },
     });

@@ -21,6 +21,10 @@ export async function POST(req) {
             name: body.name,
             email: body.email,
             phone: cleanPhone, // Save without country code
+            webinarDay: body.webinarDay,
+            webinarDate: body.webinarDate,
+            webinarTime: body.webinarTime,
+            webinarType: body.webinarType,
             source:
                 process.env.NODE_ENV === "production"
                     ? "website-prod"
@@ -32,6 +36,10 @@ export async function POST(req) {
             name: body.name,
             phone: cleanPhone, // Send without country code
             email: body.email,
+            webinarDay: body.webinarDay,
+            webinarDate: body.webinarDate,
+            webinarTime: body.webinarTime,
+            webinarType: body.webinarType,
         });
 
         return NextResponse.json({

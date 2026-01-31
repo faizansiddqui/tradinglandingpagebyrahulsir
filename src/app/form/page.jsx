@@ -16,12 +16,62 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+// Calculate webinar data outside component to prevent re-renders
+const calculateWebinarData = () => {
+  const now = new Date();
+  const day = now.getDay();
+  // 0 = Sunday, 3 = Wednesday
+
+  let webinarDateObj = new Date();
+  let webinarDay = "";
+  let webinarType = "Live Trading Webinar";
+  let webinarTime = "12:00 PM"; // 👈 change as needed
+
+  if (day === 0) {
+    // Today is Sunday → next is Wednesday
+    webinarDateObj.setDate(now.getDate() + 3);
+    webinarDay = "Wednesday";
+  } else if (day < 3) {
+    // Before Wednesday → Wednesday
+    webinarDateObj.setDate(now.getDate() + (3 - day));
+    webinarDay = "Wednesday";
+  } else if (day === 3) {
+    // Today is Wednesday → next is Sunday
+    webinarDateObj.setDate(now.getDate() + 4);
+    webinarDay = "Sunday";
+  } else {
+    // After Wednesday → Sunday
+    webinarDateObj.setDate(now.getDate() + (7 - day));
+    webinarDay = "Sunday";
+  }
+
+  const webinarDate = webinarDateObj.toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+
+  return {
+    webinarDay,
+    webinarDate,
+    webinarTime,
+    webinarType,
+  };
+};
+
+// Set initial webinar data once
+const initialWebinarData = calculateWebinarData();
+
 export default function FormPage() {
   const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
+    webinarDay: initialWebinarData.webinarDay,
+    webinarDate: initialWebinarData.webinarDate,
+    webinarTime: initialWebinarData.webinarTime,
+    webinarType: initialWebinarData.webinarType,
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -114,13 +164,23 @@ export default function FormPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Force update formData with webinar data before submission
+    const webinarData = calculateWebinarData();
+    const updatedFormData = {
+      ...formData,
+      webinarDay: formData.webinarDay || webinarData.webinarDay,
+      webinarDate: formData.webinarDate || webinarData.webinarDate,
+      webinarTime: formData.webinarTime || webinarData.webinarTime,
+      webinarType: formData.webinarType || webinarData.webinarType,
+    };
+
     setIsSubmitting(true);
     setSubmitSuccess(false);
     setErrorMessage("");
 
     try {
       // Prepare phone number without country code
-      let formattedPhone = formData.phone.trim();
+      let formattedPhone = updatedFormData.phone.trim();
       if (formattedPhone.startsWith("91")) {
         formattedPhone = formattedPhone.substring(2);
       } else if (formattedPhone.startsWith("+91")) {
@@ -134,11 +194,19 @@ export default function FormPage() {
         throw new Error("Invalid phone number. Must be 10 digits.");
       }
 
-      // Create payload with properly formatted phone
+      // Create payload with all form data including webinar info
       const payload = {
-        ...formData,
+        ...updatedFormData,
         phone: formattedPhone,
       };
+
+      // Double-check webinar data is included
+      if (!payload.webinarDay || !payload.webinarDate) {
+        payload.webinarDay = webinarData.webinarDay;
+        payload.webinarDate = webinarData.webinarDate;
+        payload.webinarTime = webinarData.webinarTime;
+        payload.webinarType = webinarData.webinarType;
+      }
 
       // Call the API route
       const response = await fetch("/api/whatsapp", {
@@ -172,6 +240,10 @@ export default function FormPage() {
           name: "",
           email: "",
           phone: "",
+          webinarDay: initialWebinarData.webinarDay,
+          webinarDate: initialWebinarData.webinarDate,
+          webinarTime: initialWebinarData.webinarTime,
+          webinarType: initialWebinarData.webinarType,
         });
 
         // Show success message temporarily

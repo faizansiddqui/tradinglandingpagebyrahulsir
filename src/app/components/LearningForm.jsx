@@ -14,12 +14,63 @@ import {
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
+// Calculate webinar data outside component to prevent re-renders
+const calculateWebinarData = () => {
+  const now = new Date();
+  const day = now.getDay();
+  // 0 = Sunday, 3 = Wednesday
+
+  let webinarDateObj = new Date();
+  let webinarDay = "";
+  let webinarType = "Live Trading Webinar";
+  let webinarTime = "12:00 PM"; // 👈 change as needed
+
+  if (day === 0) {
+    // Today is Sunday → next is Wednesday
+    webinarDateObj.setDate(now.getDate() + 3);
+    webinarDay = "Wednesday";
+  } else if (day < 3) {
+    // Before Wednesday → Wednesday
+    webinarDateObj.setDate(now.getDate() + (3 - day));
+    webinarDay = "Wednesday";
+  } else if (day === 3) {
+    // Today is Wednesday → next is Sunday
+    webinarDateObj.setDate(now.getDate() + 4);
+    webinarDay = "Sunday";
+  } else {
+    // After Wednesday → Sunday
+    webinarDateObj.setDate(now.getDate() + (7 - day));
+    webinarDay = "Sunday";
+  }
+
+  const webinarDate = webinarDateObj.toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+
+  return {
+    webinarDay,
+    webinarDate,
+    webinarTime,
+    webinarType,
+  };
+};
+
+// Set initial webinar data once
+const initialWebinarData = calculateWebinarData();
+
 export default function LearningForm() {
   const router = useRouter();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
+    webinarDay: initialWebinarData.webinarDay,
+    webinarDate: initialWebinarData.webinarDate,
+    webinarTime: initialWebinarData.webinarTime,
+    webinarType: initialWebinarData.webinarType,
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -112,13 +163,69 @@ export default function LearningForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Force update formData with webinar data before submission
+    const webinarData = calculateWebinarData();
+    const updatedFormData = {
+      ...formData,
+      webinarDay: formData.webinarDay || webinarData.webinarDay,
+      webinarDate: formData.webinarDate || webinarData.webinarDate,
+      webinarTime: formData.webinarTime || webinarData.webinarTime,
+      webinarType: formData.webinarType || webinarData.webinarType,
+    };
+
     setIsSubmitting(true);
     setSubmitSuccess(false);
     setErrorMessage("");
 
     try {
+      // Ensure webinar data is populated
+      if (!formData.webinarDay || !formData.webinarDate) {
+        // Calculate webinar data if not present
+        const now = new Date();
+        const day = now.getDay();
+        let webinarDateObj = new Date();
+        let webinarDay = "";
+        let webinarType = "Live Trading Webinar";
+        let webinarTime = "07:00 PM";
+
+        if (day === 0) {
+          webinarDateObj.setDate(now.getDate() + 3);
+          webinarDay = "Wednesday";
+        } else if (day < 3) {
+          webinarDateObj.setDate(now.getDate() + (3 - day));
+          webinarDay = "Wednesday";
+        } else if (day === 3) {
+          webinarDateObj.setDate(now.getDate() + 4);
+          webinarDay = "Sunday";
+        } else {
+          webinarDateObj.setDate(now.getDate() + (7 - day));
+          webinarDay = "Sunday";
+        }
+
+        const webinarDate = webinarDateObj.toLocaleDateString("en-IN", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        });
+
+        // Update form data with webinar info
+        setFormData((prev) => ({
+          ...prev,
+          webinarDay,
+          webinarDate,
+          webinarTime,
+          webinarType,
+        }));
+
+        // Use the calculated data for submission
+        formData.webinarDay = webinarDay;
+        formData.webinarDate = webinarDate;
+        formData.webinarTime = webinarTime;
+        formData.webinarType = webinarType;
+      }
+
       // Prepare phone number without country code
-      let formattedPhone = formData.phone.trim();
+      let formattedPhone = updatedFormData.phone.trim();
       if (formattedPhone.startsWith("91")) {
         formattedPhone = formattedPhone.substring(2);
       } else if (formattedPhone.startsWith("+91")) {
@@ -132,11 +239,22 @@ export default function LearningForm() {
         throw new Error("Invalid phone number. Must be 10 digits.");
       }
 
-      // Create payload with properly formatted phone
+      // Ensure webinar data is always included
+      const webinarData = calculateWebinarData();
+
+      // Create payload with all form data including webinar info
       const payload = {
-        ...formData,
+        ...updatedFormData,
         phone: formattedPhone,
       };
+
+      // Double-check webinar data is included
+      if (!payload.webinarDay || !payload.webinarDate) {
+        payload.webinarDay = webinarData.webinarDay;
+        payload.webinarDate = webinarData.webinarDate;
+        payload.webinarTime = webinarData.webinarTime;
+        payload.webinarType = webinarData.webinarType;
+      }
 
       // Call the API route
       const response = await fetch("/api/whatsapp", {
@@ -170,6 +288,10 @@ export default function LearningForm() {
           name: "",
           email: "",
           phone: "",
+          webinarDay: "",
+          webinarDate: "",
+          webinarTime: "",
+          webinarType: "",
         });
 
         // Show success message temporarily
@@ -300,8 +422,7 @@ export default function LearningForm() {
                       Mr. Suresh Latiyal
                     </p>
                     <div className="flex items-center gap-1 text-[10px] bg-gradient-to-r from-[#75c13f] to-[#5da432] bg-clip-text text-transparent font-black uppercase tracking-widest">
-                      <Users className="w-3 h-3 text-[#75c13f]" /> 30k+
-                      Learners
+                      <Users className="w-3 h-3 text-[#75c13f]" /> 30k+ Learners
                     </div>
                   </div>
                 </div>
@@ -432,7 +553,7 @@ export default function LearningForm() {
 
             {/* Premium Button */}
             <button
-              onClick={() => window.location.href='/form'}
+              onClick={() => (window.location.href = "/form")}
               className="relative group overflow-hidden bg-white cursor-pointer hover:bg-[#75c13f] text-black hover:text-gray-900 font-black text-sm sm:text-lg px-6 sm:px-12 py-3 sm:py-4 rounded-xl sm:rounded-2xl transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.1)] active:scale-95"
             >
               {/* Shimmer Animation */}
