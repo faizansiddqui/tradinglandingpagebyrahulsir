@@ -2,7 +2,7 @@
 
 import { getNextWebinarDate } from "./webinar";
 
-const webinarLink = "https://your-webinar-link.com"; // 🔴 PUT YOUR REAL LINK
+const webinarLink = "https://zoom.us/webinar/register/WN_r_spLOtWR1-gnYjFsqWvnw"; // 🔴 PUT YOUR REAL LINK
 
 export async function sendWhatsApp({ name, phone, email }) {
   const webinarDate = getNextWebinarDate();
