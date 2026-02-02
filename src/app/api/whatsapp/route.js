@@ -1,61 +1,51 @@
+// src/app/api/whatsapp/route.js
 import { NextResponse } from "next/server";
-import { sendWhatsApp } from "../../lib/aisensy";
+import { appendLeadRow, markCell } from "../../lib/googleSheet";
+import { buildWebinarMeta, sendConfirmation } from "../../lib/aisensy";
 import { validateForm } from "../../lib/validate";
-import { saveToSheet } from "../../lib/googleSheet";
 
 export async function POST(req) {
-    try {
-        const body = await req.json();
+  try {
+    const body = await req.json();
+    validateForm(body);
 
-        validateForm(body);
+    const name = body.name;
+    const email = body.email;
+    const phone10 = String(body.phone || "").trim(); // client already sends 10 digit ideally
 
-        // Remove country code from phone number
-        let cleanPhone = body.phone;
-        if (cleanPhone.startsWith("91")) {
-            cleanPhone = cleanPhone.substring(2);
-        } else if (cleanPhone.startsWith("+91")) {
-            cleanPhone = cleanPhone.substring(3);
-        }
+    const webinarMeta = buildWebinarMeta();
 
-        await saveToSheet({
-            name: body.name,
-            email: body.email,
-            phone: cleanPhone, // Save without country code
-            webinarDay: body.webinarDay,
-            webinarDate: body.webinarDate,
-            webinarTime: body.webinarTime,
-            webinarType: body.webinarType,
-            source:
-                process.env.NODE_ENV === "production"
-                    ? "website-prod"
-                    : "website-local",
-        });
+    // Sheet values (A:M)
+    const row = [
+      new Date().toLocaleString("en-IN"),
+      name,
+      email,
+      phone10,
+      process.env.NODE_ENV === "production" ? "website-prod" : "website-local",
+      webinarMeta.webinarDay,
+      webinarMeta.webinarDateText,
+      webinarMeta.webinarTime,
+      webinarMeta.webinarISO,
+      "no", // sentConfirmation
+      "no", // sent1Day
+      "no", // sent10Min
+      "no", // sentLive
+    ];
 
-        // Send WhatsApp template message without country code
-        await sendWhatsApp({
-            name: body.name,
-            phone: cleanPhone, // Send without country code
-            email: body.email,
-            webinarDay: body.webinarDay,
-            webinarDate: body.webinarDate,
-            webinarTime: body.webinarTime,
-            webinarType: body.webinarType,
-        });
+    const { rowNumber } = await appendLeadRow(row);
 
-        return NextResponse.json({
-            success: true,
-            message: "Form submitted successfully!",
-        });
-    } catch (error) {
-        console.error("❌ API Error:", error);
+    // Send confirmation
+    await sendConfirmation({ name, phone: phone10, email, webinarMeta });
 
-        return NextResponse.json(
-            {
-                success: false,
-                message:
-                    error.message || "Failed to submit form. Please try again.",
-            },
-            { status: 400 }
-        );
-    }
+    // Mark confirmation = yes (Column J)
+    if (rowNumber) await markCell(rowNumber, "J", "yes");
+
+    return NextResponse.json({ success: true, message: "Form submitted successfully!" });
+  } catch (error) {
+    console.error("❌ API Error:", error);
+    return NextResponse.json(
+      { success: false, message: error.message || "Failed to submit form." },
+      { status: 400 }
+    );
+  }
 }
