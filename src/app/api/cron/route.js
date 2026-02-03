@@ -43,6 +43,11 @@ export async function GET(req) {
     const WINDOW_MS = WINDOW_MIN * MIN;
 
     let sentCount = { confirm: 0, oneDay: 0, tenMin: 0, live: 0, skipped: 0 };
+    console.log("CRON START", {
+      now: now.toISOString(),
+      windowMinutes: WINDOW_MIN,
+      totalLeads: leads.length,
+    });
 
     for (let i = 0; i < leads.length; i++) {
       const row = leads[i];
@@ -61,15 +66,20 @@ export async function GET(req) {
       const sentLive = String(row[COL_SENT_LIVE] || "no").toLowerCase();
 
       // basic validations
-      if (!phone10 || phone10.length !== 10) { sentCount.skipped++; continue; }
-      if (!webinarISO) { 
-        console.log("webinarISO missing for row", sheetRowNumber, row);
+      if (!phone10 || phone10.length !== 10) {
+        console.log("SKIP invalid phone", { sheetRowNumber, phone10 });
         sentCount.skipped++;
-        continue; 
+        continue;
+      }
+      if (!webinarISO) {
+        console.log("SKIP missing webinarISO", { sheetRowNumber });
+        sentCount.skipped++;
+        continue;
       }
 
       const webinarDT = new Date(webinarISO);
       const diffMs = webinarDT.getTime() - now.getTime();
+      const diffMin = Math.round(diffMs / MIN);
 
       // If confirmation already sent via API, but sheet still says "no"
       if (sentConfirm !== "yes") {
@@ -82,6 +92,7 @@ export async function GET(req) {
         await send1DayReminder({ name, phone10, webinarDate, webinarDay, webinarTime });
         await markCell(sheetRowNumber, LETTER_SENT_1DAY, "yes");
         sentCount.oneDay++;
+        console.log("SEND 1DAY", { sheetRowNumber, diffMin, webinarISO });
         continue;
       }
 
@@ -90,6 +101,7 @@ export async function GET(req) {
         await send10MinReminder({ name, phone10, webinarDate, webinarDay, webinarTime });
         await markCell(sheetRowNumber, LETTER_SENT_10MIN, "yes");
         sentCount.tenMin++;
+        console.log("SEND 10MIN", { sheetRowNumber, diffMin, webinarISO });
         continue;
       }
 
@@ -98,8 +110,18 @@ export async function GET(req) {
         await sendLiveNow({ name, phone10, webinarDate, webinarDay, webinarTime });
         await markCell(sheetRowNumber, LETTER_SENT_LIVE, "yes");
         sentCount.live++;
+        console.log("SEND LIVE", { sheetRowNumber, diffMin, webinarISO });
         continue;
       }
+
+      console.log("SKIP window", {
+        sheetRowNumber,
+        diffMin,
+        webinarISO,
+        sent1Day,
+        sent10Min,
+        sentLive,
+      });
     }
 
     return NextResponse.json({ ok: true, sentCount, totalLeads: leads.length });

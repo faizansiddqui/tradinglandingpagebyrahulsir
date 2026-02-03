@@ -1,7 +1,7 @@
 // src/app/lib/aisensy.js
 import { to91 } from "./phone";
 
-const WEBINAR_LINK = process.env.WEBINAR_LINK;
+const TAG = process.env.AISENSY_TAG_LEAD;
 
 async function callAiSensy(payload) {
   const response = await fetch("https://backend.aisensy.com/campaign/t1/api", {
@@ -37,6 +37,10 @@ async function callAiSensy(payload) {
   throw new Error("AiSensy failed: " + text);
 }
 
+function commonTags() {
+  return TAG ? [TAG] : [];
+}
+
 export async function sendConfirmation({ name, email, phone10, webinarMeta }) {
   return callAiSensy({
     apiKey: process.env.AISENSY_API_KEY,
@@ -47,7 +51,7 @@ export async function sendConfirmation({ name, email, phone10, webinarMeta }) {
     // TEMPLATE: {{1}} name, {{2}} email, {{3}} phone
     templateParams: [name, email, phone10],
 
-    tags: ['webinar_lead'],
+    tags: commonTags(),
 
     // save attributes in contact
     attributes: {
@@ -56,7 +60,6 @@ export async function sendConfirmation({ name, email, phone10, webinarMeta }) {
       webinarDate: webinarMeta.webinarDate,
       webinarTime: webinarMeta.webinarTime,
       webinarISO: webinarMeta.webinarISO,
-      webinarLink: WEBINAR_LINK,
     },
 
     source: process.env.NODE_ENV === "production" ? "website-prod" : "website-local",
@@ -71,7 +74,7 @@ export async function send1DayReminder({ name, phone10, webinarDate, webinarDay,
     destination: to91(phone10),
     userName: name,
     templateParams: [name, webinarDate, webinarDay, webinarTime],
-    tags: ['webinar_lead'],
+    tags: commonTags(),
     source: process.env.NODE_ENV === "production" ? "website-prod" : "website-local",
   });
 }
@@ -84,7 +87,7 @@ export async function send10MinReminder({ name, phone10, webinarDate, webinarDay
     destination: to91(phone10),
     userName: name,
     templateParams: [name, webinarDate, webinarDay, webinarTime],
-    tags: ['webinar_lead'],
+    tags: commonTags(),
     source: process.env.NODE_ENV === "production" ? "website-prod" : "website-local",
   });
 }
@@ -97,7 +100,7 @@ export async function sendLiveNow({ name, phone10, webinarDate, webinarDay, webi
     destination: to91(phone10),
     userName: name,
     templateParams: [name, webinarDate, webinarDay, webinarTime],
-    tags: ['webinar_lead'],
+    tags: commonTags(),
     source: process.env.NODE_ENV === "production" ? "website-prod" : "website-local",
   });
 }
