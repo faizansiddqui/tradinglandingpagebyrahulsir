@@ -83,7 +83,7 @@ export async function send10MinReminder({ name, phone10, webinarDate, webinarDay
     campaignName: process.env.AISENSY_CAMPAIGN_10MIN,
     destination: to91(phone10),
     userName: name,
-    templateParams: [name, webinarDate, webinarDay, webinarTime, WEBINAR_LINK],
+    templateParams: [name, webinarDate, webinarDay, webinarTime],
     tags: ['webinar_lead'],
     source: process.env.NODE_ENV === "production" ? "website-prod" : "website-local",
   });
@@ -96,7 +96,7 @@ export async function sendLiveNow({ name, phone10, webinarDate, webinarDay, webi
     campaignName: process.env.AISENSY_CAMPAIGN_LIVE,
     destination: to91(phone10),
     userName: name,
-    templateParams: [name, webinarDate, webinarDay, webinarTime, WEBINAR_LINK],
+    templateParams: [name, webinarDate, webinarDay, webinarTime],
     tags: ['webinar_lead'],
     source: process.env.NODE_ENV === "production" ? "website-prod" : "website-local",
   });
