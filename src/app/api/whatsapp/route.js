@@ -131,7 +131,7 @@ export async function POST(req) {
     const raw = String(error?.message || "");
     let safeMessage = "Something went wrong. Please try again.";
     if (raw.toLowerCase().includes("insufficient whatsapp conversation credits")) {
-      safeMessage = "We are facing a temporary WhatsApp credit issue. Please try again later.";
+      safeMessage = "We are facing some issue. Please try again later.";
     } else if (raw.toLowerCase().includes("invalid phone")) {
       safeMessage = "Please enter a valid 10-digit phone number.";
     } else if (raw.toLowerCase().includes("webinar")) {

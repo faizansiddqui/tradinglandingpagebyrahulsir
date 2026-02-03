@@ -47,7 +47,7 @@ export async function sendConfirmation({ name, email, phone10, webinarMeta }) {
     // TEMPLATE: {{1}} name, {{2}} email, {{3}} phone
     templateParams: [name, email, phone10],
 
-    tags: [process.env.AISENSY_TAG_LEAD],
+    tags: ['webinar_lead'],
 
     // save attributes in contact
     attributes: {
@@ -71,7 +71,7 @@ export async function send1DayReminder({ name, phone10, webinarDate, webinarDay,
     destination: to91(phone10),
     userName: name,
     templateParams: [name, webinarDate, webinarDay, webinarTime],
-    tags: [process.env.AISENSY_TAG_1DAY],
+    tags: ['webinar_lead'],
     source: process.env.NODE_ENV === "production" ? "website-prod" : "website-local",
   });
 }
@@ -84,7 +84,7 @@ export async function send10MinReminder({ name, phone10, webinarDate, webinarDay
     destination: to91(phone10),
     userName: name,
     templateParams: [name, webinarDate, webinarDay, webinarTime, WEBINAR_LINK],
-    tags: [process.env.AISENSY_TAG_10MIN],
+    tags: ['webinar_lead'],
     source: process.env.NODE_ENV === "production" ? "website-prod" : "website-local",
   });
 }
@@ -97,7 +97,7 @@ export async function sendLiveNow({ name, phone10, webinarDate, webinarDay, webi
     destination: to91(phone10),
     userName: name,
     templateParams: [name, webinarDate, webinarDay, webinarTime, WEBINAR_LINK],
-    tags: [process.env.AISENSY_TAG_LIVE],
+    tags: ['webinar_lead'],
     source: process.env.NODE_ENV === "production" ? "website-prod" : "website-local",
   });
 }
