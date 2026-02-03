@@ -128,8 +128,17 @@ export async function POST(req) {
     return NextResponse.json({ success: true, message: "Form submitted successfully!" });
   } catch (error) {
     console.error("API Error:", error);
+    const raw = String(error?.message || "");
+    let safeMessage = "Something went wrong. Please try again.";
+    if (raw.toLowerCase().includes("insufficient whatsapp conversation credits")) {
+      safeMessage = "We are facing a temporary WhatsApp credit issue. Please try again later.";
+    } else if (raw.toLowerCase().includes("invalid phone")) {
+      safeMessage = "Please enter a valid 10-digit phone number.";
+    } else if (raw.toLowerCase().includes("webinar")) {
+      safeMessage = "Please refresh the page and try again.";
+    }
     return NextResponse.json(
-      { success: false, message: error.message || "Failed to submit form" },
+      { success: false, message: safeMessage },
       { status: 400 }
     );
   }
