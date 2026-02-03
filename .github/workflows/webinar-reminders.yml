@@ -11,4 +11,4 @@ jobs:
     steps:
       - name: Call cron endpoint
         run: |
-          curl -sS "https://mahabalipriceaction.com/api/cron?secret=${{ secrets.CRON_SECRET }}"
+          curl -sS "https://mahabalipriceaction.com/api/cron/?secret=${{ secrets.CRON_SECRET }}"
