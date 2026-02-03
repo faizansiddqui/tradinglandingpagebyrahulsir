@@ -19,31 +19,27 @@ import { useRouter } from "next/navigation";
 // Calculate webinar data outside component to prevent re-renders
 const calculateWebinarData = () => {
   const now = new Date();
-  const day = now.getDay();
-  // 0 = Sunday, 3 = Wednesday
+  const SUNDAY = 0;
+  const THURSDAY = 4;
 
   let webinarDateObj = new Date();
-  let webinarDay = "";
-  let webinarType = "Live Trading Webinar";
-  let webinarTime = "12:00 PM"; // 👈 change as needed
+  const webinarType = "Live Trading Webinar";
+  const webinarTime = "08:00 PM";
 
-  if (day === 0) {
-    // Today is Sunday → next is Wednesday
-    webinarDateObj.setDate(now.getDate() + 3);
-    webinarDay = "Wednesday";
-  } else if (day < 3) {
-    // Before Wednesday → Wednesday
-    webinarDateObj.setDate(now.getDate() + (3 - day));
-    webinarDay = "Wednesday";
-  } else if (day === 3) {
-    // Today is Wednesday → next is Sunday
-    webinarDateObj.setDate(now.getDate() + 4);
-    webinarDay = "Sunday";
-  } else {
-    // After Wednesday → Sunday
-    webinarDateObj.setDate(now.getDate() + (7 - day));
-    webinarDay = "Sunday";
+  function getNextDay(targetDay) {
+    const result = new Date(now);
+    const dayDiff = (targetDay - now.getDay() + 7) % 7;
+    result.setDate(now.getDate() + (dayDiff === 0 ? 7 : dayDiff));
+    return result;
   }
+
+  const nextSunday = getNextDay(SUNDAY);
+  const nextThursday = getNextDay(THURSDAY);
+  webinarDateObj = nextSunday < nextThursday ? nextSunday : nextThursday;
+
+  const webinarDay = webinarDateObj.toLocaleDateString("en-IN", {
+    weekday: "long",
+  });
 
   const webinarDate = webinarDateObj.toLocaleDateString("en-IN", {
     day: "2-digit",

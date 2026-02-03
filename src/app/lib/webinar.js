@@ -3,9 +3,9 @@ export function getNextWebinarDate() {
   const now = new Date();
 
   const SUNDAY = 0;
-  const WEDNESDAY = 3;
+  const THURSDAY = 4;
 
-  const webinarHour = 12;   // 12 PM (aap change kar sakte ho)
+  const webinarHour = 20;   // 08:00 PM IST
   const webinarMinute = 0;
 
   function getNextDay(targetDay) {
@@ -18,9 +18,9 @@ export function getNextWebinarDate() {
   }
 
   const nextSunday = getNextDay(SUNDAY);
-  const nextWednesday = getNextDay(WEDNESDAY);
+  const nextThursday = getNextDay(THURSDAY);
 
-  return nextSunday < nextWednesday ? nextSunday : nextWednesday;
+  return nextSunday < nextThursday ? nextSunday : nextThursday;
 }
 
 export function formatWebinarParts(webinarDT) {

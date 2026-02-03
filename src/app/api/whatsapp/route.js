@@ -4,6 +4,7 @@ import { cleanPhone10 } from "../../lib/phone";
 import { validateForm } from "../../lib/validate";
 import { saveToSheet, markCell } from "../../lib/googleSheet";
 import { sendConfirmation } from "../../lib/aisensy";
+import { scheduleReminders } from "../../lib/queue";
 
 // Column J = sentConfirmation
 const COL_LETTER_SENT_CONFIRM = "J";
@@ -119,6 +120,20 @@ export async function POST(req) {
       phone10,
       webinarMeta: { webinarDay, webinarDate, webinarTime, webinarISO },
     });
+
+    // schedule reminders via Redis/BullMQ
+    if (rowNumber) {
+      await scheduleReminders({
+        rowNumber,
+        name: normalized.name,
+        email: normalized.email,
+        phone10,
+        webinarDay,
+        webinarDate,
+        webinarTime,
+        webinarISO,
+      });
+    }
 
     // if success -> mark sentConfirmation = yes
     if (rowNumber) {
