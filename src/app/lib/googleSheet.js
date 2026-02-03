@@ -1,7 +1,7 @@
 // src/app/lib/googleSheet.js
 import { google } from "googleapis";
 
-function getSheetsClient() {
+function getAuthClient() {
   const auth = new google.auth.GoogleAuth({
     credentials: {
       client_email: process.env.GOOGLE_CLIENT_EMAIL,
@@ -9,54 +9,81 @@ function getSheetsClient() {
     },
     scopes: ["https://www.googleapis.com/auth/spreadsheets"],
   });
-
-  return google.sheets({ version: "v4", auth });
+  return auth.getClient();
 }
 
-// A:M (we use until M = 13 columns)
-const SHEET_NAME = "Sheet1";
-const RANGE_APPEND = `${SHEET_NAME}!A:M`;
-const RANGE_READ = `${SHEET_NAME}!A2:M`; // rows after headers
+async function getSheets() {
+  const client = await getAuthClient();
+  return google.sheets({ version: "v4", auth: client });
+}
 
-export async function appendLeadRow(rowValues) {
-  const sheets = getSheetsClient();
+// ✅ Append full row A:M and return inserted row number
+export async function saveToSheet({
+  name,
+  email,
+  phone,
+  source,
+  webinarDay,
+  webinarDate,
+  webinarTime,
+  webinarISO,
+}) {
+  const sheets = await getSheets();
+
+  const values = [[
+    new Date().toLocaleString("en-IN"), // A Timestamp
+    name,                               // B
+    email,                              // C
+    phone,                              // D (10 digit only)
+    source,                             // E
+    webinarDay || "",                   // F
+    webinarDate || "",                  // G
+    webinarTime || "",                  // H
+    webinarISO || "",                   // I
+    "no",                               // J sentConfirmation
+    "no",                               // K sent1Day
+    "no",                               // L sent10Min
+    "no",                               // M sentLive
+  ]];
 
   const res = await sheets.spreadsheets.values.append({
     spreadsheetId: process.env.GOOGLE_SHEET_ID,
-    range: RANGE_APPEND,
-    valueInputOption: "USER_ENTERED",
-    insertDataOption: "INSERT_ROWS",
-    requestBody: { values: [rowValues] },
+    range: "Sheet1!A:M",
+    valueInputOption: "RAW",
+    requestBody: { values },
   });
 
-  // Try to extract appended row number from updatedRange: "Sheet1!A12:M12"
-  const updatedRange = res?.data?.updates?.updatedRange || "";
-  const match = updatedRange.match(/![A-Z]+(\d+):/);
-  const rowNumber = match ? parseInt(match[1], 10) : null;
+  // Example updatedRange: "Sheet1!A12:M12"
+  const updatedRange = res.data?.updates?.updatedRange || "";
+  const match = updatedRange.match(/!A(\d+):/);
+  const rowNumber = match ? Number(match[1]) : null;
 
-  return { success: true, rowNumber, updatedRange };
+  return { success: true, rowNumber };
 }
 
-export async function readAllLeads() {
-  const sheets = getSheetsClient();
-  const res = await sheets.spreadsheets.values.get({
-    spreadsheetId: process.env.GOOGLE_SHEET_ID,
-    range: RANGE_READ,
-  });
-  return res.data.values || [];
-}
-
-// Update single cell like K12, L12 etc
+// ✅ Mark a single cell (e.g. J12 = "yes")
 export async function markCell(rowNumber, columnLetter, value) {
-  const sheets = getSheetsClient();
-  const range = `${SHEET_NAME}!${columnLetter}${rowNumber}`;
+  const sheets = await getSheets();
 
   await sheets.spreadsheets.values.update({
     spreadsheetId: process.env.GOOGLE_SHEET_ID,
-    range,
-    valueInputOption: "USER_ENTERED",
+    range: `Sheet1!${columnLetter}${rowNumber}`,
+    valueInputOption: "RAW",
     requestBody: { values: [[value]] },
   });
 
   return { success: true };
+}
+
+// ✅ Read all leads (rows after header)
+export async function readAllLeads() {
+  const sheets = await getSheets();
+
+  const res = await sheets.spreadsheets.values.get({
+    spreadsheetId: process.env.GOOGLE_SHEET_ID,
+    range: "Sheet1!A:M",
+  });
+
+  const rows = res.data.values || [];
+  return rows.slice(1); // remove header row
 }

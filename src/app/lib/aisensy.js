@@ -1,129 +1,103 @@
 // src/app/lib/aisensy.js
-import { getNextWebinarDate } from "./webinar";
+import { to91 } from "./phone";
 
-const API_URL = "https://backend.aisensy.com/campaign/t1/api";
+const WEBINAR_LINK = process.env.WEBINAR_LINK;
 
-function to10Digit(phone) {
-  let p = String(phone || "").trim();
-  if (p.startsWith("+91")) p = p.slice(3);
-  if (p.startsWith("91")) p = p.slice(2);
-  if (p.startsWith("0")) p = p.slice(1);
-  return p;
-}
-
-function to91(phone10) {
-  const p = to10Digit(phone10);
-  return `91${p}`;
-}
-
-async function callAisensy(payload) {
-  const response = await fetch(API_URL, {
+async function callAiSensy(payload) {
+  const response = await fetch("https://backend.aisensy.com/campaign/t1/api", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
   });
 
-  const text = await response.text(); // ✅ Aisensy often returns "Success."
-  if (text.toLowerCase().includes("success")) return { ok: true, raw: text };
+  const text = await response.text();
+  console.log("AiSensy RAW response:", text);
 
-  // try parse json error
-  let msg = text;
+  let data = null;
   try {
-    const j = JSON.parse(text);
-    msg = j?.message || text;
-  } catch {}
-  throw new Error(`AiSensy failed: ${msg}`);
+    data = JSON.parse(text);
+  } catch {
+    data = null;
+  }
+
+  if (!response.ok) {
+    throw new Error(`AiSensy failed (${response.status}): ${text}`);
+  }
+
+  const status = data?.status ?? data?.success ?? data?.code;
+  if (
+    status === "success" ||
+    status === true ||
+    status === 200 ||
+    String(text).toLowerCase().includes("success")
+  ) {
+    return { status: "success", data };
+  }
+
+  throw new Error("AiSensy failed: " + text);
 }
 
-export function buildWebinarMeta() {
-  const webinarDate = getNextWebinarDate();
-
-  const webinarISO = webinarDate.toISOString();
-
-  const webinarDay = webinarDate.toLocaleDateString("en-IN", { weekday: "long" });
-
-  const webinarDateText = webinarDate.toLocaleDateString("en-IN", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  });
-
-  const webinarTime = webinarDate.toLocaleTimeString("en-IN", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
-  });
-
-  return { webinarISO, webinarDay, webinarDateText, webinarTime };
-}
-
-// 1) Confirmation (template has {{1}} {{2}} {{3}} => name,email,phone)
-export async function sendConfirmation({ name, phone, email, webinarMeta }) {
-  const phone10 = to10Digit(phone);
-  const destination = to91(phone10);
-
-  const { webinarISO, webinarDay, webinarDateText, webinarTime } = webinarMeta;
-
-  return callAisensy({
+export async function sendConfirmation({ name, email, phone10, webinarMeta }) {
+  return callAiSensy({
     apiKey: process.env.AISENSY_API_KEY,
     campaignName: process.env.AISENSY_CAMPAIGN_CONFIRM,
-    destination,
+    destination: to91(phone10),
     userName: name,
 
+    // TEMPLATE: {{1}} name, {{2}} email, {{3}} phone
     templateParams: [name, email, phone10],
 
-    // ✅ safe tag (avoid underscore)
-    tags: [process.env.AISENSY_TAG_LEAD || "webinar_lead"],
+    tags: [process.env.AISENSY_TAG_LEAD],
 
-    // ✅ these names must match your AiSensy user attributes
+    // save attributes in contact
     attributes: {
       email,
-      webinarDay,
-      webinarDate: webinarDateText,
-      webinarTime,
-      webinarDatetime: webinarISO,
-      webinarLink: process.env.WEBINAR_LINK,
+      webinarDay: webinarMeta.webinarDay,
+      webinarDate: webinarMeta.webinarDate,
+      webinarTime: webinarMeta.webinarTime,
+      webinarISO: webinarMeta.webinarISO,
+      webinarLink: WEBINAR_LINK,
     },
 
     source: process.env.NODE_ENV === "production" ? "website-prod" : "website-local",
   });
 }
 
-// 2) 1-day reminder (template: {{1}} {{2}} {{3}} {{4}} => name, webinarDate, webinarDay, webinarTime)
+// 1 Day
 export async function send1DayReminder({ name, phone10, webinarDate, webinarDay, webinarTime }) {
-  return callAisensy({
+  return callAiSensy({
     apiKey: process.env.AISENSY_API_KEY,
     campaignName: process.env.AISENSY_CAMPAIGN_1DAY,
     destination: to91(phone10),
     userName: name,
     templateParams: [name, webinarDate, webinarDay, webinarTime],
-    tags: [process.env.AISENSY_TAG_LEAD || "webinar_lead"],
-    source: "cron",
+    tags: [process.env.AISENSY_TAG_1DAY],
+    source: process.env.NODE_ENV === "production" ? "website-prod" : "website-local",
   });
 }
 
-// 3) 10-min reminder (template: {{1}} {{2}} {{3}} {{4}} {{5}} => name,date,day,time,link)
+// 10 Min
 export async function send10MinReminder({ name, phone10, webinarDate, webinarDay, webinarTime }) {
-  return callAisensy({
+  return callAiSensy({
     apiKey: process.env.AISENSY_API_KEY,
     campaignName: process.env.AISENSY_CAMPAIGN_10MIN,
     destination: to91(phone10),
     userName: name,
-    templateParams: [name, webinarDate, webinarDay, webinarTime],
-    tags: [process.env.AISENSY_TAG_LEAD || "webinar_lead"],
-    source: "cron",
+    templateParams: [name, webinarDate, webinarDay, webinarTime, WEBINAR_LINK],
+    tags: [process.env.AISENSY_TAG_10MIN],
+    source: process.env.NODE_ENV === "production" ? "website-prod" : "website-local",
   });
 }
 
-// 4) Live now (template: {{1}} {{2}} {{3}} {{4}} {{5}} => name,date,day,time,link)
+// Live
 export async function sendLiveNow({ name, phone10, webinarDate, webinarDay, webinarTime }) {
-  return callAisensy({
+  return callAiSensy({
     apiKey: process.env.AISENSY_API_KEY,
     campaignName: process.env.AISENSY_CAMPAIGN_LIVE,
     destination: to91(phone10),
     userName: name,
-    templateParams: [name, webinarDate, webinarDay, webinarTime],
-    tags: [process.env.AISENSY_TAG_LEAD || "webinar_lead"],
-    source: "cron",
+    templateParams: [name, webinarDate, webinarDay, webinarTime, WEBINAR_LINK],
+    tags: [process.env.AISENSY_TAG_LIVE],
+    source: process.env.NODE_ENV === "production" ? "website-prod" : "website-local",
   });
 }

@@ -1,13 +1,23 @@
-export function validateForm({ name, phone, email }) {
-  if (!name || name.trim().length < 2) {
-    throw new Error("Invalid name");
+// src/app/lib/validate.js
+import { cleanPhone10 } from "./phone";
+
+export function validateForm(body) {
+  if (!body?.name || body.name.trim().length < 2) {
+    throw new Error("Name is required (min 2 chars).");
   }
 
-  if (!email || !/\S+@\S+\.\S+/.test(email)) {
-    throw new Error("Invalid email address");
+  if (!body?.email || !/^\S+@\S+\.\S+$/.test(body.email)) {
+    throw new Error("Valid email is required.");
   }
 
-  if (!phone || !/^\d{10}$/.test(phone)) {
-    throw new Error("Invalid phone number. Must be 10 digits");
-  }
+  // ✅ Normalize phone here
+  const phone10 = cleanPhone10(body.phone);
+
+  // ✅ Return normalized values so route.js can use it directly
+  return {
+    ...body,
+    name: body.name.trim(),
+    email: body.email.trim().toLowerCase(),
+    phone: phone10, // always 10 digit now
+  };
 }
