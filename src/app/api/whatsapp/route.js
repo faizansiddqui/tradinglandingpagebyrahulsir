@@ -101,6 +101,9 @@ export async function POST(req) {
       );
     }
 
+    const leadId = (globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random()}`)
+      .replace(/[^\w-]/g, "");
+
     // save row first (A:M)
     const { rowNumber } = await saveToSheet({
       name: normalized.name,
@@ -111,6 +114,7 @@ export async function POST(req) {
       webinarDate,
       webinarTime,
       webinarISO,
+      leadId,
     });
 
     // send confirmation
@@ -145,6 +149,7 @@ export async function POST(req) {
 
       const payload = {
         rowNumber,
+        leadId,
         name: normalized.name,
         email: normalized.email,
         phone10,

@@ -27,6 +27,7 @@ export async function saveToSheet({
   webinarDate,
   webinarTime,
   webinarISO,
+  leadId,
 }) {
   const sheets = await getSheets();
 
@@ -44,11 +45,12 @@ export async function saveToSheet({
     "no",                               // K sent1Day
     "no",                               // L sent10Min
     "no",                               // M sentLive
+    leadId || "",                       // N leadId
   ]];
 
   const res = await sheets.spreadsheets.values.append({
     spreadsheetId: process.env.GOOGLE_SHEET_ID,
-    range: "Sheet1!A:M",
+    range: "Sheet1!A:N",
     valueInputOption: "RAW",
     requestBody: { values },
   });
@@ -59,6 +61,25 @@ export async function saveToSheet({
   const rowNumber = match ? Number(match[1]) : null;
 
   return { success: true, rowNumber };
+}
+
+// Find row number by leadId stored in column N
+export async function findRowByLeadId(leadId) {
+  if (!leadId) return null;
+  const sheets = await getSheets();
+  const res = await sheets.spreadsheets.values.get({
+    spreadsheetId: process.env.GOOGLE_SHEET_ID,
+    range: "Sheet1!N:N",
+  });
+
+  const rows = res.data.values || [];
+  // rows[0] is header
+  for (let i = 1; i < rows.length; i++) {
+    if (String(rows[i]?.[0] || "") === String(leadId)) {
+      return i + 1; // sheet row number
+    }
+  }
+  return null;
 }
 
 // ✅ Mark a single cell (e.g. J12 = "yes")
@@ -81,7 +102,7 @@ export async function readAllLeads() {
 
   const res = await sheets.spreadsheets.values.get({
     spreadsheetId: process.env.GOOGLE_SHEET_ID,
-    range: "Sheet1!A:M",
+    range: "Sheet1!A:N",
   });
 
   const rows = res.data.values || [];

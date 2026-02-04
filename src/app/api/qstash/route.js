@@ -1,7 +1,7 @@
 // src/app/api/qstash/route.js
 import { NextResponse } from "next/server";
 import { verifyQstashRequest } from "../../lib/qstash";
-import { markCell } from "../../lib/googleSheet";
+import { findRowByLeadId, markCell } from "../../lib/googleSheet";
 import { send1DayReminder, send10MinReminder, sendLiveNow } from "../../lib/aisensy";
 
 export async function POST(req) {
@@ -18,6 +18,7 @@ export async function POST(req) {
     const {
       type,
       rowNumber,
+      leadId,
       name,
       phone10,
       webinarDate,
@@ -25,24 +26,35 @@ export async function POST(req) {
       webinarTime,
     } = data;
 
-    if (!rowNumber || !type) {
+    if (!type) {
       return NextResponse.json({ ok: false, message: "Missing payload fields" }, { status: 400 });
     }
 
-    console.log("QSTASH RECEIVED", { type, rowNumber, phone10, webinarDate, webinarDay, webinarTime });
+    let targetRow = null;
+    if (leadId) {
+      targetRow = await findRowByLeadId(leadId);
+    }
+    if (!targetRow && rowNumber) {
+      targetRow = rowNumber;
+    }
+    if (!targetRow) {
+      return NextResponse.json({ ok: false, message: "Row not found" }, { status: 404 });
+    }
+
+    console.log("QSTASH RECEIVED", { type, rowNumber: targetRow, leadId, phone10, webinarDate, webinarDay, webinarTime });
 
     if (type === "1day") {
       await send1DayReminder({ name, phone10, webinarDate, webinarDay, webinarTime });
-      await markCell(rowNumber, "K", "yes");
-      console.log("QSTASH SENT 1DAY", { rowNumber });
+      await markCell(targetRow, "K", "yes");
+      console.log("QSTASH SENT 1DAY", { rowNumber: targetRow });
     } else if (type === "10min") {
       await send10MinReminder({ name, phone10, webinarDate, webinarDay, webinarTime });
-      await markCell(rowNumber, "L", "yes");
-      console.log("QSTASH SENT 10MIN", { rowNumber });
+      await markCell(targetRow, "L", "yes");
+      console.log("QSTASH SENT 10MIN", { rowNumber: targetRow });
     } else if (type === "live") {
       await sendLiveNow({ name, phone10, webinarDate, webinarDay, webinarTime });
-      await markCell(rowNumber, "M", "yes");
-      console.log("QSTASH SENT LIVE", { rowNumber });
+      await markCell(targetRow, "M", "yes");
+      console.log("QSTASH SENT LIVE", { rowNumber: targetRow });
     } else {
       return NextResponse.json({ ok: false, message: "Unknown job type" }, { status: 400 });
     }
