@@ -7,9 +7,12 @@ function requireEnv(name) {
   if (!process.env[name]) throw new Error(`${name} is required`);
 }
 
-export function getQstashTargetUrl(reqUrl) {
+export function getQstashTargetUrl(reqUrl, headers) {
   if (process.env.QSTASH_TARGET_URL) return normalizeBaseUrl(process.env.QSTASH_TARGET_URL);
   if (process.env.NEXT_PUBLIC_SITE_URL) return normalizeBaseUrl(process.env.NEXT_PUBLIC_SITE_URL);
+  const host = headers?.get?.("x-forwarded-host") || headers?.get?.("host");
+  const proto = headers?.get?.("x-forwarded-proto");
+  if (host) return `${proto || "https"}://${host}`;
   if (reqUrl) return new URL(reqUrl).origin;
   return "http://localhost:3000";
 }
@@ -17,6 +20,8 @@ export function getQstashTargetUrl(reqUrl) {
 function normalizeBaseUrl(raw) {
   if (!raw) return raw;
   let value = String(raw).trim();
+  // strip wrapping quotes if user saved value like "https://example.com"
+  value = value.replace(/^['"]|['"]$/g, "");
   if (!/^https?:\/\//i.test(value)) {
     const isLocal = value.startsWith("localhost") || value.startsWith("127.0.0.1");
     value = `${isLocal ? "http" : "https"}://${value}`;

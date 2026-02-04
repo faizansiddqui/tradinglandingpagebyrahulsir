@@ -123,8 +123,18 @@ export async function POST(req) {
 
     // schedule reminders via QStash
     if (rowNumber) {
-      const baseUrl = getQstashTargetUrl(req.url);
+      const baseUrl = getQstashTargetUrl(req.url, req.headers);
       const receiverUrl = `${baseUrl}/api/qstash`;
+      try {
+        const parsed = new URL(receiverUrl);
+        if (!/^https?:$/.test(parsed.protocol)) {
+          throw new Error("Invalid protocol");
+        }
+      } catch {
+        throw new Error(
+          `Invalid QStash destination URL: ${receiverUrl}. Set QSTASH_TARGET_URL with http:// or https://`
+        );
+      }
 
       const webinarTs = new Date(webinarISO).getTime();
       if (Number.isNaN(webinarTs)) throw new Error("Invalid webinarISO");
