@@ -1,0 +1,55 @@
+// src/app/lib/qstash.js
+import { Receiver } from "@upstash/qstash";
+
+const QSTASH_BASE = process.env.QSTASH_BASE_URL || "https://qstash-us-east-1.upstash.io";
+
+function requireEnv(name) {
+  if (!process.env[name]) throw new Error(`${name} is required`);
+}
+
+export function getQstashTargetUrl(reqUrl) {
+  if (process.env.QSTASH_TARGET_URL) return process.env.QSTASH_TARGET_URL.replace(/\/$/, "");
+  if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "");
+  if (reqUrl) return new URL(reqUrl).origin;
+  return "http://localhost:3000";
+}
+
+export async function publishScheduled({ url, body, notBeforeEpochSeconds }) {
+  requireEnv("QSTASH_TOKEN");
+
+  const publishUrl = `${QSTASH_BASE}/v2/publish/${encodeURIComponent(url)}`;
+
+  const res = await fetch(publishUrl, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${process.env.QSTASH_TOKEN}`,
+      "Content-Type": "application/json",
+      "Upstash-Not-Before": String(notBeforeEpochSeconds),
+    },
+    body: JSON.stringify(body),
+  });
+
+  const text = await res.text();
+  if (!res.ok) {
+    throw new Error(`QStash publish failed (${res.status}): ${text}`);
+  }
+
+  return text;
+}
+
+export async function verifyQstashRequest({ body, signature, reqUrl }) {
+  requireEnv("QSTASH_CURRENT_SIGNING_KEY");
+  requireEnv("QSTASH_NEXT_SIGNING_KEY");
+
+  const receiver = new Receiver({
+    currentSigningKey: process.env.QSTASH_CURRENT_SIGNING_KEY,
+    nextSigningKey: process.env.QSTASH_NEXT_SIGNING_KEY,
+  });
+
+  const url = `${getQstashTargetUrl(reqUrl)}/api/qstash`;
+  return receiver.verify({ body, signature, url });
+}
+
+export function toEpochSeconds(isoString) {
+  return Math.floor(new Date(isoString).getTime() / 1000);
+}

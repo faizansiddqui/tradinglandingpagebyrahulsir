@@ -4,7 +4,7 @@ import { cleanPhone10 } from "../../lib/phone";
 import { validateForm } from "../../lib/validate";
 import { saveToSheet, markCell } from "../../lib/googleSheet";
 import { sendConfirmation } from "../../lib/aisensy";
-import { scheduleReminders } from "../../lib/queue";
+import { getQstashTargetUrl, publishScheduled, toEpochSeconds } from "../../lib/qstash";
 
 // Column J = sentConfirmation
 const COL_LETTER_SENT_CONFIRM = "J";
@@ -121,9 +121,19 @@ export async function POST(req) {
       webinarMeta: { webinarDay, webinarDate, webinarTime, webinarISO },
     });
 
-    // schedule reminders via Redis/BullMQ
+    // schedule reminders via QStash
     if (rowNumber) {
-      await scheduleReminders({
+      const baseUrl = getQstashTargetUrl(req.url);
+      const receiverUrl = `${baseUrl}/api/qstash`;
+
+      const webinarTs = new Date(webinarISO).getTime();
+      if (Number.isNaN(webinarTs)) throw new Error("Invalid webinarISO");
+
+      const oneDayEpoch = toEpochSeconds(new Date(webinarTs - 24 * 60 * 60 * 1000).toISOString());
+      const tenMinEpoch = toEpochSeconds(new Date(webinarTs - 10 * 60 * 1000).toISOString());
+      const liveEpoch = toEpochSeconds(new Date(webinarTs).toISOString());
+
+      const payload = {
         rowNumber,
         name: normalized.name,
         email: normalized.email,
@@ -132,6 +142,22 @@ export async function POST(req) {
         webinarDate,
         webinarTime,
         webinarISO,
+      };
+
+      await publishScheduled({
+        url: receiverUrl,
+        body: { type: "1day", ...payload },
+        notBeforeEpochSeconds: oneDayEpoch,
+      });
+      await publishScheduled({
+        url: receiverUrl,
+        body: { type: "10min", ...payload },
+        notBeforeEpochSeconds: tenMinEpoch,
+      });
+      await publishScheduled({
+        url: receiverUrl,
+        body: { type: "live", ...payload },
+        notBeforeEpochSeconds: liveEpoch,
       });
     }
 
