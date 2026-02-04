@@ -8,10 +8,20 @@ function requireEnv(name) {
 }
 
 export function getQstashTargetUrl(reqUrl) {
-  if (process.env.QSTASH_TARGET_URL) return process.env.QSTASH_TARGET_URL.replace(/\/$/, "");
-  if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "");
+  if (process.env.QSTASH_TARGET_URL) return normalizeBaseUrl(process.env.QSTASH_TARGET_URL);
+  if (process.env.NEXT_PUBLIC_SITE_URL) return normalizeBaseUrl(process.env.NEXT_PUBLIC_SITE_URL);
   if (reqUrl) return new URL(reqUrl).origin;
   return "http://localhost:3000";
+}
+
+function normalizeBaseUrl(raw) {
+  if (!raw) return raw;
+  let value = String(raw).trim();
+  if (!/^https?:\/\//i.test(value)) {
+    const isLocal = value.startsWith("localhost") || value.startsWith("127.0.0.1");
+    value = `${isLocal ? "http" : "https"}://${value}`;
+  }
+  return value.replace(/\/$/, "");
 }
 
 export async function publishScheduled({ url, body, notBeforeEpochSeconds }) {
