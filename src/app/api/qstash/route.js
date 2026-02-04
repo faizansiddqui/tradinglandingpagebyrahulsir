@@ -29,15 +29,20 @@ export async function POST(req) {
       return NextResponse.json({ ok: false, message: "Missing payload fields" }, { status: 400 });
     }
 
+    console.log("QSTASH RECEIVED", { type, rowNumber, phone10, webinarDate, webinarDay, webinarTime });
+
     if (type === "1day") {
       await send1DayReminder({ name, phone10, webinarDate, webinarDay, webinarTime });
       await markCell(rowNumber, "K", "yes");
+      console.log("QSTASH SENT 1DAY", { rowNumber });
     } else if (type === "10min") {
       await send10MinReminder({ name, phone10, webinarDate, webinarDay, webinarTime });
       await markCell(rowNumber, "L", "yes");
+      console.log("QSTASH SENT 10MIN", { rowNumber });
     } else if (type === "live") {
       await sendLiveNow({ name, phone10, webinarDate, webinarDay, webinarTime });
       await markCell(rowNumber, "M", "yes");
+      console.log("QSTASH SENT LIVE", { rowNumber });
     } else {
       return NextResponse.json({ ok: false, message: "Unknown job type" }, { status: 400 });
     }
