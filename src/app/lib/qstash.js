@@ -32,7 +32,7 @@ function normalizeBaseUrl(raw) {
 export async function publishScheduled({ url, body, notBeforeEpochSeconds }) {
   requireEnv("QSTASH_TOKEN");
 
-  const publishUrl = `${QSTASH_BASE}/v2/publish/${encodeURIComponent(url)}`;
+  const publishUrl = `${QSTASH_BASE}/v2/publish/${url}`;
 
   const res = await fetch(publishUrl, {
     method: "POST",
