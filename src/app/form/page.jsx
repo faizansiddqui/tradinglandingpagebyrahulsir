@@ -24,7 +24,7 @@ const calculateWebinarData = () => {
 
   let webinarDateObj = new Date();
   const webinarType = "Live Trading Webinar";
-  const webinarTime = "12:50 PM";
+  const webinarTime = "08:00 PM";
 
   function getNextDay(targetDay) {
     const result = new Date(now);

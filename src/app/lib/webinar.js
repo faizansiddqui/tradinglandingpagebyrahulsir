@@ -5,8 +5,8 @@ export function getNextWebinarDate() {
   const SUNDAY = 0;
   const THURSDAY = 4;
 
-  const webinarHour = 12;   // 12:50 PM IST (temporary)
-  const webinarMinute = 50;
+  const webinarHour = 20;   // 08:00 PM IST
+  const webinarMinute = 0;
 
   function getNextDay(targetDay) {
     const result = new Date(now);
