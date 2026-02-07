@@ -32,6 +32,7 @@ const calculateWebinarData = () => {
     result.setDate(now.getDate() + (dayDiff === 0 ? 7 : dayDiff));
     return result;
   }
+  
 
   const nextSunday = getNextDay(SUNDAY);
   const nextThursday = getNextDay(THURSDAY);
