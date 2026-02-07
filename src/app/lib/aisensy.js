@@ -2,6 +2,7 @@
 import { to91 } from "./phone";
 
 const TAG = process.env.AISENSY_TAG_LEAD;
+const WEBINAR_LINK = process.env.WEBINAR_LINK;
 
 async function callAiSensy(payload) {
   const response = await fetch("https://backend.aisensy.com/campaign/t1/api", {
@@ -86,7 +87,7 @@ export async function send10MinReminder({ name, phone10, webinarDate, webinarDay
     campaignName: process.env.AISENSY_CAMPAIGN_10MIN,
     destination: to91(phone10),
     userName: name,
-    templateParams: [name, webinarDate, webinarDay, webinarTime],
+    templateParams: [name, webinarDate, webinarDay, webinarTime, WEBINAR_LINK],
     tags: commonTags(),
     source: process.env.NODE_ENV === "production" ? "website-prod" : "website-local",
   });
@@ -99,7 +100,7 @@ export async function sendLiveNow({ name, phone10, webinarDate, webinarDay, webi
     campaignName: process.env.AISENSY_CAMPAIGN_LIVE,
     destination: to91(phone10),
     userName: name,
-    templateParams: [name, webinarDate, webinarDay, webinarTime],
+    templateParams: [name, webinarDate, webinarDay, webinarTime, WEBINAR_LINK],
     tags: commonTags(),
     source: process.env.NODE_ENV === "production" ? "website-prod" : "website-local",
   });
