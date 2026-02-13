@@ -222,6 +222,9 @@ export default function FormPage() {
           name: formData.name,
           email: formData.email,
           phone: formattedPhone,
+          webinarDay: updatedFormData.webinarDay,
+          webinarDate: updatedFormData.webinarDate,
+          webinarTime: updatedFormData.webinarTime,
           timestamp: new Date().toISOString(),
         };
         localStorage.setItem("thankyouData", JSON.stringify(thankYouData));

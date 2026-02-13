@@ -49,8 +49,15 @@ export async function sendConfirmation({ name, email, phone10, webinarMeta }) {
     destination: to91(phone10),
     userName: name,
 
-    // TEMPLATE: {{1}} name, {{2}} email, {{3}} phone
-    templateParams: [name, email, phone10],
+    // TEMPLATE: {{1}} name, {{2}} email, {{3}} phone, {{4}} date, {{5}} day, {{6}} time
+    templateParams: [
+      name,
+      email,
+      phone10,
+      webinarMeta.webinarDate,
+      webinarMeta.webinarDay,
+      webinarMeta.webinarTime,
+    ],
 
     tags: commonTags(),
 
