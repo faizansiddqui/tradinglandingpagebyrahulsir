@@ -3,8 +3,33 @@ import { to91 } from "./phone";
 
 const TAG = process.env.AISENSY_TAG_LEAD;
 const WEBINAR_LINK = process.env.WEBINAR_LINK;
+const AISENSY_DEBUG = process.env.AISENSY_DEBUG === "true";
+
+function maskValue(value) {
+  const str = String(value ?? "");
+  if (!str) return "";
+  if (str.includes("@")) {
+    const [user, domain] = str.split("@");
+    const safeUser = user.length <= 2 ? `${user[0] || ""}*` : `${user[0]}***${user[user.length - 1]}`;
+    return `${safeUser}@${domain}`;
+  }
+  if (/^\d{6,}$/.test(str)) {
+    return `${str.slice(0, 2)}******${str.slice(-2)}`;
+  }
+  return str.length > 8 ? `${str.slice(0, 4)}****${str.slice(-2)}` : `${str[0]}***`;
+}
 
 async function callAiSensy(payload) {
+  if (AISENSY_DEBUG) {
+    const params = Array.isArray(payload?.templateParams) ? payload.templateParams : [];
+    console.log("AiSensy DEBUG:", {
+      campaignName: payload?.campaignName,
+      destination: maskValue(payload?.destination),
+      paramsCount: params.length,
+      params: params.map(maskValue),
+      source: payload?.source,
+    });
+  }
   const response = await fetch("https://backend.aisensy.com/campaign/t1/api", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
